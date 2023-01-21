@@ -1,6 +1,22 @@
 # TER_Gsociety
 Bienvenue dans notre dépôt GitHub, où la collaboration est reine et les bugs sont nos esclaves. Attention, ce dépôt peut causer des crises d'épilepsie...
 
+Rappel : Ne pas travailler directement sur le main !!
+Voici la liste des commandes à réaliser pour créer une nouvelle branche et la fusionner avec la branche principale dans Git quand tout est ok :
+
+    1 - git branch pour vérifier la branche active
+    2 - git checkout master pour accéder à la branche principale
+    3 - git branch nom-de-la-branche pour créer une nouvelle branche
+    4 - git checkout nom-de-la-branche pour passer à la nouvelle branche
+    5 - git add et git commit pour faire des modifications et des commits sur cette branche
+    6 - git checkout master pour revenir à la branche principale
+    7 - git merge nom-de-la-branche pour fusionner les modifications de la nouvelle branche dans la branche principale
+    8 - git push origin master pour envoyer les modifications sur le dépôt distant
+    
+Il est important de noter que avant de merger il est préférable de faire une revue de code pour s'assurer que les modifications sont correctes et ne causent pas de conflits. Il est aussi important de s'assurer que la branche principale soit à jour avant de faire un merge.
+
+
+
 Regle du quoridor #byChatgpt
 
     1 - Quoridor est un jeu de société pour deux joueurs.
@@ -13,3 +29,5 @@ Regle du quoridor #byChatgpt
     8 - Si un joueur ne peut plus déplacer son pion, la partie est considérée comme terminée et l'autre joueur a gagné.
     9 - Les joueurs peuvent également s'accorder sur une égalité si aucun des joueurs ne peut atteindre l'autre côté de l'échiquier.
     10 - Il est interdit de bloquer le pion de l'adversaire en l'enfermant dans un espace qui ne lui permet pas de bouger.
+
+
