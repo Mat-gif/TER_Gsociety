@@ -4,14 +4,14 @@ Bienvenue dans notre dépôt GitHub, où la collaboration est reine et les bugs 
 Rappel : Ne pas travailler directement sur le main !!
 Voici la liste des commandes à réaliser pour créer une nouvelle branche et la fusionner avec la branche principale dans Git quand tout est ok :
 
-    1 - git branch pour vérifier la branche active
-    2 - git checkout master pour accéder à la branche principale
-    3 - git branch nom-de-la-branche pour créer une nouvelle branche
-    4 - git checkout nom-de-la-branche pour passer à la nouvelle branche
-    5 - git add et git commit pour faire des modifications et des commits sur cette branche
-    6 - git checkout master pour revenir à la branche principale
-    7 - git merge nom-de-la-branche pour fusionner les modifications de la nouvelle branche dans la branche principale
-    8 - git push origin master pour envoyer les modifications sur le dépôt distant
+    1 - 'git branch' pour vérifier la branche active
+    2 - 'git checkout main' pour accéder à la branche principale
+    3 - 'git branch nom-de-la-branche' pour créer une nouvelle branche
+    4 - 'git checkout nom-de-la-branche' pour passer à la nouvelle branche
+    5 - 'git add' et 'git commit' pour faire des modifications et des commits sur cette branche
+    6 - 'git checkout main' pour revenir à la branche principale
+    7 - 'git merge nom-de-la-branche' pour fusionner les modifications de la nouvelle branche dans la branche principale
+    8 - 'git push origin main' pour envoyer les modifications sur le dépôt distant
     
 Il est important de noter que avant de merger il est préférable de faire une revue de code pour s'assurer que les modifications sont correctes et ne causent pas de conflits. Il est aussi important de s'assurer que la branche principale soit à jour avant de faire un merge.
 
