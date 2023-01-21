@@ -2,6 +2,9 @@
 Bienvenue dans notre dépôt GitHub, où la collaboration est reine et les bugs sont nos esclaves. Attention, ce dépôt peut causer des crises d'épilepsie...
 
 Rappel : Ne pas travailler directement sur le main !!
+
+Pour mettre à jour votre dépôt local avec les dernières modifications du dépôt distant : 'git pull'
+
 Voici la liste des commandes à réaliser pour créer une nouvelle branche et la fusionner avec la branche principale dans Git quand tout est ok :
 
     1 - 'git branch' pour vérifier la branche active
