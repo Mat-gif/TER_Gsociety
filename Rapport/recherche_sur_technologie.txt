@@ -63,3 +63,6 @@ Facilité d'utilisation: l'API Canvas est facile à utiliser pour les développe
 
 
 
+////
+
+https://stackoverflow.com/questions/9880279/how-do-i-add-a-simple-onclick-event-handler-to-a-canvas-element
