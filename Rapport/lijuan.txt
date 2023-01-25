@@ -1,0 +1,11 @@
+
+
+git pull : mettre a jour ton répertoire
+
+Tu fait tes motifs
+
+git add .
+
+git commit -m "nom de message"
+
+git push -u origin main
