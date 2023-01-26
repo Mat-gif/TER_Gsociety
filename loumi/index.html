@@ -63,6 +63,7 @@
       <!-- section pour le plateau de ce jeu  cette partie, je pense pouvait être  une page speciale qui sera appele si et seulement si certaines actions sont appele -->
       <!-- ===================================== -->
       <!-- un exemple using d3 pour le graphisme  -->
+      <svg id="plateau"></svg>
     </main>
 
     <!-- le lien pour charger la bibliothèque d3 -->
@@ -70,6 +71,26 @@
     <!-- les scripts js pour le côté  -->
     <script>
       console.log("vous êtes dans la page client ");
+
+      // les elements du joueur
+      const joueur = {
+        username: "",
+        host: false,
+        sockedId: "",
+        turn: false,
+        win: false,
+      };
+      const plateau = d3
+        .select("#plateau")
+        .attr("width", "60%")
+        .attr("height", "60vh")
+        .style("justify-content", "center")
+        .style("align-items", "center")
+        .style("border", "7px solid red")
+        .style("margin-left", "20%")
+        .style("margin-top", "5%")
+        .style("border-radius", "9px")
+        .style("background", "orange");
     </script>
     <!-- fin des scripts js pour le côté client -->
   </body>
