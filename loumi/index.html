@@ -24,9 +24,14 @@
       <div class="row">
         <div class="col">
           <div class="container">
-            <form action="#">
+            <form action="#" class="form">
               <label for="">Nom d'utilisateur</label>
-              <input type="text" name="username" id="" class="form-control" />
+              <input
+                type="text"
+                name="username"
+                id=""
+                class="form-control username"
+              />
               <label for="nb__player" class="mt-3">Adversaire</label>
               <input
                 type="number"
@@ -34,7 +39,7 @@
                 id=""
                 min="1"
                 max="3"
-                class="form-control"
+                class="form-control adversaire"
               />
               <button type="submit" class="btn btn-primary mt-3 ml-3">
                 Recherche de joueur
@@ -66,15 +71,19 @@
             <p>Vous êtes {nombre de joeur} dans la partie :</p>
             <ul class="participants__name__list">
               <!-- les listes ici servent d'exemple ils ne seront pas pré-remplies et seront remplies avec les données des joueurs: username -->
-              <li>Toi</li>
-              <li>moi</li>
-              <li>Elle</li>
-              <li>Ils</li>
+              <!-- les deux premoier joueurs si le jeu ne comporte que deux joueurs -->
+              <li class="player__host">moi</li>
+              <li class="second__player">Toi</li>
+              <!-- les deux autres joueurs si le jeu comporte plus de deux joueurs -->
+              <li class="third__player">Elle</li>
+              <li class="last__player">Ils</li>
             </ul>
           </div>
           <div class="col mt-5">
             <button class="btn btn-danger">Chat</button>
-            <button class="btn btn-warning mt-1">Personaliser votre avatar</button>
+            <button class="btn btn-warning mt-1">
+              Personaliser votre avatar
+            </button>
           </div>
         </div>
       </div>
@@ -87,10 +96,20 @@
 
     <!-- le lien pour charger la bibliothèque d3 -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- le script du serveur  -->
+    <script src="server.js"></script>
     <!-- les scripts js pour le côté  -->
     <script>
       console.log("vous êtes dans la page client ");
-
+      // recuperer des données du formulaire
+      const formulaire = document.querySelector(".form");
+      const inputUseranme = document.querySelector(".username");
+      const inputAdversaire = document.querySelector(".adversaire");
+      //ecouteur d'évènement du formulaire
+      formulaire.addEventListener("submit", () => {
+        console.log("you have submit something ");
+      });
       // les elements du joueur
       const joueur = {
         username: "",
@@ -99,6 +118,8 @@
         turn: false,
         win: false,
       };
+
+      // definition du cadre  du plateau de jeu
       const plateau = d3
         .select("#plateau")
         .attr("width", "60%")
@@ -110,6 +131,35 @@
         .style("margin-top", "5%")
         .style("border-radius", "9px")
         .style("background", "orange");
+      // mes deux sequences pour créer un matrix
+      const cellules = 9;
+      const colonnes = 9;
+      //array vide
+      const dessin = [];
+
+      // boucler pour avoir le matrix
+      for (let i = 0; i < cellules; i++) {
+        for (let j = 0; j < colonnes; i++) {
+          //sous formes d'objets a qui sera les cellules
+          // o qui sera les colonnes
+          dessin.push({
+            a: i,
+            o: j,
+          });
+        }
+      }
+
+      const micro__cellules = plateau
+        .selectAll(".cell")
+        .data(dessin)
+        .enter()
+        .append("rect")
+        .attr("class", "cell")
+        .attr("x", (d) => d.a * 50)
+        .attr("y", (d) => d.o * 50)
+        .attr("height", 41)
+        .attr("width", 41)
+        .style("fill", "red");
     </script>
     <!-- fin des scripts js pour le côté client -->
   </body>
