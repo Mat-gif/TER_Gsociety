@@ -181,13 +181,13 @@
         .style("perspective", "10px")
         .style("fill", "red");
 
-      let currentColor = "white";
+      let couluerActu = "white";
       micro__cellules.on("click", function () {
-        d3.select(this).style("fill", currentColor);
-        if (currentColor === "white") {
-          currentColor = "blue";
+        d3.select(this).style("fill", couluerActu);
+        if (couluerActu === "white") {
+          couluerActu = "blue";
         } else {
-          currentColor = "black";
+          couluerActu = "white";
         }
       });
     </script>
