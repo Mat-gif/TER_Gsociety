@@ -1,0 +1,14 @@
+
+étude préalable
+	SP init partie
+		- création partie
+		- connexion partie
+	SP partie
+		- deroulement partie
+		- condition victoire
+		
+
+
+(IA)
+(score)
+	-> bd
