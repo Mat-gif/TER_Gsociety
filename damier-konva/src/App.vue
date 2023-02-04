@@ -52,16 +52,23 @@
         this.checkConditionsCircle(theClick,circles)
         this.checkConditionsRect(theClick,rects)
 
-
-        if ( this.checkConditionsDeplacement())
+        if (this.checkConditionsDeplacement())
         {
           const circle = this.$refs.stage.getNode().findOne('Circle');
-                circle.setAttrs({
-                  x: this.cell.attrs.x+50,
-                  y: this.cell.attrs.y+50
-                });
+
+          new Konva.Tween(
+            {
+              node: circle,
+              duration: 1, // durée en secondes
+              x: this.cell.attrs.x + 50,
+              y: this.cell.attrs.y + 50,
+              onFinish: () => {
+                this.$refs.stage.getNode().draw();
+              } 
+            } ).play();
+          
         }
-        this.$refs.stage.getNode().draw();
+
     },
     checkConditionsDeplacement() {
       if (this.elem  && this.cell )
