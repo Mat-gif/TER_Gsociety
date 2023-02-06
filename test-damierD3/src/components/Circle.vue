@@ -21,6 +21,7 @@ export default
       .attr("r", 20)
       .attr("id", "pion")
       .style("fill", "green")
+      
   }
 };
 </script>

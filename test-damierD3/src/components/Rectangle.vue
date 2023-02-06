@@ -23,9 +23,16 @@
             .attr("y", j*50)
             .attr("width", 40)
             .attr("height", 40)
-            .attr("id", "("+i*50+", "+j*50+")")
+            .attr("id", "("+i*50+","+j*50+")")
             .style("fill", "blue")
+            svg
+            .append("text")
+            .text("("+i+","+j+")")
+            .attr("x", (i*50)+5)
+            .attr("y", (j*50)+25)
+            .style("fill", "white")
         }
+        
       }
     }
   };
