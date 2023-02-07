@@ -5,7 +5,7 @@
 const { Socket } = require("socket.io");
 const express = require("express");
 const app = express();
-const port = 8889;
+const port = 8882;
 /// création du serveur
 const http = require("http").createServer(app);
 const path = require("path");
@@ -24,6 +24,6 @@ io.on("connection", (socket) => {
 });
 //the server
 
-app.listen({ port }, () => {
+app.listen(`${port }`, () => {
   console.log(`the server is running on :http://localhost:${port}`);
 });

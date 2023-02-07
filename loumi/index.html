@@ -39,7 +39,7 @@
       <div class="row">
         <div class="col">
           <div class="container">
-            <form class="form">
+            <form method="post" class="form">
               <label for="">Nom d'utilisateur</label>
               <input
                 type="text"
@@ -95,7 +95,10 @@
             </ul>
           </div>
           <div class="col mt-5">
-            <button class="btn btn-danger">Chat</button>
+            <div class="chat">
+              <p>chat</p>
+              <button class="rounded ">&plus;</button>
+            </div>
             <button class="btn btn-warning mt-1">
               Personaliser votre avatar
             </button>
@@ -111,10 +114,9 @@
 
     <!-- le lien pour charger la bibliothèque d3 -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 
     <!-- le script du serveur  -->
-    <!-- <script src="./server.js"></script>
-    <script src="/socket.io/socket.io.js"></script> -->
 
     <!-- les scripts js pour le côté  -->
     <script>
@@ -124,10 +126,13 @@
       const inputUseranme = document.querySelector(".username");
       const inputAdversaire = document.querySelector(".adversaire");
       //ecouteur d'évènement du formulaire
-      formulaire.addEventListener("submit", () => {
+      formulaire.addEventListener("submit", (e) => {
+        e.preventDefault();
         console.log(
           `${inputUseranme.value} souhaite jouer avec ${inputAdversaire.value}`
         );
+        inputUseranme.value = "";
+        inputAdversaire.value = "";
       });
       // les elements du joueur
       const joueur = {
@@ -141,8 +146,8 @@
       // definition du cadre  du plateau de jeu
       const plateau = d3
         .select("#plateau")
-        .attr("width", "60%")
-        .attr("height", "auto")
+        .attr("width", "65%")
+        .attr("height", "550px")
         .style("justify-content", "center")
         .style("align-items", "center")
         .style("border", "7px solid red")
@@ -191,6 +196,7 @@
         }
       });
     </script>
+    <script src="server.js"></script>
     <!-- fin des scripts js pour le côté client -->
   </body>
 </html>
