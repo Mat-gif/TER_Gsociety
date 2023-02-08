@@ -1,6 +1,7 @@
 <template>
   <div>
     <Rectangle :svg="svg" />
+    <Grille :svg="svg" />
     <Circle :svg="svg" />
   </div>
 </template>
@@ -8,7 +9,9 @@
 <script>
 import Circle from "./components/Circle.vue";
 import Rectangle from "./components/Rectangle.vue";
+import Grille from "./components/Grille.vue";
 import * as d3 from "d3";
+
 
 export default {
   data() {
@@ -19,11 +22,10 @@ export default {
         .attr("height", 1000),
       pion : null,
       cell : null,
-      test : []
     }
   },
   components: {
-    Circle,Rectangle
+    Circle,Rectangle,Grille
   },
   mounted() {
     d3.selectAll("rect").on("click",  () =>{
@@ -31,8 +33,23 @@ export default {
       this.transitionPion();
     })
 
+    d3.selectAll("rect").on("mouseover",  () =>{
+      d3.select(event.currentTarget).transition()
+               .duration('50')
+               .style("opacity", 0.5);
+  
+    })
+    d3.selectAll("rect").on("mouseout",  () =>{
+      d3.select(event.currentTarget).transition()
+               .duration('50')
+               .style("opacity", 1);
+  
+    })
+
+
     d3.selectAll("circle").on("click",  () => {
       this.pion =d3.select(event.currentTarget) //sélectionner l'élément cible de l'événement
+
       this.cellulesproche();
     })
   },
@@ -65,6 +82,7 @@ export default {
           (parseInt(element.getAttribute("x")) === x0-50 && parseInt(element.getAttribute("y")) === y0+50) ||
           (parseInt(element.getAttribute("x")) === x0+50 && parseInt(element.getAttribute("y")) === y0-50)  ){
             console.log(element)
+            
             this.test.push(element)
       }
     
