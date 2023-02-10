@@ -22,6 +22,7 @@ export default {
         .attr("height", 1000),
       pion : null,
       cell : null,
+      t:8
     }
   },
   components: {
@@ -56,6 +57,7 @@ export default {
   methods: {
     transitionPion() {
     if (this.pion !== null && this.cell !== null && this.test.indexOf(this.cell.node()) !== -1) {
+      this.victoire();
       console.log("go")
       const t = d3.transition().duration(1000);
       d3.select(this.pion.node()).transition(t)
@@ -88,6 +90,27 @@ export default {
     
       })
       console.log("------- -----------------------------")
+  },
+  victoire(){
+      
+      var dif = parseInt(this.pion.node().getAttribute("cy"))-parseInt(this.cell.node().getAttribute("y"))
+      console.log(dif)
+      if(dif > 20 ) {
+        this.t = this.t-1
+        console.log(this.t)
+        if (this.t === 0) {
+          console.log (this.t +" = "+ "victoire")
+        }
+      }else if (dif <20) {
+      this.t = this.t+1
+      console.log(this.t)
+      if (this.t === 0) {
+        console.log (this.t +" = "+ "victoire")
+      }
+      }
+      
+
+
   }
 }
 }
