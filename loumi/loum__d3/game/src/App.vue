@@ -1,8 +1,15 @@
 <template>
   <div class="container">
-    <div class="d-flex">
-      <div id="plateau"></div>
-    </div>
+    <div id="plateau"></div>
+  </div>
+
+  <div class="containr">
+    <form action="post" class="form-group" v-on:submit="onSubmit">
+      <label for="username">Username</label>
+      <input type="text" name="" id="username" class="form-control" />
+      <button type="submit" class="btn btn-primary">Envoyer</button>
+    </form>
+    <p></p>
   </div>
 </template>
 
@@ -10,9 +17,32 @@
 <script>
 import "bootstrap/dist/css/bootstrap.css";
 import * as d3 from "d3";
+/// les elemnents du joueur
+const joueur = {
+  hote: false,
+  idSalon: null,
+  usernamer: "",
+  pion: "",
+  turn: false,
+  barriere: null,
+};
 
 export default {
   mounted() {
+    /// optimisation du code pour les fonctions de retrait et ajout de classe
+    let classToAdd = function (c, a) {
+      const classe = document.getElementById(c);
+      if (classe) {
+        classe.classList.add(a);
+      }
+    };
+
+    let classToHide = function (c, r) {
+      const classe = document.getElementById(c);
+      if (classe) {
+        classe.classList.remove(r);
+      }
+    };
     const plateau = d3
       .select("#plateau")
       .append("svg")
@@ -50,11 +80,15 @@ export default {
       .style("fill", "blue");
 
     ////le click dans une cellule
+
     m_case.on("click", function (p) {
       /// toutes l
       d3.selectAll(".cell").style("fill", "blue");
       d3.select(this).style("fill", "red");
     });
+  },
+  methods: {
+    
   },
 };
 </script>
