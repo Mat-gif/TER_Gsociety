@@ -24,7 +24,6 @@
 
 <script>
   export default {
-    
     data() 
     {
       return {
@@ -45,18 +44,11 @@
               theClick.x<=element.attrs.x + element.attrs.width && 
               theClick.y>=element.attrs.y && 
               theClick.y<=element.attrs.y + element.attrs.height){
-
-                console.log(element.attrs.fill)
                 element.attrs.fill= element.attrs.fill === "red" ? "blue" : "red";
-                console.log(element.attrs.fill)
           }
-          
         })
         this.$refs.stage.getNode().draw();
-        
-    
     },
-
   }
   };
 
