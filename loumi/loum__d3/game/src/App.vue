@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <div id="barrier"></div>
     <div id="plateau"></div>
   </div>
 
@@ -47,22 +48,25 @@ export default {
       .select("#plateau")
       .append("svg")
       .attr("width", "500px")
-      .attr("height", "500px")
-      .style("text-align", "center")
-      .style("justify-content", "center")
-      .style("align-items", "center");
+      .attr("height", "500px");
 
-    const cellules = 9;
-    const colonnes = 9;
+    //pas besoin de styliser pour le moment
+    // .style("text-align", "center")
+    // .style("justify-content", "center")
+    // .style("align-items", "center");
+
+    // const cellules = 9;   pas besion en tant que variables ont les utilises pas on mets directement la taille 9
+    // const colonnes = 9;
     const matrice = [];
 
-    for (let i = 0; i < cellules; i++) {
-      for (let j = 0; j < colonnes; j++) {
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 9; j++) {
         matrice.push({
           a: i,
           o: j,
           id: `cellule n°:-${i}-${j}`,
         });
+        // on cree directement l'objet svg pour ne pas se compliquer les choses
       }
     }
 
@@ -86,10 +90,43 @@ export default {
       d3.selectAll(".cell").style("fill", "blue");
       d3.select(this).style("fill", "red");
     });
+
+    // version ameliorée pour le moment
+    let barriere = [
+      {
+        id: "barriere_1",
+        x: 0,
+        y: 0,
+        width: 2 * m_case.attr("width"),
+        height: 10,
+      },
+      {
+        id: "barriere_2",
+        x: 0,
+        y: 0,
+        width: 2 * m_case.attr("width"),
+        height: 20,
+      },
+    ];
+    const barrier = d3
+      .select("#barrier")
+      .append("svg")
+      .attr("width", "200px")
+      .attr("height", "200px");
+
+    let m_barriere = barrier
+      .selectAll(".barrier")
+      .data(barriere)
+      .enter()
+      .append("rect")
+      .attr("id", (d) => d.id)
+      .attr("x", (d) => d.x)
+      .attr("y", (d) => d.y)
+      .attr("width", (d) => d.width)
+      .attr("height", (d) => d.height)
+      .style("fill", "orange");
   },
-  methods: {
-    
-  },
+  methods: {},
 };
 </script>
 
