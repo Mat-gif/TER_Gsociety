@@ -23,7 +23,8 @@
     </div>
     <!-- l'input pourrait être afficher si et seulement si les joueurs sont prêts à joueur -->
     <!-- :disabled="!socket || !socket.connected" -->
-    <input :value="text"
+    <input
+      :value="text"
       @input="$emit('update: text', $event.target.value)"
       placeholder="write a message..."
       class="text-message"
@@ -58,9 +59,11 @@ export default {
         user: this.utilisateur,
         socketId: this.socket.id,
       };
-      this.messages = this.messages.concat(message);
-      this.text = "";
+      this.$emit("messages", this.messages.concat(message));
+      this.$emit("texte", (this.text = ""));
       this.socket.emit("message", message);
+      // this.$emit("messages", `this.messages.concat(message)`);
+      // this.$emit("texte", `this.text = ""`);
     },
   },
 };

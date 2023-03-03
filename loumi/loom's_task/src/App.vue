@@ -8,7 +8,6 @@
   <div class="grid">
     <div>
       <h1 class="title">Quoridor</h1>
-      <button class="btn btn-start">Démarrer</button>
     </div>
     <div>
       <img src="./quoridor-removebg-preview.png" class="img" />
@@ -18,17 +17,14 @@
   <div class="container">
     <div class="row">
       <div class="username_ask col mt-5 pt-5">
-        <form class="form">
+        <form
+          class="form"
+          v-on:submit.prevent="OnSubmit"
+          v-bind:joined="joined"
+        >
           <label username="Username">Nom d'utilisateur</label>
           <input type="text" class="form-control" v-model="utilisateur" />
-          <button
-            type="submit"
-            class="btn btn-primary mt-3"
-            v-on:submit.prevent="OnSubmit"
-            v-bind:joined="joined"
-          >
-            Démarrer
-          </button>
+          <button class="btn btn-start">Démarrer</button>
         </form>
       </div>
     </div>
@@ -87,47 +83,6 @@
               }"
             />
           </template>
-          <template>
-            <v-circle
-              :config="{
-                x: 25 * 9 + 48,
-                y: 25 * 2.5,
-                width: 40,
-                height: 40,
-                radius: 10,
-                fill: 'white',
-              }"
-            />
-          </template>
-          <template>
-            <v-circle
-              :config="{
-                x: 40 * 11,
-                y: 25 * 19,
-                width: 40,
-                height: 40,
-                radius: 10,
-                fill: 'orange',
-              }"
-            />
-          </template>
-        </template>
-      </v-layer>
-      <v-layer>
-        <template
-          v-for="x in Array.from({ length: 9 }, (_, i) => i + 1)"
-          :key="x"
-        >
-          <v-rect
-            :config="{
-              x: 40 * x,
-              y: 40 * y,
-              width: 10,
-              height: 90,
-              fill: 'orange',
-              draggable: true,
-            }"
-          />
         </template>
       </v-layer>
     </v-stage>
@@ -140,11 +95,12 @@
       :messages="messages"
       :socket="socket"
       :text="text"
+      v-on:sendMessage="listenToMessages($event)"
       v-if="joined"
     ></Chat>
   </div>
 </template>
-<script setup>
+<script>
 import io from "socket.io-client";
 import "bootstrap/dist/css/bootstrap.css";
 import Chat from "./components/chatBox.vue";
@@ -158,6 +114,7 @@ const joueur = {
   idSalon: null,
   socketId: "",
 };
+// eslint-disable-next-line vue/no-export-in-script-setup
 export default {
   data() {
     return {
@@ -178,7 +135,6 @@ export default {
   methods: {
     handlerclik() {
       var theClick = this.$refs.stage.getNode().getPointerPosition();
-
       this.$refs.stage.getNode().children[0].children.forEach((element) => {
         element.attrs.fill = element.attrs.fill === "blue" ? "blue" : "blue";
 
@@ -191,9 +147,9 @@ export default {
           element.attrs.fill = element.attrs.fill === "red" ? "blue" : "red";
         }
       });
-      this.$refs.stage.getNode().draw();
     },
     OnSubmit() {
+      console.log("submitteed");
       this.socket = io("http://localhost:3000");
       this.joined = true;
       this.socket.on("message recu", (data) => {
@@ -201,10 +157,7 @@ export default {
       });
 
       if (this.joined) {
-        (() => {
-          /// à partir de ce moment ou une discussion est possible
-
-          // selection des éléments du DOM
+        () => {
           let chatty = document.querySelector(".chatty");
           console.log(chatty);
           /* Animation */
@@ -227,21 +180,15 @@ export default {
 
           joueur.username = input.value;
           joueur.socketId = this.socket.id;
-          joueur.hote = true;
-          joueur.tour = true;
+          this.socket.emit("playerData", joueur);
+        };
+      }
+    },
 
-          //pion test pour les joueurs
-
-          let pionTest = document.createElement("div");
-          pionTest.classList.add("pion-test");
-          console.log(pionTest);
-
-          this.$refs.stage.getNode().draw(pionTest);
-     
-        this.socket.emit("playerData", joueur);
-      )
-      this$refs.stage.getNode().draw();
-    })
+    /// method communication : Parent to child {Chat}
+    listenToMessages(messages) {
+      console.log(messages);
+      this.messages = messages;
     },
     sendMessage() {
       //d'autres possiblités pourront être ajouter
