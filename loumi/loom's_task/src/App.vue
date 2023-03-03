@@ -144,8 +144,7 @@
     ></Chat>
   </div>
 </template>
-<script>
-"use strict";
+<script setup>
 import io from "socket.io-client";
 import "bootstrap/dist/css/bootstrap.css";
 import Chat from "./components/chatBox.vue";
@@ -159,13 +158,6 @@ const joueur = {
   idSalon: null,
   socketId: "",
 };
-//chatty
-
-// à revoir apres
-//texte de bienvenue
-// const welcome = document.createElement("div");
-// //welcome.classList.add('welcome-message');
-// welcome.innerHTML = `Seul ou à deux ? clic ici `;
 export default {
   data() {
     return {
@@ -202,7 +194,7 @@ export default {
       this.$refs.stage.getNode().draw();
     },
     OnSubmit() {
-      this.socket = io("http://localhost:3001");
+      this.socket = io("http://localhost:3000");
       this.joined = true;
       this.socket.on("message recu", (data) => {
         this.messages = this.messages.concat(data);
@@ -245,31 +237,11 @@ export default {
           console.log(pionTest);
 
           this.$refs.stage.getNode().draw(pionTest);
-          const pionHote = new Konva.Circle({
-            x: 25 * 9 + 50,
-            y: 25 * 2,
-            radius: 10,
-            fill: "white",
-          });
-
-          let pionAutreJoueur = new Konva.Circle({
-            x: 25 * 2 + 50,
-            y: 25 * 9,
-            radius: 10,
-            fill: "red",
-          });
-
-          if (joueur.hote === true) {
-            joueur.pion = pionHote;
-          } else {
-            joueur.pion = pionAutreJoueur;
-          }
-          console.log(joueur.pion);
-          console.log(joueur.username);
-        })();
+     
         this.socket.emit("playerData", joueur);
-      }
-      this.$refs.stage.getNode().draw();
+      )
+      this$refs.stage.getNode().draw();
+    })
     },
     sendMessage() {
       //d'autres possiblités pourront être ajouter
