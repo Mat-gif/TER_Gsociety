@@ -62,8 +62,6 @@ export default {
       this.$emit("messages", this.messages.concat(message));
       this.$emit("texte", (this.text = ""));
       this.socket.emit("message", message);
-      // this.$emit("messages", `this.messages.concat(message)`);
-      // this.$emit("texte", `this.text = ""`);
     },
   },
 };
