@@ -1,0 +1,83 @@
+gerer listes des barrières / pions associés à chaque joueur
+
+gerer instanceof konva.rect --> différencier les rects
+
+
+Faire plusieurs layers et test sur les layers différentes
+
+
+
+
+
+/*
+    handlerclik(event) {
+        var theClick = this.$refs.stage.getNode().getPointerPosition()
+
+        console.log(theClick.x+" , "+theClick.y)
+
+        // Instance of rect = la cellule pas le type Konva.Rect
+        const rects = this.$refs.stage.getNode().children[0].children.filter(node => {
+          return node instanceof Konva.Rect})
+
+        rects.forEach(e => {
+          if (e.attrs.className === 'cellule'){
+            // console.log(e)
+          }
+
+        })
+        const circles = this.$refs.stage.getNode().children[0].children.filter(node => {
+          return node instanceof Konva.Circle
+        });
+        
+        console.log(circles)
+
+        this.checkConditionsCircle(theClick,circles)
+        this.checkConditionsRect(theClick,rects)
+
+        if (this.checkConditionsDeplacement())
+        {
+          const circle = this.$refs.stage.getNode().findOne('Circle');
+
+          new Konva.Tween(
+            {
+              node: circle,
+              duration: 0.3, // durée en seconde
+              x: this.cell.attrs.x + 50,
+              y: this.cell.attrs.y + 50,
+              onFinish: () => {
+                this.$refs.stage.getNode().draw();
+              } 
+            } ).play();
+          
+        }
+
+    },
+    checkConditionsDeplacement() {
+      if (this.elem  && this.cell )
+      {
+        return true
+      }
+      return false
+    },
+    checkConditionsCircle(theClick,circles){
+      circles.forEach(element => {
+        if ( theClick.x>=element.attrs.x-element.attrs.radius && theClick.x<=element.attrs.x+element.attrs.radius && theClick.y>=element.attrs.y-element.attrs.radius && theClick.y<=element.attrs.y + element.attrs.radius) 
+          {
+            this.elem = element; 
+          }
+      })
+    },
+    checkConditionsRect(theClick,rects){
+      rects.forEach(element => {
+        if ( theClick.x>=element.attrs.x && theClick.x<=element.attrs.x + element.attrs.width && theClick.y>=element.attrs.y && theClick.y<=element.attrs.y + element.attrs.height) 
+          {
+            if (this.elem){
+              if ( !(theClick.x>=this.elem.attrs.x-this.elem.attrs.radius && theClick.x<=this.elem.attrs.x+this.elem.attrs.radius && theClick.y>=this.elem.attrs.y-this.elem.attrs.radius && theClick.y<=this.elem.attrs.y + this.elem.attrs.radius)) 
+              {
+                this.cell = element;
+              }
+            }
+          }
+      })
+    }
+  } */
