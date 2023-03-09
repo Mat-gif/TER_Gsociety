@@ -1,56 +1,50 @@
 <template>
-  <div>
-    <v-stage ref="stage" :config="stageSize" @click="handlerclik">
-     <v-layer>
-      <template v-for="x in  Array.from({length: 9}, (_, i) => i + 1)" :key="x">
-          <template v-for="y in  Array.from({length: 9}, (_, i) => i + 1)" :key="y">
-              <v-rect  
-                :config="{
-                    x: 50 * x,
-                    y: 50 * y,
-                    width: 40,
-                    height: 40,
-                    fill: 'blue',
-                  }"   
-              />
-          </template>
-      </template>
-    </v-layer>
-   </v-stage>
-  </div>
+  <div ref="container"></div>
 </template>
 
-
-
 <script>
-  export default {
-    data() 
-    {
-      return {
-        stageSize: {
-          width: window.innerWidth,
-          height: window.innerHeight,
-        }
-      };
-    },
-  methods:{
-    handlerclik() {
-        var theClick =  this.$refs.stage.getNode().getPointerPosition()
-        this.$refs.stage.getNode().children[0].children.forEach(element => {
+import Konva from 'konva';
+/*
+  Stage : zone de dessin principale où les formes sont placées.
+  Layer : conteneurs pour les formes qui sont placées sur le Stage 
+          Chaque Layer peut contenir plusieurs formes et peut être manipulé indépendamment des autres
+*/
+export default {
+  mounted() {
+    const stage = new Konva.Stage({
+      container: this.$refs.container, // ref de la div contenu dans le template
+      width: 500, // Dimensions de la scène principale
+      height: 500
+    });
 
-          element.attrs.fill= element.attrs.fill === "blue" ? "blue" : "blue";
+    const layer = new Konva.Layer(); // Creation d'une nouvelle Layer
+    stage.add(layer); // Ajout de la Layer a la scène principale
 
-          if( theClick.x>=element.attrs.x && 
-              theClick.x<=element.attrs.x + element.attrs.width && 
-              theClick.y>=element.attrs.y && 
-              theClick.y<=element.attrs.y + element.attrs.height){
-                element.attrs.fill= element.attrs.fill === "red" ? "blue" : "red";
-          }
-        })
-        this.$refs.stage.getNode().draw();
-    },
-  }
-  };
+    let prevRect = null; // Garder une référence à l'élément précédemment cliqué
 
+    for (let i = 0; i < 9; i++ ) {
+      for( let j = 0; j < 9; j++) {
+        const rect = new Konva.Rect({
+          id: "("+i+","+j+")",
+          x: 50*i,
+          y: 50*j,
+          width: 40,
+          height: 40,
+          fill: 'blue',
+          listening: true
+        });
+        
+        rect.on('click', function(evt)  {
+          if (prevRect) prevRect.fill('blue'); // Réinitialiser l'élément précédemment cliqué
+          evt.target.fill('red');
+          prevRect = evt.target; // Mettre à jour la référence de l'élément précédemment cliqué
+          layer.draw();
+        });
 
+        layer.add(rect); // Ajouter le rectangle à la couche
+      }
+    }
+    stage.draw(); // Mettre a jour la Scène principale
+  },
+}
 </script>
