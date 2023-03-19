@@ -1,21 +1,13 @@
-<mxfile host="app.diagrams.net" modified="2023-03-19T15:06:46.608Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36" etag="iKxn0DPF6Aqqd89dk1k8" version="21.0.6" type="github">
+<mxfile host="app.diagrams.net" modified="2023-03-19T15:13:11.486Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36" etag="2HCS7vENQgeiglIdMO3k" version="21.0.6" type="github">
   <diagram name="Page-1" id="FgP8BDgSYU1iSLKfVy64">
     <mxGraphModel dx="1434" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="3Rz-C_fRMMW0dZHXcKt9-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;exitX=0.497;exitY=1.018;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="dIRDVUr5gUY7s9fhSYIf-24" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="530.0526315789473" y="310.0000000000001" as="sourcePoint" />
-            <mxPoint x="600" y="430" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="3Rz-C_fRMMW0dZHXcKt9-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;startArrow=none;" parent="1" source="dIRDVUr5gUY7s9fhSYIf-25" edge="1">
+        <mxCell id="3Rz-C_fRMMW0dZHXcKt9-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.005;entryY=0.667;entryDx=0;entryDy=0;endArrow=none;endFill=0;startArrow=none;entryPerimeter=0;" parent="1" source="dIRDVUr5gUY7s9fhSYIf-25" edge="1" target="dIRDVUr5gUY7s9fhSYIf-22">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="430" y="255.0000000000001" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="430" y="262" />
-            </Array>
+            <Array as="points" />
           </mxGeometry>
         </mxCell>
         <mxCell id="eeULFgyOEKWC4nzDJ71u-9" value="0 ou 1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="3Rz-C_fRMMW0dZHXcKt9-9">
@@ -146,7 +138,7 @@
         <mxCell id="dIRDVUr5gUY7s9fhSYIf-16" value=" " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="dIRDVUr5gUY7s9fhSYIf-13" vertex="1">
           <mxGeometry y="60" width="220" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="dIRDVUr5gUY7s9fhSYIf-17" value="Barrière" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
+        <mxCell id="dIRDVUr5gUY7s9fhSYIf-17" value="Mur" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
           <mxGeometry x="570" y="30" width="220" height="104" as="geometry" />
         </mxCell>
         <mxCell id="dIRDVUr5gUY7s9fhSYIf-18" value="- longueur : int&#xa;- largeur : int&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="dIRDVUr5gUY7s9fhSYIf-17" vertex="1">
@@ -158,8 +150,11 @@
         <mxCell id="dIRDVUr5gUY7s9fhSYIf-20" value=" " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="dIRDVUr5gUY7s9fhSYIf-17" vertex="1">
           <mxGeometry y="78" width="220" height="26" as="geometry" />
         </mxCell>
+        <mxCell id="eeULFgyOEKWC4nzDJ71u-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="dIRDVUr5gUY7s9fhSYIf-21" target="dIRDVUr5gUY7s9fhSYIf-34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="dIRDVUr5gUY7s9fhSYIf-21" value="Élement" style="swimlane;fontStyle=3;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-          <mxGeometry x="430" y="200" width="220" height="114" as="geometry" />
+          <mxGeometry x="435" y="200" width="220" height="114" as="geometry" />
         </mxCell>
         <mxCell id="dIRDVUr5gUY7s9fhSYIf-22" value="- posX : int&#xa;- posY : int&#xa;- couleur : string&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="dIRDVUr5gUY7s9fhSYIf-21" vertex="1">
           <mxGeometry y="26" width="220" height="54" as="geometry" />
@@ -254,6 +249,14 @@
           <mxGeometry x="0.6313" y="-2" relative="1" as="geometry">
             <mxPoint x="-51" y="-8" as="offset" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="eeULFgyOEKWC4nzDJ71u-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;dashed=1;" edge="1" parent="1" source="eeULFgyOEKWC4nzDJ71u-15">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="540" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="eeULFgyOEKWC4nzDJ71u-15" value="Un joueur possède 1 Pion&lt;br&gt;Un joueur possède n Mur&amp;nbsp;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" vertex="1" parent="1">
+          <mxGeometry x="780" y="330" width="240" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
