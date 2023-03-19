@@ -1,24 +1,23 @@
 <template>
   <div class="container">
-    <div class="d-flex">
       <div id="plateau"></div>
-    </div>
   </div>
 </template>
 
-<!-- le script  sans composants et methods  -->
+
 <script>
-import "bootstrap/dist/css/bootstrap.css";
 import * as d3 from "d3";
 
 export default {
   mounted() {
+     //// Initialisation de la scène principale
     const plateau = d3
       .select("#plateau")
       .append("svg")
       .attr("width", "500px")
       .attr("height", "500px")
 
+    //// Création des cellules du plateau
     for (let i = 0; i < 9; i++) {
       for (let j = 0; j < 9; j++) {
         plateau
@@ -32,7 +31,7 @@ export default {
       }
     }
 
-    ////le click dans une cellule
+    //// Ecouteurs d'évenements
     plateau.selectAll("rect").on("click", () => {
       d3.selectAll("rect").style("fill", "blue");
       d3.select(event.currentTarget).style("fill", "red");
@@ -41,7 +40,3 @@ export default {
 };
 </script>
 
-<!-- j'ai laissé le même style css -->
-<style scoped>
-
-</style>

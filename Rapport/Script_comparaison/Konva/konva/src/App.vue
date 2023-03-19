@@ -4,24 +4,22 @@
 
 <script>
 import Konva from 'konva';
-/*
-  Stage : zone de dessin principale où les formes sont placées.
-  Layer : conteneurs pour les formes qui sont placées sur le Stage 
-          Chaque Layer peut contenir plusieurs formes et peut être manipulé indépendamment des autres
-*/
+
 export default {
   mounted() {
+    //// Initialisation de la scène principale
     const stage = new Konva.Stage({
-      container: this.$refs.container, // ref de la div contenu dans le template
-      width: 500, // Dimensions de la scène principale
+      container: this.$refs.container, 
+      width: 500,
       height: 500
     });
 
-    const layer = new Konva.Layer(); // Creation d'une nouvelle Layer
-    stage.add(layer); // Ajout de la Layer a la scène principale
+    const layer = new Konva.Layer(); 
+    stage.add(layer);
 
-    let prevRect = null; // Garder une référence à l'élément précédemment cliqué
+    let prevRect = null; 
 
+    //// Création des cellules du plateau
     for (let i = 0; i < 9; i++ ) {
       for( let j = 0; j < 9; j++) {
         const rect = new Konva.Rect({
@@ -34,17 +32,19 @@ export default {
           listening: true
         });
         
+          
+        //// Ecouteurs d'évenements
         rect.on('click', function(evt)  {
-          if (prevRect) prevRect.fill('blue'); // Réinitialiser l'élément précédemment cliqué
+          if (prevRect) prevRect.fill('blue'); 
           evt.target.fill('red');
-          prevRect = evt.target; // Mettre à jour la référence de l'élément précédemment cliqué
+          prevRect = evt.target; 
           layer.draw();
         });
 
-        layer.add(rect); // Ajouter le rectangle à la couche
+        layer.add(rect); 
       }
     }
-    stage.draw(); // Mettre a jour la Scène principale
+    stage.draw(); 
   },
 }
 </script>
