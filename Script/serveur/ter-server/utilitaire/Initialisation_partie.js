@@ -1,12 +1,12 @@
 // module.js
 
-const init = {
+module.exports = {
     createdRoom: function (player,game,rooms){
         const room =
             {
                 id: this.roomId(),
                 info : game,
-                plateau: this.createZeroMatrix(player.nb_Squares),
+                plateau: this.createZeroMatrix(game.nb_Squares),
                 players: []
             }
         room.plateau= this.positionPionStart(room.plateau,1);
@@ -52,5 +52,3 @@ const init = {
     }
 
 };
-
-export default init;

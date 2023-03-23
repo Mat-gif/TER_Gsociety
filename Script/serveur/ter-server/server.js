@@ -9,8 +9,7 @@ const http = require('http');
 const server = http.createServer(app);
 const io = require("socket.io")(server);
 
-import init from './utilitaire/Initialisation_partie';
-
+var init = require('./utilitaire/Initialisation_partie');
 // Utiliser des fichiers statiques à partir du répertoire 'public'
 app.use(express.static('dist'));
 
@@ -49,8 +48,8 @@ io.on('connection', (socket) => {
     /* info quand autre joueurs rejoints le salon uniquement a un socket*/
     io.to(socket.id).emit('join room', room.id);
     /* debut de la partie */
-    if (room.game.length === room.game.nb_Players) {
-      io.to(room.id).emit('start game', room.players);
+    if (room.players.length === room.info.nb_Players) {
+      io.to(room.id).emit('start game', "Début !");
     }
   });
 

@@ -25,6 +25,9 @@ export default {
     ListeUserComponent
 
   },
+  created() {
+    this.socket.on('start game', (data) => alert(data));
+  },
   methods: {
         // Définit la méthode utilisée par le payload pour mettre à jour la propriété data
         setRoomId(payload) {
