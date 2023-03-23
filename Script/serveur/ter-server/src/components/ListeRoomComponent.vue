@@ -1,7 +1,7 @@
 <template>
   
     <div>
-      <h2>Liste des sallons disponibles </h2>
+      <h2>Liste des salons disponibles </h2>
       <ul id="room-list">
         <li v-for="room in rooms" :key="room.id">{{ room.id }}</li>
       </ul>

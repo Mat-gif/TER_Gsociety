@@ -9,6 +9,8 @@ const http = require('http');
 const server = http.createServer(app);
 const io = require("socket.io")(server);
 
+import init from './utilitaire/Initialisation_partie';
+
 // Utiliser des fichiers statiques à partir du répertoire 'public'
 app.use(express.static('dist'));
 
@@ -20,13 +22,13 @@ io.on('connection', (socket) => {
 
 
   /*  connection d'un client */
-  socket.on('playerData', (player) => {
+  socket.on('playerData', (player,game) => {
     console.log(`[playerData] ${player.username}`);
     let room = null;
 
     /* creation d'une nouvelle room*/
     if (!player.roomId) {
-      room = createdRoom(player);
+      room = init.createdRoom(player,game,rooms);
       console.log(`[create room] - ${room.id} - ${player.username}`);
       io.emit('room id',room.id)
       
@@ -37,9 +39,9 @@ io.on('connection', (socket) => {
       }
       /*on ajoute le joueur dans la room */
       room.players.push(player);
-      room.plateau = positionPionStart(room.plateau, room.players.length)
+      room.plateau = init.positionPionStart(room.plateau, room.players.length)
       console.log(room.plateau)
-      io.emit('list rooms', rooms.filter(r => r.players.length < r.players.nb_Players));
+      io.emit('list rooms', rooms.filter(r => r.players.length < r.info.nb_Players));
     }
 
     socket.join(room.id);
@@ -47,14 +49,14 @@ io.on('connection', (socket) => {
     /* info quand autre joueurs rejoints le salon uniquement a un socket*/
     io.to(socket.id).emit('join room', room.id);
     /* debut de la partie */
-    if (room.players.length === room.players.nb_Players) {
+    if (room.game.length === room.game.nb_Players) {
       io.to(room.id).emit('start game', room.players);
     }
   });
 
   /* récuperation des liste des socket disponibles */
   socket.on('get rooms', () => {
-    io.to(socket.id).emit('list rooms', rooms.filter(r => r.players.length < r.players.nb_Players));
+    io.to(socket.id).emit('list rooms', rooms.filter(r => r.players.length < r.info.nb_Players));
   });
 
   socket.on('get users', (roomID) => {
@@ -83,66 +85,11 @@ io.on('connection', (socket) => {
       });
      
     });
-    io.emit('list rooms', rooms.filter(r => r.players.length < r.players.nb_Players));
+    io.emit('list rooms', rooms.filter(r => r.players.length < r.info.nb_Players));
   })
 
 
 });
-
-
-/* creation de nouvelle room */
-function createdRoom(player){
-  const room = 
-  {
-    id: roomId(),
-    plateau: createZeroMatrix(player.nb_Squares), 
-    players: []
-  };
-
-  room.plateau= positionPionStart(room.plateau,1);
-  console.log(room.plateau);
-  player.roomId = room.id;
-
-  room.players.push(player);
-
-  rooms.push(room);
-
-  return room;
-}
-/* pour generer un id unique pour chaque nouvelle room */
-function roomId(){
-  return Math.random().toString(36).substr(2,9);
-}
-
-function createZeroMatrix(n) {
-  var matrix = [];
-  for (var i = 0; i < n; i++) {
-    var row = [];
-    for (var j = 0; j < n; j++) {
-      row.push(0);
-    }
-    matrix.push(row);
-  }
-  return matrix;
-}
-
-function positionPionStart(plateau,num){
-  switch (num) {
-    case 1:
-      plateau[0][Math.floor(plateau.length/2)] = num;
-      break;
-    case 2:
-      plateau[plateau.length-1][Math.floor(plateau.length/2)] = num;
-      break; 
-    case 3:
-      plateau[Math.floor(plateau.length/2)][0] = num;
-      break; 
-    case 4:
-      plateau[Math.floor(plateau.length/2)][plateau.length-1] = num;
-      break; 
-  }
-  return plateau;
-}
 
 
 
