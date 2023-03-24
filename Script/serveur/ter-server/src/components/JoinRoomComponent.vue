@@ -23,6 +23,7 @@
           username: "",
           socketId : "",
           turn: false,
+          color: null,
           win: false
         },
       }
@@ -32,7 +33,7 @@
         this.player.socketId = this.socket.id;
         this.socket.emit('playerData', this.player);
 
-        this.$emit('event-roomId', { roomId: this.player.roomId });
+        this.$emit('event-roomId', { roomId: this.player.roomId , socketId:this.socket.id });
         console.log(this.player);
       }
     }

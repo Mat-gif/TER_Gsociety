@@ -7,7 +7,17 @@ import Konva from 'konva';
 
 export default {
   name: 'PlateauComponent',
-  mounted() {
+  props: {
+    nbSquares: {
+      default:0,
+      required: true
+    },
+    color:{
+      required: true
+    }
+
+  },
+  created() {
     console.log("dans PlateauComponent")
     //// Initialisation de la scène principale
     const stage = new Konva.Stage({
@@ -19,8 +29,8 @@ export default {
     stage.add(layer);
     let prevRect = null;
     //// Création des cellules du plateau
-    for (let i = 0; i < 9; i++) {
-      for (let j = 0; j < 9; j++) {
+    for (let i = 0; i < this.nbSquares; i++) {
+      for (let j = 0; j < this.nbSquares; j++) {
         const rect = new Konva.Rect({
           id: "(" + i + "," + j + ")",
           x: 50 * i,
@@ -35,7 +45,7 @@ export default {
         //// Ecouteurs d'évenements
         rect.on('click', function (evt) {
           if (prevRect) prevRect.fill('blue');
-          evt.target.fill('red');
+          evt.target.fill(this.color);
           prevRect = evt.target;
           layer.draw();
         });

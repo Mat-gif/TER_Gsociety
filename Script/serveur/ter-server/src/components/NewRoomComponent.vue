@@ -21,6 +21,7 @@
           username: "",
           socketId : "",
           turn: false,
+          color: null,
           win: false
         },
         game : {
@@ -38,7 +39,7 @@
         
         
         this.socket.emit('playerData', this.player, this.game );
-        this.socket.on('room id', (roomId) => this.$emit('event-roomId', { roomId: roomId }));
+        this.socket.on('room id', (roomId) => this.$emit('event-roomId', { roomId: roomId, socketId:this.socket.id }));
         console.log(this.player);
       }
     }

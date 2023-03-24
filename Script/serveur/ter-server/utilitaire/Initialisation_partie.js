@@ -7,14 +7,15 @@ module.exports = {
                 id: this.roomId(),
                 info : game,
                 plateau: this.createZeroMatrix(game.nb_Squares),
-                players: []
+                players: [],
+                colors :  []
             }
         room.plateau= this.positionPionStart(room.plateau,1);
         console.log(room.plateau);
         player.roomId = room.id;
 
         room.players.push(player);
-
+        this.colorPlayer(player.socketId, room.players.length,room)
         rooms.push(room);
 
         return room;
@@ -49,6 +50,22 @@ module.exports = {
                 break;
         }
         return plateau;
+    },
+    colorPlayer: function (socketId, num, room){
+        switch (num) {
+            case 1:
+                room.colors.push({socketId: socketId, color:"red"});
+                break;
+            case 2:
+                room.colors.push({socketId: socketId, color:"green"});
+                break;
+            case 3:
+                room.colors.push({socketId: socketId, color:"yellow"});
+                break;
+            case 4:
+                room.colors.push({socketId: socketId, color:"purple"});
+                break;
+        }
     }
 
 };

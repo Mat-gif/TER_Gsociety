@@ -21,24 +21,25 @@ io.on('connection', (socket) => {
 
 
   /*  connection d'un client */
-  socket.on('playerData', ({ username, roomId }, game) => {
-    console.log(`[playerData] ${username}`);
+  socket.on('playerData', (player, game) => {
+    console.log(`[playerData] ${player.username}`);
     let room = null;
 
     /* creation d'une nouvelle room*/
-    if (!roomId) {
-      room = init.createdRoom({ username }, game, rooms);
-      console.log(`[create room] - ${room.id} - ${username}`);
+    if (!player.roomId) {
+      room = init.createdRoom(player, game, rooms);
+      console.log(`[create room] - ${room.id} - ${player.username}`);
       io.emit('room id', room.id)
 
     } else { /* j'ajoute le player dans la room */
-      room = rooms.find(r => r.id === roomId);
+      room = rooms.find(r => r.id === player.roomId);
       if (room === undefined) {
         return;
       }
       /*on ajoute le joueur dans la room */
-      room.players.push({ username });
+      room.players.push({ player });
       room.plateau = init.positionPionStart(room.plateau, room.players.length)
+      init.colorPlayer(player.socketId, room.players.length,room)
       console.log(room.plateau)
       io.emit('list rooms', rooms.filter(r => r.players.length < r.info.nb_Players));
     }
@@ -49,7 +50,11 @@ io.on('connection', (socket) => {
     io.to(socket.id).emit('join room', room.id);
     /* debut de la partie */
     if (room.players.length === room.info.nb_Players) {
-      io.to(room.id).emit('start game', "Début !");
+      console.log(room)
+      room.colors.forEach(e => {
+        io.to(e.socketId).emit('start game', room.info.nb_Squares, e.color);
+      })
+
     }
   });
 
