@@ -30,7 +30,6 @@ io.on('connection', (socket) => {
       room = init.createdRoom(player, game, rooms);
       console.log(`[create room] - ${room.id} - ${player.username}`);
       io.emit('room id', room.id)
-
     } else { /* j'ajoute le player dans la room */
       room = rooms.find(r => r.id === player.roomId);
       if (room === undefined) {
@@ -38,11 +37,12 @@ io.on('connection', (socket) => {
       }
       /*on ajoute le joueur dans la room */
       room.players.push({ player });
-      room.plateau = init.positionPionStart(room.plateau, room.players.length)
+      init.positionPionStart(room.plateau, room.players.length,player)
       init.colorPlayer(player.socketId, room.players.length,room)
       console.log(room.plateau)
       io.emit('list rooms', rooms.filter(r => r.players.length < r.info.nb_Players));
     }
+
 
     socket.join(room.id);
 
@@ -50,11 +50,7 @@ io.on('connection', (socket) => {
     io.to(socket.id).emit('join room', room.id);
     /* debut de la partie */
     if (room.players.length === room.info.nb_Players) {
-      console.log(room)
-      room.colors.forEach(e => {
-        io.to(e.socketId).emit('start game', room.info.nb_Squares, e.color);
-      })
-
+      io.to(room.id).emit('start game', room);
     }
   });
 
