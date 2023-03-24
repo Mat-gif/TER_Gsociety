@@ -37,15 +37,8 @@
         this.player.host = true;
         this.player.turn = true;
         this.player.socketId = this.socket.id;
-        
-        
         this.socket.emit('playerData', this.player, this.game );
-
-
-          this.socket.on('room id', (roomId) => this.$emit('event-roomId', { roomId: roomId, socketId:this.socket.id}));
-
-
-
+        this.socket.on('room id', (roomId) => this.$emit('event-roomId', { roomId: roomId, socketId:this.socket.id}));
 
 
         console.log(this.player);
