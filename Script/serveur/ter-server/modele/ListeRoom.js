@@ -8,7 +8,7 @@ class ListeRoom {
     addRoom(room)
     {
         this.rooms.push(room);
-        console.log( `[ ListeRoom ] ${room.id} ajouté a la liste`)
+        console.log( `[listeRoom] ${room.id} ajouté a la liste`)
     }
 
     findRoom(roomId)

@@ -22,7 +22,7 @@ class Room {
         this.setPlayers(player)
         this.plateau =  this.positionPionStart( this.plateau, this.sizePlayers(), player )
         this.initGame.push(this.colorPlayer( player.socketId, this.sizePlayers()) )
-        console.log(`--> ${ player.username } ajouté a la room : ${ this.id }`)
+        console.log(`[room] ${ player.username } ajouté a la room : ${ this.id }`)
     }
 
     sizePlayers(){return this.players.length}
