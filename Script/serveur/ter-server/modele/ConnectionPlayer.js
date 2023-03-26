@@ -7,7 +7,8 @@ class ConnectionPlayer {
 
     createRoom(rooms,player,game)
     {
-        const room = new Room(player, game); // donner une valeur de constructeur de classe
+        const room = new Room(game); // donner une valeur de constructeur de classe
+        room.addPlayer(player) // j'ajoute l'hote de la partie
         rooms.addRoom(room); // ajout de la room a la liste
         return room;
     }

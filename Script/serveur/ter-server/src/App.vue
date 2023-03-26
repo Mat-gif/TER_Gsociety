@@ -3,7 +3,7 @@
   <JoinRoomComponent v-if="!playGame" :socket="socket" @event-roomId="setRoomId"/>
   <ListeRoomComponent  v-if="!playGame" :socket="socket"/>
   <ListeUserComponent v-if="roomId && !playGame" :roomID="roomId" :socket="socket"/>
-  <PlateauComponent v-if="playGame" :color="color" :nbSquares="nbSquares" />
+  <PlateauComponent v-if="playGame" :color="color" :nbSquares="nbSquares" :myInitGame="myInitGame" :otherInitGame="otherInitGame" />
 </template>
 
 <script>
@@ -25,7 +25,8 @@ export default {
         playGame : false,
         color: null,
         nbSquares:null,
-        allPositionStart:[],
+        myInitGame:null,
+        otherInitGame:[],
       }
     },
   components: {
@@ -37,11 +38,18 @@ export default {
 
   },
   created() {
-    this.socket.on('start game', ({info, colors}) => {
+    this.socket.on('start game', ({info, initGame}) => {
       alert("Début du game !")
       this.nbSquares = info.nb_Squares;
-      colors.forEach(e =>{
-        if ( e.socketId === this.socketId) this.color = e.color;
+      initGame.forEach(element => {
+        if( element.socketId === this.socketId)
+        {
+          this.myInitGame = element
+        }
+        else
+        {
+          this.otherInitGame.push(element)
+        }
       })
       this.playGame = true;
     });

@@ -13,19 +13,21 @@ export default {
       required: true,
       type: Number
     },
-    color:{
+    myInitGame:{
+      required: true
+    },
+    otherInitGame:{
       required: true
     }
 
   },
   mounted() {
-    this.init();
-
+    this.createGame();
   },
   methods:{
-    init(){
+    createGame(){
       console.log("dans PlateauComponent")
-      const mycolor = this.color;
+      const mycolor = this.myInitGame.color;
       //// Initialisation de la scène principale
       const stage = new Konva.Stage({
         container: this.$refs.container,
@@ -39,7 +41,7 @@ export default {
       for (let i = 0; i < this.nbSquares; i++) {
         for (let j = 0; j < this.nbSquares; j++) {
           const rect = new Konva.Rect({
-            id: "(" + i + "," + j + ")",
+            id:  i + j ,
             x: 50 * i,
             y: 50 * j,
             width: 40,

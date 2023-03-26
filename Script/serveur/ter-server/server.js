@@ -26,13 +26,13 @@ io.on('connection', (socket) => {
       socket.on('playerData', (player, game) => {
             console.log(`[playerData] ${player.username}`);
 
-            /* CREER UNE NOUVELLE ROOM */
+            /*  CREER UNE NOUVELLE ROOM  */
             if (!player.roomId)
             {
                   room = connection.createRoom(rooms,player,game)
                   io.emit('room id', room.id)
             }
-            /* REJOINDRE UNE ROOM */
+            /*  REJOINDRE UNE ROOM  */
             else
             {
                   room = connection.joinRoom(rooms,player)
@@ -50,7 +50,6 @@ io.on('connection', (socket) => {
             {
                   /* DEBUT DE LA PARTIE */
                   if (room.sizePlayers() === room.info.nb_Players) {
-                        console.log(room)
                         io.to(room.id).emit('start game', room);
                   }
             }

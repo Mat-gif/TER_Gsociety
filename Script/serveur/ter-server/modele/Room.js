@@ -1,28 +1,25 @@
 class Room {
 
-    players = [];
-    constructor( player, game ) {
+    constructor( game ) {
         this.id = Math.random().toString(36).substr(2,9);
         this.info = game;
-        this.plateau = this.positionPionStart(
-            this.createZeroMatrix( game.nb_Squares ),
-            1,
-            player
-        );
-        this.setPlayers(player) ;
-        this.initGame = [ this.colorPlayer( player.socketId, 1 ) ];
+        this.plateau = this.createZeroMatrix( game.nb_Squares );
+        this.players = [] ;
+        this.initGame = [];
     }
 
-    setPlayers(player) {
-        this.players.push(player)
-    }
+
+
+
+    //this.initGame = [ this.colorPlayer( player.socketId, 1 ) ];
+
 
 
     addPlayer(player){
-        this.setPlayers(player)
-        this.plateau =  this.positionPionStart( this.plateau, this.sizePlayers(), player )
-        this.initGame.push(this.colorPlayer( player.socketId, this.sizePlayers()) )
-        console.log(`[room] ${ player.username } ajouté a la room : ${ this.id }`)
+        this.players.push(player)
+        this.plateau =  this.positionPionStart( this.plateau, this.sizePlayers(), player );
+        this.initGame.push(this.paramPlayers( player, this.sizePlayers()) );
+        console.log(`[room] ${ player.username } ajouté a la room : ${ this.id }`);
     }
 
     sizePlayers(){return this.players.length}
@@ -66,23 +63,13 @@ class Room {
         return plateau
     }
 
-    colorPlayer(socketId, num){
-        let out = null;
+    paramPlayers({socketId,positionStart}, num){
         switch (num) {
-            case 1:
-                out = {socketId: socketId, color:"red"};
-                break;
-            case 2:
-                out ={socketId: socketId, color:"green"};
-                break;
-            case 3:
-                out ={socketId: socketId, color:"yellow"};
-                break;
-            case 4:
-                out ={socketId: socketId, color:"purple"};
-                break;
+            case 1: return {socketId: socketId, positionStart:positionStart, color:"red"};
+            case 2: return {socketId: socketId, positionStart:positionStart, color:"green"};
+            case 3: return {socketId: socketId, positionStart:positionStart, color:"yellow"};
+            case 4: return {socketId: socketId, positionStart:positionStart, color:"purple"};
         }
-        return out
     }
 
     removePlayer(player)
