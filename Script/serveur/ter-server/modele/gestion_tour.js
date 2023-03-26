@@ -30,6 +30,7 @@ module.exports = {
 
 
 //? fonction startgame ou deplacement
+    // je donne ma liste de joeurs en entré
     startGame : function (players) {
     //* trouver le joueur hote
     //* à l'inverse de la vidéo envoyé dans le groupe je suis passé par le joueur hote au lieu du joueur ennemies*/
