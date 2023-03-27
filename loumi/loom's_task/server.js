@@ -24,6 +24,11 @@ let rooms = [];
 io.on("connection", (socket) => {
   console.log(`[connection] ${socket.id}`);
 
+  /*reception d'un message #loom */
+  socket.on("message", (data) => {
+    socket.broadcast.emit("message recu", data);
+  });
+
   /*  connection d'un client */
   socket.on("playerData", (player) => {
     console.log(`[playerData] ${player.username}`);

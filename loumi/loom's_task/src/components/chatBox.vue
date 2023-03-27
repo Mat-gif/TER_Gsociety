@@ -1,7 +1,7 @@
 <!-- ===================================== -->
 <!-- ============= le template ============ -->
 <template>
-  <div class="container messtemp" v-if="joined">
+  <div class="container messtemp">
     <h2>Chat</h2>
     <div
       v-for="message in messages"
@@ -44,13 +44,13 @@ export default {
   },
   methods: {
     sendMessage() {
-      if (this.socket && this.socket.connected) {
-        console.log(this.text);
-        this.addMessage();
-        this.emit = "";
-      } else {
-        alert("la connexion au serveur a été perdu ou n'est pas été établie.");
-      }
+      // if (this.socket && this.socket.connected) {
+      console.log(this.text);
+      this.addMessage();
+      this.$emit("text", (this.text = ""));
+      // } else {
+      //   alert("la connexion au serveur a été perdu ou n'est pas été établie.");
+      // }
     },
     addMessage() {
       const message = {
@@ -60,7 +60,7 @@ export default {
         socketId: this.socket.id,
       };
       this.$emit("messages", this.messages.concat(message));
-      this.$emit("texte", (this.text = ""));
+      // this.$emit("texte", (this.text = ""));
       this.socket.emit("message", message);
     },
   },

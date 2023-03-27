@@ -5,6 +5,14 @@
 <!-- ====================================================================== -->
 
 <template>
+  <Chat
+    :joined="joined"
+    :utilisateur="utilisateur"
+    :messages="messages"
+    :socket="socket"
+    :text="text"
+    @event-messages="listenToMessages"
+  ></Chat>
   <div class="grid">
     <div>
       <h1 class="title">Quoridor</h1>
@@ -13,15 +21,11 @@
       <img src="./quoridor-removebg-preview.png" class="img" />
     </div>
   </div>
-
+  <!-- v-bind:joined="joined" -->
   <div class="container">
     <div class="row">
       <div class="username_ask col mt-5 pt-5">
-        <form
-          class="form"
-          v-on:submit.prevent="OnSubmit"
-          v-bind:joined="joined"
-        >
+        <form class="form" v-on:submit.prevent="OnSubmit">
           <label username="Username">Nom d'utilisateur</label>
           <input type="text" class="form-control" v-model="utilisateur" />
           <button class="btn btn-start">Démarrer</button>
@@ -29,8 +33,9 @@
       </div>
     </div>
   </div>
-  <div class="d-none containi">
-    <div v-if="joined">
+  <!-- v-if="joined" -->
+  <div class="containi">
+    <div>
       <div>
         <h2 class="chatty">Chat</h2>
         <div
@@ -88,32 +93,12 @@
     </v-stage>
 
     <!-- v-on:keyup.enter="sendMessage" -->
-
-    <Chat
-      :joined="joined"
-      :utilisateur="utilisateur"
-      :messages="messages"
-      :socket="socket"
-      :text="text"
-      v-on:sendMessage="listenToMessages($event)"
-      v-if="joined"
-    ></Chat>
   </div>
 </template>
 <script>
 import io from "socket.io-client";
 import "bootstrap/dist/css/bootstrap.css";
 import Chat from "./components/chatBox.vue";
-const joueur = {
-  hote: false,
-  username: "",
-  tour: false,
-  win: false,
-  message: "",
-  pion: null,
-  idSalon: null,
-  socketId: "",
-};
 // eslint-disable-next-line vue/no-export-in-script-setup
 export default {
   data() {
@@ -160,27 +145,11 @@ export default {
         () => {
           let chatty = document.querySelector(".chatty");
           console.log(chatty);
-          /* Animation */
-          setInterval(() => {
-            const entierAleatoire = (min, max) =>
-              Math.floor(Math.random() * (max - min + 1) + min);
-            // eslint-disable-next-line no-unused-vars
-            const couleurAleatoire = () =>
-              `rgb(${entierAleatoire(0, 255)},${entierAleatoire(
-                0,
-                255
-              )},${entierAleatoire(0, 255)})`;
-          }, 100);
           const form = document.querySelector(".form");
-          const input = document.querySelector(".form-control");
           const stage = document.querySelector(".containi");
 
           form.classList.add("d-none");
           stage.classList.remove("d-none");
-
-          joueur.username = input.value;
-          joueur.socketId = this.socket.id;
-          this.socket.emit("playerData", joueur);
         };
       }
     },
@@ -192,13 +161,13 @@ export default {
     },
     sendMessage() {
       //d'autres possiblités pourront être ajouter
-      if (this.socket && this.socket.connected) {
-        console.log(this.text);
-        this.addMessage();
-        this.text = "";
-      } else {
-        alert("la connexion au serveur a été perdu ou n'est pas été établie.");
-      }
+      // if (this.socket && this.socket.connected) {
+      console.log(this.text);
+      this.addMessage();
+      this.text = "";
+      // } else {
+      //   alert("la connexion au serveur a été perdu ou n'est pas été établie.");
+      // }
     },
     addMessage() {
       const message = {

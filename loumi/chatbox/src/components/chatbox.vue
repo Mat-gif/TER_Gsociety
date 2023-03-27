@@ -19,6 +19,7 @@ cheers🤚🤚🤚
   </div>
   <div class="container messtemp" v-if="joined">
     <h2 id="chatty">Chat</h2>
+    <button>📨</button>
     <div
       v-for="message in messages"
       :key="message.id"
@@ -40,12 +41,24 @@ cheers🤚🤚🤚
         </div>
       </div>
     </div>
+    <!-- v-on:keyup="onTyping" -->
     <input
       v-model="text"
       placeholder="write a message..."
       class="text-message"
       v-on:keyup.enter="sendMessage"
+      v-on:keyup="onTyping"
     />
+    <!-- <p id="typing-indicator" v-if="isTyping && typingUsername !== username">
+      {{ typingUsername }} est en train d'écrire...
+    </p> -->
+
+    <p id="typing-indicator" v-if="isTyping && typingUsername === username">
+      Vous êtes en train d'écrire...
+    </p>
+    <p id="typing-indicator" v-if="isTyping && typingUsername !== username">
+      {{ typingUsername }} est en train d'écrire...
+    </p>
   </div>
 </template>
 
@@ -61,6 +74,9 @@ export default {
       text: "",
       messages: [],
       socket: null,
+      isTyping: false,
+      typingUsername: "",
+      timeout: null,
     };
   },
 
@@ -98,7 +114,35 @@ export default {
       this.messages = [...this.messages, message];
       this.text = "";
       this.socket.emit("message", message);
+      this.socket.emit("stop typing", this.username);
     },
+    onTyping() {
+      this.socket.emit("typing", this.username);
+    },
+  },
+  watch: {
+    text: function () {
+      this.isTyping = true;
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        this.isTyping = false;
+      }, 1000);
+    },
+  },
+  mounted() {
+    // ...
+    this.socket = io("http://localhost:3000");
+
+    this.socket.on("typing", (username) => {
+      document.getElementById(
+        "typing-indicator"
+      ).textContent = `${username} est en train d'écrire...`;
+    });
+
+    // eslint-disable-next-line no-unused-vars
+    this.socket.on("stop typing", (username) => {
+      document.getElementById("typing-indicator").textContent = "";
+    });
   },
 };
 </script>
@@ -115,18 +159,22 @@ export default {
   font-family: "Press Start 2P", sans-serif;
 }
 .text-message {
-  margin-top: 20px;
-  padding: 0.5rem;
+  /* margin-top: 20px; */
   width: 100%;
+  padding: 0.5rem;
   outline: none;
   border: solid 3px lightskyblue;
   border-radius: 11px;
+  bottom: 0;
+  position: fixed;
+  box-sizing: border-box;
 }
 input::placeholder {
   padding-left: 8px;
   font-size: 1.5rem;
 }
 .text_saisie {
+  text-align: center;
   overflow: hidden;
   width: 100%;
   padding: 0.5rem;
@@ -153,5 +201,11 @@ input::placeholder {
   margin-top: -10px;
   border-radius: 15px;
   background: yellow;
+}
+#typing-indicator {
+  font-size: 0.8rem;
+  color: gray;
+  background-color: aquamarine;
+  margin-top: 10px;
 }
 </style>
