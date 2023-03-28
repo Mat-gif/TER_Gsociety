@@ -15,6 +15,9 @@ export class Player {
         Object.assign(this, data);
     }
 
+
+
+
     isHost(sockedId){
         this.host = true;
         this.turn = true;
