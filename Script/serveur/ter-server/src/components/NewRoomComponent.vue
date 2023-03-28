@@ -6,7 +6,8 @@
 </template>
   
   <script>
-  
+  const {Player} = require('../modele/Player');
+  const {Game} = require('../modele/Game');
   export default {
     props: {
     socket: {
@@ -15,31 +16,23 @@
   },
     data() {
       return {
-        player: {
-          host: false,
-          roomId : null,
-          username: "",
-          socketId : "",
-          turn: false,
-          color: null,
-          positionStart:null,
-          win: false
-        },
-        game : {
-          nb_Players: 2,
-          nb_Squares: 9,
-          nb_Walls: 5
-        }
+        player: new Player(),
+        game: new Game(),
       }
     },
     methods: {
       createRoom() {
-        this.player.host = true;
-        this.player.turn = true;
-        this.player.socketId = this.socket.id;
-        this.socket.emit('playerData', this.player, this.game );
-        this.socket.on('room id', (roomId) => this.$emit('event-roomId', { roomId: roomId, socketId:this.socket.id}));
+        // J'initialise les paramètres du joueur Hote de la partie
+        this.player.isHost(this.socket.id)
 
+        // J'envoie au serveur le joueur pour l'ajouter au salon
+        this.socket.emit('playerData', this.player, this.game );
+
+        // Permet d'émettre au composant "parent" les information concernant le salon
+        this.socket.on('room id', (roomId) => {
+              this.player.roomId = roomId;
+              this.$emit('event-roomId', {roomId: roomId});
+            });
 
         console.log(this.player);
       }

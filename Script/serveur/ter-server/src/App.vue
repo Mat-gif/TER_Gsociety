@@ -21,7 +21,6 @@ export default {
       return {
         socket : io(),
         roomId : null,
-        socketId : null,
         playGame : false,
         color: null,
         nbSquares:null,
@@ -42,7 +41,7 @@ export default {
       alert("Début du game !")
       this.nbSquares = info.nb_Squares;
       initGame.forEach(element => {
-        if( element.socketId === this.socketId)
+        if( element.socketId === this.socket.id)
         {
           this.myInitGame = element
         }
@@ -59,10 +58,8 @@ export default {
   methods: {
         // Définit la méthode utilisée par le payload pour mettre à jour la propriété data
         setRoomId(payload) {
-          console.log(payload)
             this.roomId = payload.roomId
-            this.socketId = payload.socketId
-            console.log("app : "+this.roomId)
+            console.log("[App.vue] : "+this.roomId)
         }
     }
 };

@@ -8,7 +8,7 @@
   
   <script>
 
-  
+  const {Player} = require('../modele/Player');
   export default {
     props: {
     socket: {
@@ -17,29 +17,19 @@
   },
     data() {
       return {
-        player: {
-          host: false,
-          roomId : null,
-          username: "",
-          socketId : "",
-          turn: false,
-          color: null,
-          positionStart:null,
-          win: false
-        },
+        player: new Player(),
       }
     },
     methods: {
       joinRoom() {
+        // J'initialise les paramètres du joueur qui rejoint une partie
         this.player.socketId = this.socket.id;
+
+        // J'envoie au serveur le joueur pour l'ajouter au salon
         this.socket.emit('playerData', this.player);
 
-
-          this.$emit('event-roomId', { roomId: this.player.roomId , socketId:this.socket.id });
-
-
-
-
+        // Permet d'émettre au composant "parent" les information concernant le salon
+        this.$emit('event-roomId', { roomId:  this.player.roomId });
 
 
         console.log(this.player);

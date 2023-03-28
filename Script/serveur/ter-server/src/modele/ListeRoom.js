@@ -42,7 +42,7 @@ class ListeRoom {
             r.players.forEach(p => {
                 if (p.socketId === socketid) {
                     if(p.host){
-                        this.rooms.removeRoom(r);
+                        this.removeRoom(r);
                     }else {
                         r.removePlayer(p)
                     }

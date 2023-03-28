@@ -26,7 +26,6 @@ export default {
   },
   methods:{
     createGame(){
-      console.log("dans PlateauComponent")
       const mycolor = this.myInitGame.color;
       //// Initialisation de la scène principale
       const stage = new Konva.Stage({

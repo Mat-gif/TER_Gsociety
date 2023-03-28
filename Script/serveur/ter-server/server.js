@@ -8,8 +8,8 @@ const port = 3000;
 const http = require('http');
 const server = http.createServer(app);
 const io = require("socket.io")(server);
-const ListeRoom = require('./modele/ListeRoom');
-const ConnectionPlayer = require('./modele/ConnectionPlayer');
+const ListeRoom = require('./src/modele/ListeRoom');
+const ConnectionPlayer = require('./src/modele/ConnectionPlayer');
 
 // Utiliser des fichiers statiques à partir du répertoire 'public'
 app.use(express.static('dist'));

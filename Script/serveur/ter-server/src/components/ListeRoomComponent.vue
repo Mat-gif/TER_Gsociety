@@ -29,8 +29,7 @@
         // Mettre à jour les données des rooms
         this.rooms = room;
       });
-  
-    
+
     }
 }
   </script>
