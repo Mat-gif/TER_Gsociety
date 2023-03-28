@@ -7,6 +7,7 @@
 </template>
 
 <script>
+
 // probleme lors du chargement de <PlateauComponent> !!!:
 
 import io from 'socket.io-client';
