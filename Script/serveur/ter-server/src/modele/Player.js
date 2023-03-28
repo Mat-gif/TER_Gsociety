@@ -18,6 +18,8 @@ export class Player {
 
 
 
+
+
     isHost(sockedId){
         this.host = true;
         this.turn = true;
