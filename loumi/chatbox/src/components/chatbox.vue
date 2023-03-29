@@ -65,6 +65,7 @@ cheers🤚🤚🤚
 <script>
 import io from "socket.io-client";
 import "bootstrap/dist/css/bootstrap.css";
+import { Player, PlayerLinked, Tour } from "/src/module_Tour.js";
 
 export default {
   data() {
@@ -84,6 +85,41 @@ export default {
     onSubmit() {
       this.joined = true;
       this.socket = io("http://localhost:3000");
+      //*============================================
+      //*=============================================
+      // Création de joueurs pour tester la classe Player et PlayerLinked
+      const player1 = new Player("Mat", true, null, "room1", 0);
+      const player2 = new Player("Vic", false, null, "room1", 8);
+      const player3 = new Player("lom", false, null, "room1", 4);
+
+      const playerLinked1 = new PlayerLinked(player1);
+      const playerLinked2 = new PlayerLinked(player2);
+      const playerLinked3 = new PlayerLinked(player3);
+
+      playerLinked1.Playernext = playerLinked2;
+      playerLinked2.playerPrev = playerLinked1;
+      playerLinked2.Playernext = playerLinked3;
+      playerLinked3.playerPrev = playerLinked2;
+      playerLinked3.Playernext = playerLinked1;
+      playerLinked1.playerPrev = playerLinked3;
+
+      const players = [playerLinked1, playerLinked2, playerLinked3];
+
+      // Création de la classe Tour pour tester les méthodes
+      const tour = new Tour(players, playerLinked1);
+
+      console.log("on passe au tour de :", tour.joueurSuivant());
+      tour.changerJoueurActif();
+      console.log(`${tour.currentPlayer.name} est en train de jouer`);
+      console.log(
+        ` Est-ce que la partie est terminée ${tour.estFini()} car ${
+          tour.currentPlayer.name
+        } est en train de jouer`
+      );
+
+      //*============================================
+      //*=============================================
+
       //traitement des messages reçus
 
       //============================================

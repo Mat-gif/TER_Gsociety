@@ -1,7 +1,5 @@
-
-
 //* 1. Création  de la classe joueur
-export   class Player {
+export class Player {
   constructor(username, host, socket, roomId, positionStart) {
     this.name = username;
     this.host = host;
@@ -9,20 +7,15 @@ export   class Player {
     this.roomId = roomId;
     this.position = positionStart;
   }
-
-
-
 }
 //* 2. Création de la classe joueur chainé
 export class PlayerLinked {
   constructor(player) {
     this.playerPrev = null;
-    this.player = player;
+    this.currentPlayer = player;
     this.Playernext = null;
   }
- 
 }
-
 
 //* 3. Création de la classe tour
 export class Tour {
@@ -32,8 +25,7 @@ export class Tour {
   }
 
   joueurSuivant() {
-    const index = this.players.indexOf(this.currentPlayer);
-    return this.players[(index + 1) % this.players.length];
+    return this.currentPlayer.Playernext.currentPlayer;
   }
 
   changerJoueurActif() {
@@ -46,22 +38,15 @@ export class Tour {
     if (this.currentPlayer.positionEnd >= 8) {
       return true;
     }
-  
+
     // Vérifie si l'un des joueurs n'a plus de murs
-    for (let player of this.players) {
-      if (joueur.murs.length === 0) {
+    for (let playerLinked of this.players) {
+      if (playerLinked.murs === 0) {
         return true;
       }
     }
-  
+
     // Si aucun des cas ci-dessus n'est vrai, le jeu n'est pas terminé
     return false;
   }
 }
-
-
-
-
-
-  
-
