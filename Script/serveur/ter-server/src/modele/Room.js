@@ -1,3 +1,4 @@
+const ListePlayerLinked = require('./ListePlayerLinked');
 class Room {
 
     constructor( game ) {
@@ -6,6 +7,7 @@ class Room {
         this.plateau = this.createZeroMatrix( game.nb_Squares );
         this.players = [] ;
         this.initGame = [];
+        this.listePlayerLinked = new ListePlayerLinked(game);
     }
 
 
@@ -17,6 +19,7 @@ class Room {
 
     addPlayer(player){
         this.players.push(player)
+        this.listePlayerLinked.addPlayerLinked(player)
         this.plateau =  this.positionPionStart( this.plateau, this.sizePlayers(), player );
         this.initGame.push(this.paramPlayers( player, this.sizePlayers()) );
         console.log(`[room] ${ player.username } ajouté a la room : ${ this.id }`);

@@ -55,6 +55,7 @@ export default {
     });
 
 
+
   },
   methods: {
         // Définit la méthode utilisée par le payload pour mettre à jour la propriété data

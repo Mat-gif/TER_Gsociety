@@ -10,6 +10,8 @@ const server = http.createServer(app);
 const io = require("socket.io")(server);
 const ListeRoom = require('./src/modele/ListeRoom');
 const ConnectionPlayer = require('./src/modele/ConnectionPlayer');
+//const Tour = require('./src/modele/Tour');
+
 
 // Utiliser des fichiers statiques à partir du répertoire 'public'
 app.use(express.static('dist'));
@@ -50,7 +52,16 @@ io.on('connection', (socket) => {
             {
                   /* DEBUT DE LA PARTIE */
                   if (room.sizePlayers() === room.info.nb_Players) {
+
+                        //const tour = new Tour(room.listePlayerLinked );
+
                         io.to(room.id).emit('start game', room);
+
+
+
+
+
+
                   }
             }
       });
