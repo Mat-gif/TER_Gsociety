@@ -19,9 +19,14 @@ class Room {
 
     addPlayer(player){
         this.players.push(player)
-        this.listePlayerLinked.addPlayerLinked(player)
+
         this.plateau =  this.positionPionStart( this.plateau, this.sizePlayers(), player );
         this.initGame.push(this.paramPlayers( player, this.sizePlayers()) );
+        if (this.sizePlayers() === this.info.nb_Players) {
+            this.listePlayerLinked.addPlayerLinked(this.players)
+            console.log(this.listePlayerLinked.listePlayerLinked)
+        }
+
         console.log(`[room] ${ player.username } ajouté a la room : ${ this.id }`);
     }
 

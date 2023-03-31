@@ -35,17 +35,19 @@ io.on('connection', (socket) => {
             {
                   room = connection.createRoom(rooms,player,game)
                   io.emit('room id', room.id)
+                  console.log('----- creation')
             }
             /*  REJOINDRE UNE ROOM  */
             else
             {
                   room = connection.joinRoom(rooms,player)
                   io.emit('list rooms', rooms.roomsDispo() );
+                  console.log('----- rejoindre')
             }
 
             /* AJOUTER LE SOCKET DU PLAYER AU SALON */
             socket.join(room.id);
-
+            console.log('----- join')
             /* info quand autre joueurs rejoints le salon uniquement a un socket*/
             io.to(room.id).emit('join room', room.id);
 
@@ -56,9 +58,7 @@ io.on('connection', (socket) => {
                   if (room.sizePlayers() === room.info.nb_Players) {
 
                         io.to(room.id).emit('start game', room);
-
-                        const tour = new Tour( room.listePlayerLinked );
-                        io.to(tour.currentPlayer.socketId).emit('my turn', true);
+                        console.log('----- start game')
 
 
 
@@ -70,13 +70,21 @@ io.on('connection', (socket) => {
 
       });
 
-      socket.on('controle', (data) => {
-            if(data)
-            {
-                  console.log("---------- dans controle ")
+      socket.on('game',(roomID) => {
+            console.log(`[game] ${socket.id}`);
+            const room = rooms.findRoom(roomID)
+            console.log('----- game ')
+            const tour = new Tour( room.listePlayerLinked );
+            io.to(tour.currentPlayer.currentPlayer.socketId).emit('my turn', true);
 
 
-            }
+
+            socket.on('nextplayer',() => {
+                  console.log(`[nextplayer] ${socket.id}`);
+                  tour.changerJoueurActif()
+                  io.to(tour.currentPlayer.currentPlayer.socketId).emit('my turn', true);
+            })
+
       })
 
 

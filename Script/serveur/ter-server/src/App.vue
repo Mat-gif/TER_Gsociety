@@ -28,7 +28,8 @@ export default {
         nbSquares:null,
         myInitGame:null,
         otherInitGame:[],
-        myTurn:false
+        myTurn:false,
+        start:false
       }
     },
   components: {
@@ -44,6 +45,8 @@ export default {
     this.socket.on('start game', ({info, initGame}) => {
       alert("Début du game !")
       this.nbSquares = info.nb_Squares;
+      this.start =true
+      this.socket.emit('game', this.roomId);
       initGame.forEach(element => {
         if( element.socketId === this.socket.id)
         {
@@ -57,7 +60,10 @@ export default {
       this.playGame = true;
     });
 
-    this.socket.on("my turn", (turn) => this.myTurn = turn)
+
+      this.socket.on("my turn", (turn) => {
+        this.myTurn = turn
+      })
 
 
 
@@ -71,8 +77,7 @@ export default {
         },
         changeturn(payload){
               this.myTurn=payload.myTurn
-
-               this.socket.emit('controle', true);
+              this.socket.emit('nextplayer');
         }
     }
 };
