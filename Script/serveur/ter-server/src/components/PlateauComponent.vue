@@ -22,10 +22,11 @@ export default {
 
   },
   mounted() {
-    this.createGame();
+    const self = this; // stocker la référence à "this"
+    this.createGame(self);
   },
   methods:{
-    createGame(){
+    createGame(self){
       const mycolor = this.myInitGame.color;
       //// Initialisation de la scène principale
       const stage = new Konva.Stage({
@@ -55,6 +56,8 @@ export default {
             if (prevRect) prevRect.fill('blue');
             evt.target.fill(mycolor);
             prevRect = evt.target;
+            self.$emit('event-turn', {myTurn: false});
+
             layer.draw();
           });
           layer.add(rect);

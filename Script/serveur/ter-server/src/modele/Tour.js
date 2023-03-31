@@ -2,15 +2,11 @@
 class Tour {
     constructor(players) {
         this.players = players;
-        this.currentPlayer = players[0];
-    }
-
-    joueurActif() {
-        return this.currentPlayer;
+        this.currentPlayer = players.listePlayerLinked[0].currentPlayer;
     }
 
     joueurSuivant() {
-        return this.currentPlayer.Playernext.currentPlayer;
+        return this.currentPlayer.playernext.currentPlayer;
     }
 
     changerJoueurActif() {

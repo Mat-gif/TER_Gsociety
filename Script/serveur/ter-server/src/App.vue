@@ -1,9 +1,10 @@
 <template>
+  <h1 v-if="myTurn" style="color: red"> A toi de jouer mon pote !</h1>
   <NewRoomComponent v-if="!playGame" :socket="socket" @event-roomId="setRoomId"/>
   <JoinRoomComponent v-if="!playGame" :socket="socket" @event-roomId="setRoomId"/>
   <ListeRoomComponent  v-if="!playGame" :socket="socket"/>
   <ListeUserComponent v-if="roomId && !playGame" :roomID="roomId" :socket="socket"/>
-  <PlateauComponent v-if="playGame" :color="color" :nbSquares="nbSquares" :myInitGame="myInitGame" :otherInitGame="otherInitGame" />
+  <PlateauComponent v-if="playGame" @event-turn="changeturn"  :color="color" :nbSquares="nbSquares" :myInitGame="myInitGame" :otherInitGame="otherInitGame" />
 </template>
 
 <script>
@@ -27,6 +28,7 @@ export default {
         nbSquares:null,
         myInitGame:null,
         otherInitGame:[],
+        myTurn:false
       }
     },
   components: {
@@ -38,6 +40,7 @@ export default {
 
   },
   created() {
+
     this.socket.on('start game', ({info, initGame}) => {
       alert("Début du game !")
       this.nbSquares = info.nb_Squares;
@@ -54,6 +57,9 @@ export default {
       this.playGame = true;
     });
 
+    this.socket.on("my turn", (turn) => this.myTurn = turn)
+
+
 
 
   },
@@ -62,6 +68,11 @@ export default {
         setRoomId(payload) {
             this.roomId = payload.roomId
             console.log("[App.vue] : "+this.roomId)
+        },
+        changeturn(payload){
+              this.myTurn=payload.myTurn
+
+               this.socket.emit('controle', true);
         }
     }
 };

@@ -1,52 +1,39 @@
 const PlayerLinked = require('./PlayerLinked');
 
-
 class ListePlayerLinked {
-
-
     constructor({nb_Players}) {
-        this.listePlayerLinked = Array(nb_Players);
+        this.listePlayerLinked = new Array(nb_Players);
     }
 
-    addPlayerLinked(player){
+    addPlayerLinked(player) {
         this.listePlayerLinked[this.size()] = new PlayerLinked(player);
-
-        if(this.size() === this.listePlayerLinked.length)
-        {
-            this. addLink();
+        if(this.size() === this.listePlayerLinked.length) {
+            this.addLink();
         }
     }
 
-    size(){
+    size() {
         let nombreElementsDefinis = 0;
         for (let i = 0; i < this.listePlayerLinked.length; i++) {
             if (this.listePlayerLinked[i] !== undefined) {
                 nombreElementsDefinis++;
             }
         }
-        return nombreElementsDefinis; // Renvoie 2
+        return nombreElementsDefinis;
     }
 
-    addLink(){
-        for (let i = 0; i < this.listePlayerLinked.length; i++)
-        {
-            if ( i === 0) {
-                this.listePlayerLinked[i].Playernext =  this.listePlayerLinked[1];
-                this.listePlayerLinked[i].playerPrev  =  this.listePlayerLinked[-1];
-            }
-            else if (i === this.listePlayerLinked.length-1) {
-                this.listePlayerLinked[i].Playernext =  this.listePlayerLinked[0];
-                this.listePlayerLinked[i].playerPrev  =  this.listePlayerLinked[i-1];
-            }
-            else {
-                this.listePlayerLinked[i].Playernext =  this.listePlayerLinked[i+1];
-                this.listePlayerLinked[i].playerPrev  =  this.listePlayerLinked[i-1];
-            }
-
+    addLink() {
+        const length = this.listePlayerLinked.length;
+        let prevPlayer = this.listePlayerLinked[length - 1];
+        for (let i = 0; i < length; i++) {
+            const currentPlayer = this.listePlayerLinked[i];
+            currentPlayer.playerPrev = prevPlayer.currentPlayer;
+            prevPlayer.playernext = currentPlayer.currentPlayer;
+            prevPlayer = currentPlayer;
         }
+        this.listePlayerLinked[0].playerPrev = prevPlayer.currentPlayer;
+        prevPlayer.playernext = this.listePlayerLinked[0].currentPlayer;
     }
-
-
 }
 
 module.exports = ListePlayerLinked;

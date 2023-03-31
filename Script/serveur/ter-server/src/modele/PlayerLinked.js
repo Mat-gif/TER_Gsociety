@@ -3,7 +3,8 @@ class PlayerLinked {
     constructor(player) {
         this.playerPrev = null;
         this.currentPlayer = player;
-        this.Playernext = null;
+        this.playernext = null;
     }
 }
+
 module.exports = PlayerLinked;

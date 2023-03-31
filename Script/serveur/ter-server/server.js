@@ -10,7 +10,7 @@ const server = http.createServer(app);
 const io = require("socket.io")(server);
 const ListeRoom = require('./src/modele/ListeRoom');
 const ConnectionPlayer = require('./src/modele/ConnectionPlayer');
-//const Tour = require('./src/modele/Tour');
+const Tour = require('./src/modele/Tour');
 
 
 // Utiliser des fichiers statiques à partir du répertoire 'public'
@@ -26,6 +26,8 @@ io.on('connection', (socket) => {
 
       /*  CONNEXION D'UN JOUEUR  */
       socket.on('playerData', (player, game) => {
+
+
             console.log(`[playerData] ${player.username}`);
 
             /*  CREER UNE NOUVELLE ROOM  */
@@ -53,18 +55,31 @@ io.on('connection', (socket) => {
                   /* DEBUT DE LA PARTIE */
                   if (room.sizePlayers() === room.info.nb_Players) {
 
-                        //const tour = new Tour(room.listePlayerLinked );
-
                         io.to(room.id).emit('start game', room);
 
-
+                        const tour = new Tour( room.listePlayerLinked );
+                        io.to(tour.currentPlayer.socketId).emit('my turn', true);
 
 
 
 
                   }
             }
+
+
+
       });
+
+      socket.on('controle', (data) => {
+            if(data)
+            {
+                  console.log("---------- dans controle ")
+
+
+            }
+      })
+
+
 
       /* OBTENIR LA LISTE DES JOUEURS DANS UN SALON */
       socket.on('get users', (roomID) => {
