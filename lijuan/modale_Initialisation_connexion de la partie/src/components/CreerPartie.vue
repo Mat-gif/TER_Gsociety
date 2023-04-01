@@ -7,7 +7,8 @@
 
     <!-- <h1 class="mb-5">Quoridor</h1>-->
    <!-- -->
-    <div class="overlay" v-onclick="toggleModale">  </div>
+    <div class="overlay" v-onclick="toggleModale">  
+    </div>
        <!-- le boutton pour fermer le modale-->
         <button v-on:click="toggleModale" 
         class="btn-closei btn btn-danger">X</button>
@@ -16,33 +17,30 @@
         <!-- un bloc  qui contient mes colonnes  -->
     <div class="row">
         <!--la première qui contient le boutton "créer une partie"  -->
-        <div class="col">
-            <button class="btn btn-primary">
-                A
-            </button>
-        </div>
-        <!--la deuxième clonne qui contient le boutton "rejoindre une partie"  -->
-        <div class="col">
-            <button class="btn btn-info">
-              BLABKAS
-            </button>
-        </div>
-   </div>
-       
-   
-
+        
+            <input placeholder="Nom de la pertie"/>
+    </div>
+    <div class="row">
+        <input placeholder="Nombre de joueurs"/>
+    </div>
+    <div class="row">
+        <input placeholder="Nombre de barrières"/>
+    </div>
+    <div class="row">
+        <button @click="enregistrer">Créer une partie</button>
+    </div>
+                 
 </div>
-
-
-
-
+        
 </template>
 
 <script>
 
+
 export default{
     name :'Creer',
-    props:['revele','toggleModale']
+    props:['revele','toggleModale'],
+  
 
 }
 
