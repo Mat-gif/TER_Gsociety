@@ -1,4 +1,5 @@
 const ListePlayerLinked = require('./ListePlayerLinked');
+const Tour = require("./Tour");
 class Room {
 
     constructor( game ) {
@@ -8,6 +9,7 @@ class Room {
         this.players = [] ;
         this.initGame = [];
         this.listePlayerLinked = new ListePlayerLinked(game);
+        this.tour = new Tour();
     }
 
 
@@ -22,8 +24,10 @@ class Room {
 
         this.plateau =  this.positionPionStart( this.plateau, this.sizePlayers(), player );
         this.initGame.push(this.paramPlayers( player, this.sizePlayers()) );
+
         if (this.sizePlayers() === this.info.nb_Players) {
             this.listePlayerLinked.addPlayerLinked(this.players)
+            this.tour.initTour(this.listePlayerLinked)
             console.log(this.listePlayerLinked.listePlayerLinked)
         }
 

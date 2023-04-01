@@ -18,8 +18,10 @@ export default {
     },
     otherInitGame:{
       required: true
+    },
+    myTurn:{
+      required: true
     }
-
   },
   mounted() {
     const self = this; // stocker la référence à "this"
@@ -53,13 +55,19 @@ export default {
 
           //// Ecouteurs d'évenements
           rect.on('click', function (evt) {
-            if (prevRect) prevRect.fill('blue');
-            evt.target.fill(mycolor);
-            prevRect = evt.target;
-            self.$emit('event-turn', {myTurn: false});
 
-            layer.draw();
+            if (self.myTurn) { // si c'est mon tour
+              if (prevRect) prevRect.fill('blue');
+              evt.target.fill(mycolor);
+              prevRect = evt.target;
+              console.log('event-turn')
+              self.$emit('event-turn', {myTurn: false});
+              layer.draw();
+            }
+
           });
+
+
           layer.add(rect);
         }
       }

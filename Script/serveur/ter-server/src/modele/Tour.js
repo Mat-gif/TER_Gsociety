@@ -1,6 +1,11 @@
 //* 3. Création de la classe tour
 class Tour {
-    constructor(players) {
+    constructor() {
+        this.players = [];
+        this.currentPlayer = null;
+    }
+
+    initTour(players) {
         this.players = players;
         this.currentPlayer = players.listePlayerLinked[0];
     }

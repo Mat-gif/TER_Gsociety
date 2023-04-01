@@ -26,8 +26,6 @@ io.on('connection', (socket) => {
 
       /*  CONNEXION D'UN JOUEUR  */
       socket.on('playerData', (player, game) => {
-
-
             console.log(`[playerData] ${player.username}`);
 
             /*  CREER UNE NOUVELLE ROOM  */
@@ -35,54 +33,37 @@ io.on('connection', (socket) => {
             {
                   room = connection.createRoom(rooms,player,game)
                   io.emit('room id', room.id)
-                  console.log('----- creation')
             }
             /*  REJOINDRE UNE ROOM  */
             else
             {
                   room = connection.joinRoom(rooms,player)
                   io.emit('list rooms', rooms.roomsDispo() );
-                  console.log('----- rejoindre')
             }
-
             /* AJOUTER LE SOCKET DU PLAYER AU SALON */
             socket.join(room.id);
-            console.log('----- join')
             /* info quand autre joueurs rejoints le salon uniquement a un socket*/
             io.to(room.id).emit('join room', room.id);
 
             /* A FAIRE QUAND IL EXISTE AU MOINS UN SALON DE JEU */
             if (!rooms.isEmpty())
-            {
-                  /* DEBUT DE LA PARTIE */
+            {     /* DEBUT DE LA PARTIE */
                   if (room.sizePlayers() === room.info.nb_Players) {
-
                         io.to(room.id).emit('start game', room);
-                        console.log('----- start game')
-
-
-
-
                   }
             }
-
-
 
       });
 
       socket.on('game',(roomID) => {
             console.log(`[game] ${socket.id}`);
-            const room = rooms.findRoom(roomID)
-            console.log('----- game ')
-            const tour = new Tour( room.listePlayerLinked );
-            io.to(tour.currentPlayer.currentPlayer.socketId).emit('my turn', true);
-
-
-
-            socket.on('nextplayer',() => {
+            const room = rooms.findRoom(roomID);
+            if(socket.id === room.tour.currentPlayer.currentPlayer.socketId) io.to(room.tour.currentPlayer.currentPlayer.socketId).emit('my turn', true);
+            socket.on('nextplayer',(roomID) => {
                   console.log(`[nextplayer] ${socket.id}`);
-                  tour.changerJoueurActif()
-                  io.to(tour.currentPlayer.currentPlayer.socketId).emit('my turn', true);
+                  const room = rooms.findRoom(roomID);
+                  room.tour.changerJoueurActif()
+                  io.to(room.tour.currentPlayer.currentPlayer.socketId).emit('my turn', true);
             })
 
       })
