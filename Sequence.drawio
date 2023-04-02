@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-04-02T11:55:10.858Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36" etag="Y_txZmiQF-jOT7R5Q4IH" version="21.1.2" type="github">
+<mxfile host="app.diagrams.net" modified="2023-04-02T11:59:54.445Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36" etag="ZQ6yavRaZT1fx1bvtQBI" version="21.1.2" type="github">
   <diagram name="Page-1" id="2YBvvXClWsGukQMizWep">
-    <mxGraphModel dx="1235" dy="752" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1235" dy="692" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -156,7 +156,7 @@
             <mxPoint x="35" y="-11" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="uVXBUryUWw3osGIclSlN-44" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;curved=0;" edge="1" parent="1" source="uVXBUryUWw3osGIclSlN-35" target="uVXBUryUWw3osGIclSlN-23">
+        <mxCell id="uVXBUryUWw3osGIclSlN-44" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;curved=0;entryX=1;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="uVXBUryUWw3osGIclSlN-35" target="uVXBUryUWw3osGIclSlN-31">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="530" y="490" />
@@ -165,14 +165,7 @@
         </mxCell>
         <mxCell id="uVXBUryUWw3osGIclSlN-45" value="2.3 : Ajout joueur()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="uVXBUryUWw3osGIclSlN-44">
           <mxGeometry x="-0.2533" y="-2" relative="1" as="geometry">
-            <mxPoint x="-14" y="-6" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="uVXBUryUWw3osGIclSlN-46" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;curved=0;dashed=1;" edge="1" parent="1" source="uVXBUryUWw3osGIclSlN-23" target="uVXBUryUWw3osGIclSlN-31">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="390" y="490" />
-            </Array>
+            <mxPoint x="-38" y="-6" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="uVXBUryUWw3osGIclSlN-49" style="edgeStyle=elbowEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;elbow=vertical;curved=0;" edge="1" parent="1" source="uVXBUryUWw3osGIclSlN-18">
