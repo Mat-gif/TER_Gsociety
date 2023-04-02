@@ -1,45 +1,33 @@
 <template>
+  <div class="bloc-modale" v-if="revele">
+<!--    <div class="overlay" v-on:click="toggleModale"></div>-->
+      <button v-on:click="toggleModale" class="btn-closei btn btn-danger">X</button>
+      <div>
+        <label for="nbPlayersInput">Number of players:</label>
+        <input type="text" id="nbPlayersInput" v-model="game.nb_Players" />
+      </div>
+      <div>
+        <label for="nbWallsInput">Number of walls:</label>
+        <input type="text" id="nbWallsInput" v-model="game.nb_Walls" />
+      </div>
 
-    <!--mon div container, objet globale-->
-    <!-- si bloc modale est égale la valeur de revele, la valeur par defaul est false-->
-<div class="bloc-modale" v-if="revele">
-
-
-    <!-- <h1 class="mb-5">Quoridor</h1>-->
-   <!-- -->
-    <div class="overlay" v-onclick="toggleModale">  
-    </div>
-       <!-- le boutton pour fermer le modale-->
-        <button v-on:click="toggleModale" 
-        class="btn-closei btn btn-danger">X</button>
-
-
-        <!-- un bloc  qui contient mes colonnes  -->
-    <div class="row">
-        <!--la première qui contient le boutton "créer une partie"  -->
-        
-            <input placeholder="Nom de la pertie"/>
-    </div>
-    <div class="row">
-        <input placeholder="Nombre de joueurs"/>
-    </div>
-    <div class="row">
-        <input placeholder="Nombre de barrières"/>
-    </div>
-    <div class="row">
-        <button @click="enregistrer">Créer une partie</button>
-    </div>
-                 
-</div>
-        
+    <div> {{game}}</div>
+  </div>
 </template>
 
 <script>
 
-
+import {Player} from '@/modele/Player';
+import {Game} from '@/modele/Game';
 export default{
     name :'Creer',
     props:['revele','toggleModale'],
+  data() {
+    return {
+      player: new Player(),
+      game: new Game(),
+    }
+  },
   
 
 }
