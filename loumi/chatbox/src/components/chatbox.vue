@@ -10,62 +10,65 @@ et puis tu peux revenir sur ton projet et faire npm run dev
 cheers🤚🤚🤚
  -->
 <template>
-  <div class="information">
-    <form v-if="!joined" @submit.prevent="onSubmit">
-      <label for="">Username</label>
-      <input type="text" class="form-control" v-model="username" />
-      <button type="submit" class="btn btn-primary mt-3">Envoyer</button>
-    </form>
-  </div>
-  <div class="container messtemp" v-if="joined">
-    <h2 id="chatty">Chat</h2>
-    <button>📨</button>
-    <div
-      v-for="message in messages"
-      :key="message.id"
-      :class="{
-        'message-from-me': message.socketId === socket.id,
-        'message-from-others':
-          message.socketId !== socket.id && message.user !== username,
-      }"
-      class="mt-3"
-    >
-      <div class="d-flex">
-        <div v-if="message.user !== username">
-          <span
-            ><b>{{ message.user }}</b></span
-          >
-        </div>
-        <div>
-          <b class="text_saisie">{{ message.text }}</b>
+  <div class="chat__layer">
+    <div class="information">
+      <form v-if="!joined" @submit.prevent="onSubmit">
+        <label for="">Username</label>
+        <input type="text" class="form-control" v-model="username" />
+        <button type="submit" class="btn btn-primary mt-3">Envoyer</button>
+      </form>
+    </div>
+    <div class="container" v-if="joined">
+      <!-- div du haut -->
+      <div>
+        <h2 id="chatty">Chat</h2>
+        <button class="future_modal">📨</button>
+      </div>
+      <!-- fin du div du haut -->
+      <!-- =================== -->
+      <!-- div du milieu -->
+      <div>
+        <div
+          v-for="message in messages"
+          :key="message.id"
+          :class="{
+            'message-from-me': message.socketId === socket.id,
+            'message-from-others':
+              message.socketId !== socket.id && message.user !== username,
+          }"
+          class="mt-3"
+        >
+          <div v-if="message.user !== username">
+            <span
+              ><b>{{ message.user }}</b></span
+            >
+          </div>
+          <div>
+            <p>{{ message.text }}</p>
+            <span>{{ new Date(message.id).toLocaleTimeString() }}</span>
+          </div>
         </div>
       </div>
+      <!-- fin du div du milieu -->
+      <!-- =================== -->
+      <!-- div du bas -->
+      <div>
+        <input
+          v-model="text"
+          placeholder="write a message..."
+          class="text-message"
+          v-on:keyup.enter="sendMessage"
+          v-on:keyup="onTyping"
+        />
+      </div>
+      <div id="typing-indicator"></div>
     </div>
-    <!-- v-on:keyup="onTyping" -->
-    <input
-      v-model="text"
-      placeholder="write a message..."
-      class="text-message"
-      v-on:keyup.enter="sendMessage"
-      v-on:keyup="onTyping"
-    />
-    <!-- <p id="typing-indicator" v-if="isTyping && typingUsername !== username">
-      {{ typingUsername }} est en train d'écrire...
-    </p> -->
-
-    <p id="typing-indicator" v-if="isTyping && typingUsername === username">
-      Vous êtes en train d'écrire...
-    </p>
-    <p id="typing-indicator" v-if="isTyping && typingUsername !== username">
-      {{ typingUsername }} est en train d'écrire...
-    </p>
   </div>
 </template>
 
 <script>
 import io from "socket.io-client";
 import "bootstrap/dist/css/bootstrap.css";
-//import { Player, PlayerLinked, Tour } from "/src/module_Tour.js";
 
 export default {
   data() {
@@ -76,7 +79,6 @@ export default {
       messages: [],
       socket: null,
       isTyping: false,
-      typingUsername: "",
       timeout: null,
     };
   },
@@ -85,54 +87,19 @@ export default {
     onSubmit() {
       this.joined = true;
       this.socket = io("http://localhost:3000");
-      //*============================================
-      //*=============================================
-      // Création de joueurs pour tester la classe Player et PlayerLinked
-      // const player1 = new Player("Mat", true, null, "room1", 0);
-      // const player2 = new Player("Vic", false, null, "room1", 8);
-      // const player3 = new Player("lom", false, null, "room1", 4);
-
-      // const playerLinked1 = new PlayerLinked(player1);
-      // const playerLinked2 = new PlayerLinked(player2);
-      // const playerLinked3 = new PlayerLinked(player3);
-
-      // playerLinked1.Playernext = playerLinked2;
-      // playerLinked2.playerPrev = playerLinked1;
-      // playerLinked2.Playernext = playerLinked3;
-      // playerLinked3.playerPrev = playerLinked2;
-      // playerLinked3.Playernext = playerLinked1;
-      // playerLinked1.playerPrev = playerLinked3;
-
-      // const players = [playerLinked1, playerLinked2, playerLinked3];
-
-      // // Création de la classe Tour pour tester les méthodes
-      // const tour = new Tour(players, playerLinked1);
-
-      // console.log("on passe au tour de :", tour.joueurSuivant());
-      // tour.changerJoueurActif();
-      // console.log(`${tour.currentPlayer.name} est en train de jouer`);
-      // console.log(
-      //   ` Est-ce que la partie est terminée ${tour.estFini()} car ${
-      //     tour.currentPlayer.name
-      //   } est en train de jouer`
-      // );
-
-      //*============================================
-      //*=============================================
-
-      //traitement des messages reçus
-
-      //============================================
-      //implementation côté serveur
-
-      /* le code : s'il y'a message je le diffuse à tous les sockets connectés  */
-      //       socket.on("message", (data) => {
-      //     socket.broadcast.emit("message recu", data);
-      //   });
-
-      ///==========================================
       this.socket.on("message recu", (data) => {
         this.messages = [...this.messages, data];
+      });
+      this.socket.on("typing", (data) => {
+        const typingUser = data.username;
+        if (typingUser !== this.username) {
+          document.getElementById(
+            "typing-indicator"
+          ).innerHTML = `${typingUser} est en train d'écrire`;
+        }
+      });
+      this.socket.on("stop typing", () => {
+        document.getElementById("typing-indicator").innerHTML = "";
       });
     },
     sendMessage() {
@@ -150,35 +117,23 @@ export default {
       this.messages = [...this.messages, message];
       this.text = "";
       this.socket.emit("message", message);
-      this.socket.emit("stop typing", this.username);
     },
     onTyping() {
-      this.socket.emit("typing", this.username);
+      if (!this.isTyping) {
+        this.isTyping = true;
+        this.socket.emit("typing", this.username);
+        this.timeout = setTimeout(() => {
+          this.isTyping = false;
+          this.socket.emit("stop typing");
+        }, 1000);
+      } else {
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+          this.isTyping = false;
+          this.socket.emit("stop typing");
+        }, 1000);
+      }
     },
-  },
-  watch: {
-    text: function () {
-      this.isTyping = true;
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(() => {
-        this.isTyping = false;
-      }, 1000);
-    },
-  },
-  mounted() {
-    // ...
-    this.socket = io("http://localhost:3000");
-
-    this.socket.on("typing", (username) => {
-      document.getElementById(
-        "typing-indicator"
-      ).textContent = `${username} est en train d'écrire...`;
-    });
-
-    // eslint-disable-next-line no-unused-vars
-    this.socket.on("stop typing", (username) => {
-      document.getElementById("typing-indicator").textContent = "";
-    });
   },
 };
 </script>
@@ -190,58 +145,131 @@ export default {
 <style scoped>
 .messtemp {
   padding-bottom: 5px;
-}
-#chatty {
-  font-family: "Press Start 2P", sans-serif;
+  height: 90vh;
 }
 .text-message {
-  /* margin-top: 20px; */
   width: 100%;
+  margin-left: -1.5%;
   padding: 0.5rem;
   outline: none;
   border: solid 3px lightskyblue;
   border-radius: 11px;
-  bottom: 0;
-  position: fixed;
+  bottom: 3.3%;
   box-sizing: border-box;
 }
 input::placeholder {
   padding-left: 8px;
   font-size: 1.5rem;
 }
-.text_saisie {
-  text-align: center;
-  overflow: hidden;
-  width: 100%;
-  padding: 0.5rem;
-  border-radius: 9px;
+.d-flex .text_saisie {
+  background-color: red;
+  position: relative;
 }
+
 .message-from-me {
-  background-color: lightcoral;
-  border-radius: 15px;
-  padding: 10px;
+  float: right;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border-radius: 7px;
+  max-width: 50%;
+  overflow: hidden;
   margin-left: 50%;
+}
+p,
+span {
+  position: relative;
+  max-width: 100%;
+  word-wrap: break-word;
+  padding: 0.5rem;
+}
+p {
+  background-color: lightcoral;
+}
+.message-from-me > span {
+  background: yellow;
 }
 
 .message-from-others {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-between;
+  border-radius: 7px;
+  max-width: 50%;
+  word-wrap: break-word;
+  margin-right: 20%;
+}
+.message-from-others p {
   background-color: yellowgreen;
-  border-radius: 15px;
-  padding: 10px;
-  margin-left: 68px;
-  margin-right: 48%;
+  max-width: 100%;
+  word-wrap: break-word !important;
+  padding: 0.5rem;
 }
 .message-from-others span {
-  position: absolute;
-  padding: 10px;
-  margin-left: -90px;
-  margin-top: -10px;
-  border-radius: 15px;
+  padding: 0.5rem;
   background: yellow;
+  align-self: flex-end;
+}
+.message__user__time {
+  background-color: yellow;
 }
 #typing-indicator {
   font-size: 0.8rem;
-  color: gray;
+  color: black;
   background-color: aquamarine;
   margin-top: 10px;
+}
+
+/* style du div ou du container  */
+.chat__layer {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin-top: 10px;
+  background-color: antiquewhite;
+  height: 90vh;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+}
+/* div information pour s'aasurer que quelqu'un est connecté et récuperer ses informations pour la connection ce dernier a été stylé avec bootstrap */
+/* le content mais nommer container 
+ */
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 90vh;
+}
+/* div du haut  */
+.container > div:first-child {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.container > div:first-child #chatty {
+  font-family: "Press Start 2P", sans-serif;
+}
+/* div du milieu */
+.container > div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  flex: 1;
+  overflow: scroll;
+}
+/* div du bas  */
+.container > div:last-child {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-top: 1px solid #ccc;
 }
 </style>
