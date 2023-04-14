@@ -27,7 +27,7 @@ cheers🤚🤚🤚
       <!-- fin du div du haut -->
       <!-- =================== -->
       <!-- div du milieu -->
-      <div>
+      <div ref="messages">
         <div
           v-for="message in messages"
           :key="message.id"
@@ -101,6 +101,8 @@ export default {
       this.socket.on("stop typing", () => {
         document.getElementById("typing-indicator").innerHTML = "";
       });
+
+      this.scrollToBottom(); // Ajouter cet appel à scrollToBottom
     },
     sendMessage() {
       if (!this.socket || !this.socket.connected) {
@@ -133,6 +135,14 @@ export default {
           this.socket.emit("stop typing");
         }, 1000);
       }
+    },
+    scrollToBottom() {
+      this.$nextTick(() => {
+        // console.log("scrolling to bottom");
+        if (this.$refs.messages) {
+          this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight;
+        }
+      });
     },
   },
 };
@@ -167,50 +177,54 @@ input::placeholder {
 }
 
 .message-from-me {
+  position: relative;
   float: right;
   display: flex;
   flex-direction: column;
   gap: 3px;
   border-radius: 7px;
   max-width: 50%;
-  overflow: hidden;
   margin-left: 50%;
 }
-p,
+/* p,
 span {
   position: relative;
   max-width: 100%;
   word-wrap: break-word;
   padding: 0.5rem;
-}
-p {
+} */
+.message-from-me div p {
   background-color: lightcoral;
+  max-width: 100%;
+  word-wrap: break-word !important;
 }
-.message-from-me > span {
+.message-from-me div span {
   background: yellow;
+  max-width: 100%;
 }
 
 .message-from-others {
   position: relative;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 1fr 98%;
   gap: 10px;
-  justify-content: space-between;
   border-radius: 7px;
   max-width: 50%;
   word-wrap: break-word;
   margin-right: 20%;
 }
-.message-from-others p {
+.message-from-others div p {
   background-color: yellowgreen;
   max-width: 100%;
   word-wrap: break-word !important;
   padding: 0.5rem;
 }
-.message-from-others span {
+.message-from-others div span {
   padding: 0.5rem;
   background: yellow;
   align-self: flex-end;
+  max-width: 100%;
+  word-wrap: break-word !important;
 }
 .message__user__time {
   background-color: yellow;
@@ -261,7 +275,7 @@ p {
   flex-direction: column;
   padding: 10px;
   flex: 1;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 /* div du bas  */
 .container > div:last-child {
