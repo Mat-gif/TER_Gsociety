@@ -57,12 +57,21 @@ io.on('connection', (socket) => {
             console.log(`[game] ${socket.id}`);
             const room = rooms.findRoom(roomID);
             if(socket.id === room.tour.currentPlayer.currentPlayer.socketId) io.to(room.tour.currentPlayer.currentPlayer.socketId).emit('my turn', true);
+
             socket.on('nextplayer',(roomID) => {
                   console.log(`[nextplayer] ${socket.id}`);
                   const room = rooms.findRoom(roomID);
                   room.tour.changerJoueurActif()
                   io.to(room.tour.currentPlayer.currentPlayer.socketId).emit('my turn', true);
             })
+
+
+            socket.on('coord',(roomID,coord) => {
+                  const room = rooms.findRoom(roomID);
+                  console.log(coord)
+                  io.to(room.id).except(socket.id).emit('change', coord);
+            })
+
 
       })
 

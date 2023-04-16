@@ -7,6 +7,9 @@ import Konva from 'konva';
 
 export default {
   name: 'PlateauComponent',
+  data() {
+    this.layer=null
+  },
   props: {
     nbSquares: {
       default: 0,
@@ -21,6 +24,25 @@ export default {
     },
     myTurn:{
       required: true
+    },
+    newPosition:{
+      default: null
+    }
+
+  }, watch: {
+    newPosition: function(newVal, oldVal) {
+      // code à exécuter lorsque la prop change
+      console.log('La valeur de la prop myProp a changé de', oldVal, 'à', newVal.x);
+
+      let id =`#${newVal.x/50}${newVal.y/50}`
+      console.log(id)
+
+      //je n'arrive pas a selectionner l'element
+
+      // var myRect = layer.find('#myRect')[0];
+      // myRect.fill('blue');
+      // layer.batchDraw();
+
     }
   },
   mounted() {
@@ -36,21 +58,28 @@ export default {
         width: 500,
         height: 500
       });
-      const layer = new Konva.Layer();
-      stage.add(layer);
+      this.layer = new Konva.Layer();
+      stage.add(this.layer);
       let prevRect = null;
       //// Création des cellules du plateau
       for (let i = 0; i < this.nbSquares; i++) {
         for (let j = 0; j < this.nbSquares; j++) {
+          let c = "blue";
+
+          if ((i===this.myInitGame.positionStart.x && j===this.myInitGame.positionStart.y)) c =this.myInitGame.color;
+          if( (i===this.otherInitGame[0].positionStart.x && j===this.otherInitGame[0].positionStart.y)) c  =this.otherInitGame[0].color;
+
           const rect = new Konva.Rect({
             id:  i + j ,
             x: 50 * i,
             y: 50 * j,
             width: 40,
             height: 40,
-            fill: 'blue',
+            fill: c,
             listening: true
           });
+
+          if(c===this.myInitGame.color) prevRect=rect;
 
 
           //// Ecouteurs d'évenements
@@ -60,17 +89,20 @@ export default {
               if (prevRect) prevRect.fill('blue');
               evt.target.fill(mycolor);
               prevRect = evt.target;
-              console.log('event-turn')
-              self.$emit('event-turn', {myTurn: false});
-              layer.draw();
+              console.log('event-turn ')
+              console.log(evt.target)
+              self.$emit('event-turn', {myTurn: false, coord:{x:evt.target.attrs.x,y:evt.target.attrs.y}});
+              this.layer.draw();
             }
 
           });
 
 
-          layer.add(rect);
+          this.layer.add(rect);
         }
       }
+
+
       stage.draw();
     },
 

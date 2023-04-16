@@ -4,7 +4,7 @@
   <JoinRoomComponent v-if="!playGame" :socket="socket" @event-roomId="setRoomId"/>
   <ListeRoomComponent  v-if="!playGame" :socket="socket"/>
   <ListeUserComponent v-if="roomId && !playGame" :roomID="roomId" :socket="socket"/>
-  <PlateauComponent v-if="playGame" @event-turn="changeturn" :myTurn="myTurn"  :color="color" :nbSquares="nbSquares" :myInitGame="myInitGame" :otherInitGame="otherInitGame" />
+  <PlateauComponent v-if="playGame" @event-turn="changeturn" :myTurn="myTurn"  :color="color" :nbSquares="nbSquares" :myInitGame="myInitGame" :otherInitGame="otherInitGame" :newPosition="newPosition"/>
 </template>
 
 <script>
@@ -29,7 +29,8 @@ export default {
         myInitGame:null,
         otherInitGame:[],
         myTurn:false,
-        start:false
+        start:false,
+        newPosition:null
       }
     },
   components: {
@@ -68,6 +69,12 @@ export default {
 
 
 
+        this.socket.on("change", (coord) => {
+          console.log(coord)
+          this.newPosition=coord
+        })
+
+
 
 
 
@@ -82,6 +89,7 @@ export default {
 
               this.myTurn=payload.myTurn
               this.socket.emit('nextplayer',this.roomId);
+              this.socket.emit('coord',this.roomId, payload.coord);
               console.log("payload "+ this.myTurn)
         }
     }
