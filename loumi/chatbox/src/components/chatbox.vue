@@ -46,6 +46,7 @@ cheers🤚🤚🤚
           <div>
             <p>{{ message.text }}</p>
             <span>{{ new Date(message.id).toLocaleTimeString() }}</span>
+            <button @click="editMessage(message)">Modifier</button>
           </div>
         </div>
       </div>
@@ -87,6 +88,14 @@ export default {
     onSubmit() {
       this.joined = true;
       this.socket = io("http://localhost:3000");
+
+      // Load messages from localStorage
+      const storedMessages = localStorage.getItem("messages");
+      if (storedMessages) {
+        this.messages = JSON.parse(storedMessages);
+      }
+      this.scrollToBottom();
+
       this.socket.on("message recu", (data) => {
         this.messages = [...this.messages, data];
       });
@@ -101,8 +110,6 @@ export default {
       this.socket.on("stop typing", () => {
         document.getElementById("typing-indicator").innerHTML = "";
       });
-
-      this.scrollToBottom(); // Ajouter cet appel à scrollToBottom
     },
     sendMessage() {
       if (!this.socket || !this.socket.connected) {
@@ -119,6 +126,9 @@ export default {
       this.messages = [...this.messages, message];
       this.text = "";
       this.socket.emit("message", message);
+
+      // Save the messages to localStorage
+      localStorage.setItem("messages", JSON.stringify(this.messages));
     },
     onTyping() {
       if (!this.isTyping) {
@@ -134,6 +144,18 @@ export default {
           this.isTyping = false;
           this.socket.emit("stop typing");
         }, 1000);
+      }
+    },
+    editMessage(message) {
+      const updatedMessage = prompt("Modifier le message:", message.text);
+      if (updatedMessage && updatedMessage !== message.text) {
+        // envoyer la demande de mise à jour au serveur
+        this.socket.emit("edit message", {
+          id: message.id,
+          text: updatedMessage,
+          user: this.username,
+          socketId: this.socket.id,
+        });
       }
     },
     scrollToBottom() {
