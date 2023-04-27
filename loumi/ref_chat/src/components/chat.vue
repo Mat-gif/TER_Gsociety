@@ -1,14 +1,3 @@
-<!-- eslint-disable vue/multi-word-component-names -->
-
-<!-- pour runner le projet il faut  installer 
-npm i bootstrap socket.io socket.io-client
-
-il faut impérativement un serveur qui tourne  sur : http://localhost:3000" voir code @Mat et le lancer 
-et puis tu peux revenir sur ton projet et faire npm run dev
-
-
-cheers🤚🤚🤚
- -->
 <template>
   <div class="chat__layer">
     <div class="information">
@@ -19,14 +8,10 @@ cheers🤚🤚🤚
       </form>
     </div>
     <div class="container" v-if="joined">
-      <!-- div du haut -->
       <div>
         <h2 id="chatty">Chat</h2>
         <button class="future_modal">📨</button>
       </div>
-      <!-- fin du div du haut -->
-      <!-- =================== -->
-      <!-- div du milieu -->
       <div ref="messages">
         <div
           v-for="message in messages"
@@ -46,7 +31,6 @@ cheers🤚🤚🤚
           <div>
             <p>{{ message.text }}</p>
             <span>{{ new Date(message.id).toLocaleTimeString() }}</span>
-            <!-- <button @click="editMessage(message)">Modifier</button> -->
           </div>
         </div>
       </div>
@@ -82,44 +66,50 @@ export default {
       isTyping: false,
       timeout: null,
     };
+
+    //** appel d'api  */
+// Faites une requête HTTP GET à l'API pour récupérer tous les emojis
+axios.get('https://www.emojisworld.fr/')
+  .then(function(response) {
+    // Traitez la réponse de l'API pour extraire les données dont vous avez besoin
+    const emojis = response.data.map(function(emoji) {
+      return {
+        name: emoji.name,
+        image: emoji.image_url,
+      };
+    });
+
+    // Utilisez les données récupérées pour afficher les emojis dans votre application
+    const emojiList = document.getElementById('emoji-list');
+    emojis.forEach(function(emoji) {
+      const img = document.createElement('img');
+      img.src = emoji.image;
+      img.alt = emoji.name;
+      emojiList.appendChild(img);
+    });
+  })
+  .catch(function(error) {
+    console.error(error);
+  });
   },
 
   methods: {
     onSubmit() {
       this.joined = true;
       this.socket = io("http://localhost:3000");
-
-      // re'chergement des messages qui sont sont stockés dans le localStorage
-      // const storedMessages = localStorage.getItem("messages");
-      // if (storedMessages) {
-      //   this.messages = JSON.parse(storedMessages);
-      // }
-      this.scrollToBottom();
-
-      this.socket.on("message recu", (data) => {
-        this.messages = [...this.messages, data];
-      });
-
-      this.socket.on("typing", (data) => {
-        const typingUser = data.username;
-        if (typingUser !== this.username) {
-          document.getElementById(
-            "typing-indicator"
-          ).innerHTML = `${typingUser} est en train d'écrire`;
-        }
-      });
-      this.socket.on("stop typing", () => {
-        this.socket.emit("stop typing", {
-          username: this.username,
-        });
-        document.getElementById("typing-indicator").innerHTML = "";
-      });
     },
+
+    onTyping() {
+      this.isTyping = true;
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        this.isTyping = false;
+        this.socket.emit("typing", this.socket.id);
+      }, 500);
+    },
+
     sendMessage() {
-      if (!this.socket || !this.socket.connected) {
-        alert("La connexion au serveur a été perdue ou n'est pas établie.");
-        return;
-      }
+      this.isTyping = false;
       const message = {
         id: new Date().getTime(),
         text: this.text,
@@ -130,57 +120,15 @@ export default {
       this.messages = [...this.messages, message];
       this.text = "";
       this.socket.emit("message", message);
-      // sauvegarde des messages dans le localStorage
-      //localStorage.setItem("messages", JSON.stringify(this.messages));
-    },
-    onTyping() {
-      if (!this.isTyping) {
-        this.isTyping = true;
-        this.socket.emit("typing", this.socket.username);
-        this.timeout = setTimeout(() => {
-          this.isTyping = false;
-          this.socket.emit("stop typing");
-        }, 1000);
-      } else {
-        clearTimeout(this.timeout);
-        this.timeout = setTimeout(() => {
-          this.isTyping = false;
-          this.socket.emit("stop typing");
-        }, 1000);
-      }
-    },
-
-    //* methode pour modifier un message
-    editMessage(message) {
-      const updatedMessage = prompt("Modifier le message:", message.text);
-      if (updatedMessage && updatedMessage !== message.text) {
-        this.socket.emit("edit message", {
-          id: message.id,
-          text: updatedMessage,
-          user: this.username,
-          socketId: this.socket.id,
-        });
-      }
-    },
-    //* fin de la methode pour modifier un message
-    scrollToBottom() {
-      this.$nextTick(() => {
-        // console.log("scrolling to bottom");
-        if (this.$refs.messages) {
-       
-          this.$refs.messages.scrollToBottom = this.$refs.messages.scrollHeight;
-        }
-      });
     },
   },
-  watch: {
-    text: function () {
-      this.isTyping = true;
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(() => {
-        this.isTyping = false;
-      }, 1000);
-    },
+
+  mounted() {
+    this.socket.on("typing", (socketId) => {
+      if (socketId !== this.socket.id) {
+        this.isTyping = true;
+      }
+    });
   },
 };
 </script>
