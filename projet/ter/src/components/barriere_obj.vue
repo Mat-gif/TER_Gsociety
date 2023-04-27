@@ -22,7 +22,7 @@ export default {
               const barriere = new Konva.Rect({
                 id: "(" + i +")",
                 owner: this.listeJoueur[num][0],
-                x: num*(this.tailleGrille*100/4) + this.tailleGrille*100/4 -10*this.tailleGrille,
+                x: (num)*(this.tailleGrille)*100/4,
                 y: 20 * i + this.tailleGrille*120,
                 width: 90,
                 height: 10,
