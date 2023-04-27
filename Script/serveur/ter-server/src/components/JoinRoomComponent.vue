@@ -8,7 +8,7 @@
   
   <script>
 
-  const {Player} = require('../modele/Player');
+  const {Player} = require('./Player');
   export default {
     props: {
     socket: {

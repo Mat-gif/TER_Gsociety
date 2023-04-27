@@ -6,8 +6,8 @@
 </template>
   
   <script>
-  const {Player} = require('../modele/Player');
-  const {Game} = require('../modele/Game');
+  const {Player} = require('./Player');
+  const {Game} = require('./Game');
   export default {
     props: {
     socket: {
