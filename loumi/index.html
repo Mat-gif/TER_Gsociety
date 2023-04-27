@@ -1,0 +1,203 @@
+<!-- <!DOCTYPE html> -->
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- the bootstrap link for the styling -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <!-- end pf the bootstrap css link  -->
+    <!-- ouwn CSS link  -->
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <title>Gsociety</title>
+    <!-- This page contains also the js script for the client -->
+  </head>
+  <body>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: linear-gradient(
+          to top,
+          rgb(171, 222, 171),
+          rgb(89, 172, 80)
+        );
+        height: 100vh;
+      }
+    </style>
+    <main id="main">
+      <h2 class="text-center">Bienvenue au jeu quoridor</h2>
+      <div class="row">
+        <div class="col">
+          <div class="container">
+            <form method="post" class="form">
+              <label for="">Nom d'utilisateur</label>
+              <input
+                type="text"
+                name="username"
+                id=""
+                class="form-control username"
+              />
+              <label for="nb__player" class="mt-3">Adversaire</label>
+              <input
+                type="number"
+                name="nb__plauyer"
+                id=""
+                min="1"
+                max="3"
+                class="form-control adversaire"
+              />
+              <button type="submit" class="btn btn-primary mt-3 ml-3">
+                Recherche de joueur
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="col">
+          <div class="container">
+            <div class="card mb-3" id="rooms-card">
+              <div class="card-header">Salons disponibles</div>
+              <ul class="list-group list-group-flush" id="rooms-list"></ul>
+            </div>
+            <div class="card mb-3">
+              <div class="card-header">En attente des autres joueurs</div>
+              <div class="card-body mx-auto">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- information sur les participants et options for choosing they own customization -->
+      <div class="container">
+        <div class="row">
+          <div class="col mt-5">
+            <p>Vous êtes {nombre de joeur} dans la partie :</p>
+            <ul class="participants__name__list">
+              <!-- les listes ici servent d'exemple ils ne seront pas pré-remplies et seront remplies avec les données des joueurs: username -->
+              <!-- les deux premoier joueurs si le jeu ne comporte que deux joueurs -->
+              <li class="player__host">moi</li>
+              <li class="second__player">Toi</li>
+              <!-- les deux autres joueurs si le jeu comporte plus de deux joueurs -->
+              <li class="third__player">Elle</li>
+              <li class="last__player">Ils</li>
+            </ul>
+          </div>
+          <div class="col mt-5">
+            <div class="chat">
+              <p>chat</p>
+              <button class="rounded">&plus;</button>
+            </div>
+            <button class="btn btn-warning mt-1">
+              Personaliser votre avatar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- section pour le plateau de ce jeu  cette partie, je pense pouvait être  une page speciale qui sera appele si et seulement si certaines actions sont appele -->
+      <!-- ===================================== -->
+      <!-- un exemple using d3 pour le graphisme  -->
+      <svg id="plateau"></svg>
+    </main>
+
+    <!-- le lien pour charger la bibliothèque d3 -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- le script du serveur  -->
+
+    <!-- les scripts js pour le côté  -->
+    <script>
+      console.log("vous êtes dans la page client ");
+      // recuperer des données du formulaire
+      const formulaire = document.querySelector(".form");
+      const inputUseranme = document.querySelector(".username");
+      const inputAdversaire = document.querySelector(".adversaire");
+      //ecouteur d'évènement du formulaire
+      formulaire.addEventListener("submit", (e) => {
+        e.preventDefault();
+        console.log(
+          `${inputUseranme.value} souhaite jouer avec ${inputAdversaire.value}`
+        );
+        inputUseranme.value = "";
+        inputAdversaire.value = "";
+      });
+      // les elements du joueur
+      const joueur = {
+        username: "",
+        host: false,
+        sockedId: "",
+        turn: false,
+        win: false,
+      };
+
+      // definition du cadre  du plateau de jeu
+      const plateau = d3
+        .select("#plateau")
+        .attr("width", "65%")
+        .attr("height", "550px")
+        .style("justify-content", "center")
+        .style("align-items", "center")
+        .style("border", "7px solid red")
+        .style("margin-left", "20%")
+        .style("margin-top", "5%")
+        .style("border-radius", "9px")
+        .style("background", "orange");
+      // mes deux sequences pour créer un matrix
+      const cellules = 9;
+      const colonnes = 9;
+      //array vide
+      const dessin = [];
+
+      // boucler pour avoir le matrix
+      for (let i = 0; i < cellules; i++) {
+        for (let j = 0; j < colonnes; j++) {
+          //sous formes d'objets a qui sera les cellules
+          // o qui sera les colonnes
+          dessin.push({
+            a: i,
+            o: j,
+          });
+        }
+      }
+
+      const micro__cellules = plateau
+        .selectAll(".cell")
+        .data(dessin)
+        .enter()
+        .append("rect")
+        .attr("class", "cell")
+        .attr("x", (d) => d.a * 60)
+        .attr("y", (d) => d.o * 60)
+        .attr("height", 50)
+        .attr("width", 50)
+        .style("perspective", "10px")
+        .style("fill", "red");
+
+      let couluerActu = "white";
+      micro__cellules.on("click", function () {
+        d3.select(this).style("fill", couluerActu);
+        if (couluerActu === "white") {
+          couluerActu = "blue";
+        } else {
+          couluerActu = "white";
+        }
+      });
+ 
+    </script>
+    <script src="server.js"></script>
+    <!-- fin des scripts js pour le côté client -->
+  </body>
+</html>
