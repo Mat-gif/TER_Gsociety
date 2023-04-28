@@ -33,7 +33,7 @@ class ListeRoom {
 
     removeRoom(room)
     {
-        this.rooms.filter(r => r !== room);
+        this.rooms=this.rooms.filter(r => r !== room);
     }
 
     disconnection(socketid)

@@ -28,7 +28,7 @@ export default {
                 y: (this.height/this.tailleGrille) * j + (this.height/this.tailleGrille)*0.125/3,
                 width: (this.width/this.tailleGrille)/12,
                 height: (this.height/this.tailleGrille)*0.75,
-                fill: '#c6c6c6',
+                fill: '#F45050',
                   name: "verticale"
               });
               layerBarEmpl.add(barV);
@@ -42,7 +42,7 @@ export default {
                 y: (this.height/this.tailleGrille) * j + (this.height/this.tailleGrille)*0.875,
                 width: (this.width/this.tailleGrille)*0.75,
                 height: (this.height/this.tailleGrille)/12,
-                fill: '#c6c6c6',
+                fill: '#F45050',
                   name: "horizontale"
               });
               layerBarEmpl.add(barH);

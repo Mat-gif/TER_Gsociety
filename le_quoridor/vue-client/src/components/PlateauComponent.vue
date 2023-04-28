@@ -2,10 +2,10 @@
   <div class="container">
       <div ref="plateau">
           <Background :width="width" :height="height" :layerBackground="layerBackground" :taille-grille="nbSquares"/>
-          <Rect :width="width" :height="height" :layerCell="layerCell" :taille-grille="nbSquares"/>
+          <Rect :roomId="roomId" :socket="socket" :width="width" :height="height" :layerCell="layerCell" :taille-grille="nbSquares"/>
           <BarrierEmpl :width="width" :height="height" :layerBarEmpl="layerBarEmpl" :taille-grille="nbSquares"/>
 <!--          <BarrierObj :width="width" :height="height" :layerBar="layerBar" :listeJoueur="listeJoueur" :nbBarriere="nbBarriere" :taille-grille="nbSquares"/>-->
-          <Pion :myInitGame="myInitGame" :otherInitGame="otherInitGame" :width="width" :height="height" :layerPion="layerPion" :listeJoueur="listeJoueur" :taille-grille="nbSquares"/>
+          <Pion :newPosition="newPosition" :myInitGame="myInitGame" :otherInitGame="otherInitGame" :width="width" :height="height" :layerPion="layerPion" :listeJoueur="listeJoueur" :taille-grille="nbSquares"/>
       </div>
   </div>
 </template>
@@ -33,14 +33,14 @@ export default {
           layerPion : null,
       };
   },
-  props: ["nbSquares","myInitGame","otherInitGame","myTurn","newPosition","nbBarriere"],
+  props: ["nbSquares","myInitGame","otherInitGame","myTurn","newPosition","nbBarriere","roomId","socket"],
   //   watch: {
   //   newPosition: function(newVal, oldVal) {
   //     // code à exécuter lorsque la prop change
   //     console.log('La valeur de la prop myProp a changé de', oldVal, 'à', newVal.x);
   //
-  //     let id =`#${newVal.x/50}${newVal.y/50}`
-  //     console.log(id)
+  //     // let id =`#${newVal.x/50}${newVal.y/50}`
+  //     // console.log(id)
   //
   //     //je n'arrive pas a selectionner l'element
   //
@@ -62,17 +62,29 @@ export default {
   //   const self = this; // stocker la référence à "this"
   //   this.createGame(self);
   // },
+    methods:{
+        changeturn(payload){
+            this.$emit('event-turn', payload);
+            // this.myTurn=payload.myTurn
+            // this.socket.emit('nextplayer',this.roomId);
+            // this.socket.emit('coord',this.roomId, payload.coord);
+            // console.log("payload "+ this.myTurn)
+        },
+
+
+
+    },
+
     mounted(){
       this.listeJoueur.push([this.myInitGame.socketId,this.myInitGame.color]);
       this.otherInitGame.forEach(e => this.listeJoueur.push([e.socketId,e.color]));
       console.log("plateau joueurs : "+this.listeJoueur);
-
-        //Creation de la scene
         const stage = new Konva.Stage({
             container: this.$refs.plateau,
             width: this.width,
             height: this.height,
         });
+
 
 
         //Création du calque de fond

@@ -1,3 +1,6 @@
+<!--TODO envoie d'alerte à tous les sockets connectés qu'une personne à quitter la partie window.update  😁-->
+
+
 <template>
   
     <div>
@@ -32,7 +35,7 @@
     created() {
       // Envoyer une demande de mise à jour de la liste des rooms au serveur
       this.socket.emit('get rooms',(this.roomId));
-
+      console.log(this.rooms)
       this.socket.on('list rooms', (room) => {
         // Mettre à jour les données des rooms
         this.rooms = room;

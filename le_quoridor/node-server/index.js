@@ -62,17 +62,24 @@ io.on('connection', (socket) => {
         if(socket.id === room.tour.currentPlayer.currentPlayer.socketId) io.to(room.tour.currentPlayer.currentPlayer.socketId).emit('my turn', true);
 
         socket.on('nextplayer',(roomID) => {
+
             console.log(`[nextplayer] ${socket.id}`);
             const room = rooms.findRoom(roomID);
             room.tour.changerJoueurActif()
             io.to(room.tour.currentPlayer.currentPlayer.socketId).emit('my turn', true);
+            io.to(room.id).except(room.tour.currentPlayer.currentPlayer.socketId).emit('my turn', false);
         })
 
 
         socket.on('coord',(roomID,coord) => {
             const room = rooms.findRoom(roomID);
             console.log(coord)
-            io.to(room.id).except(socket.id).emit('change', coord);
+            let sendCoord = {id:socket.id, coord:coord}
+
+            console.log(sendCoord)
+            io.to(room.id).emit('change', sendCoord);
+
+            // io.to(room.id).except(socket.id).emit('change', sendCoord);
         })
 
 
@@ -98,6 +105,7 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log(`[disconnect] ${socket.id} `);
         rooms.disconnection(socket.id)
+        console.log(rooms);
         io.emit('list rooms', rooms.roomsDispo());
     });
     socket.on("message", (data) => {

@@ -1,4 +1,6 @@
 <!--TODO : modale règle à gerer-->
+<!--TODO : gerer les deplacements des pions -->
+
 <template>
   <!--    <h1>le quori(pompi)dor</h1>-->
     <div class="template">
@@ -9,6 +11,7 @@
 <!--    <ListeRoomComponent  v-if="!playGame" :socket="socket"/>-->
 <!--    <ListeUserComponent v-if="roomId && !playGame" :roomID="roomId" :socket="socket"/>-->
     <regles v-bind:revele="reveleRegles" v-bind:toggleModale="toggleRegles"></regles>
+    <infoBarriere v-if="playGame" :username="player.username" :nb_-walls="5"></infoBarriere>
     <!--  ====================================================================================
     =====================================================================================-->
     <!--créer un boutton ouvrir la modale, click le boutton en utilisant la méthode toggleModale-->
@@ -27,7 +30,7 @@
     <div class="game_rule">
     <div v-on:click="toggleRegles" class="btn btn-success">Regles</div>
     </div>
-    <PlateauComponent v-if="playGame" @event-turn="changeturn" :myTurn="myTurn"  :color="color" :nbSquares="nbSquares" :nbBarriere="nbBarriere" :myInitGame="myInitGame" :otherInitGame="otherInitGame" :newPosition="newPosition"/>
+    <PlateauComponent :socket="socket" :roomId="roomId" v-if="playGame" @event-turn="changeturn" :myTurn="myTurn"  :color="color" :nbSquares="nbSquares" :nbBarriere="nbBarriere" :myInitGame="myInitGame" :otherInitGame="otherInitGame" :newPosition="newPosition"/>
 </div>
     <div class="two">
         <chat :socket="socket" v-if="playGame" :username="player.username" :room-id="roomId"></chat>
@@ -46,7 +49,8 @@ import ListeRoomComponent from './components/ListeRoomComponent.vue';
 import ListeUserComponent from './components/ListeUserComponent.vue';
 import PlateauComponent from './components/PlateauComponent.vue';
 import Regles from './components/Regles.vue';
-import chat from './components/chat.vue'
+import chat from './components/chat.vue';
+import infoBarriere from './components/infoBarriere.vue';
 
 
 export default {
@@ -78,7 +82,8 @@ export default {
         ListeUserComponent,
         PlateauComponent,
         Regles,
-        chat
+        chat,
+        infoBarriere
 
     },
     created() {
