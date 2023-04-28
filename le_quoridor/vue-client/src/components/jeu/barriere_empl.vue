@@ -5,6 +5,9 @@
 </template>
 
 <script>
+
+import Konva from 'konva';
+
 export default {
   props: {
     layerBarEmpl: Object,
@@ -19,30 +22,33 @@ export default {
         if (layerBarEmpl) {
           for (let i = 0; i < this.tailleGrille-1; i++) {
             for (let j = 0; j < this.tailleGrille; j++) {
-              const barEmpl = new Konva.Rect({
-                id: "(verti" + i + ";" + j + ")",
+              let barV = new Konva.Rect({
+                id:i+j,
                 x: (this.width/this.tailleGrille) * i + (this.width/this.tailleGrille)*0.875,
                 y: (this.height/this.tailleGrille) * j + (this.height/this.tailleGrille)*0.125/3,
                 width: (this.width/this.tailleGrille)/12,
                 height: (this.height/this.tailleGrille)*0.75,
                 fill: '#c6c6c6',
+                  name: "verticale"
               });
-              layerBarEmpl.add(barEmpl);
+              layerBarEmpl.add(barV);
             }
           };
           for (let i = 0; i < this.tailleGrille; i++) {
             for (let j = 0; j < this.tailleGrille-1; j++) {
-              const barEmpl = new Konva.Rect({
-                id: "(hztal" + i + ";" + j + ")",
+              let barH = new Konva.Rect({
+                id: i+j,
                 x: (this.width/this.tailleGrille) * i + (this.width/this.tailleGrille)*0.125/3,
                 y: (this.height/this.tailleGrille) * j + (this.height/this.tailleGrille)*0.875,
                 width: (this.width/this.tailleGrille)*0.75,
                 height: (this.height/this.tailleGrille)/12,
                 fill: '#c6c6c6',
+                  name: "horizontale"
               });
-              layerBarEmpl.add(barEmpl);
+              layerBarEmpl.add(barH);
             }
           };
+          console.log(layerBarEmpl)
           layerBarEmpl.draw();
         }
       },

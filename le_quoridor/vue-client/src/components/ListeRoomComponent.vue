@@ -44,7 +44,7 @@
               this.roomId=id;
               // Permet d'émettre au composant "parent" les information concernant le salon
               console.log("[List] : "+this.roomId);
-              this.$emit('event-roomId', { roomId:  this.roomId });
+              this.$emit('event-roomId', { roomId:  this.roomId , state: "waitPlayers"});
 
           }
       }

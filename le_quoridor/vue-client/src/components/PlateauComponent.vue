@@ -5,7 +5,7 @@
           <Rect :width="width" :height="height" :layerCell="layerCell" :taille-grille="nbSquares"/>
           <BarrierEmpl :width="width" :height="height" :layerBarEmpl="layerBarEmpl" :taille-grille="nbSquares"/>
 <!--          <BarrierObj :width="width" :height="height" :layerBar="layerBar" :listeJoueur="listeJoueur" :nbBarriere="nbBarriere" :taille-grille="nbSquares"/>-->
-<!--          <Pion :width="width" :height="height" :layerPion="layerPion" :listeJoueur="listeJoueur" :taille-grille="nbSquares"/>-->
+          <Pion :myInitGame="myInitGame" :otherInitGame="otherInitGame" :width="width" :height="height" :layerPion="layerPion" :listeJoueur="listeJoueur" :taille-grille="nbSquares"/>
       </div>
   </div>
 </template>
