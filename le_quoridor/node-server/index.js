@@ -1,4 +1,4 @@
-/*npm instal express */
+/*npm install express */
 /* npm run build */
 /* node index.js*/
 
@@ -47,6 +47,9 @@ io.on('connection', (socket) => {
         if (!rooms.isEmpty())
         {     /* DEBUT DE LA PARTIE */
             if (room.sizePlayers() === room.info.nb_Players) {
+                console.log("-----------------------------------")
+                console.log(room.initGame)
+                console.log("-----------------------------------")
                 io.to(room.id).emit('start game', room);
             }
         }

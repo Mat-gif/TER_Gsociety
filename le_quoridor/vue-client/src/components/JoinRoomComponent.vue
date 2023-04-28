@@ -29,14 +29,15 @@
 <!--            </ul>-->
 
 <!--        </div>-->
-    <div v-if="!created">
+    <div v-if="state=== 'setUsername'">
         <div>
             <label for="username">nom :</label>
             <input type="text" id="username" v-model="player.username" />
         </div>
         <button @click="validateName" class="pointer btn btn-success" >Rejoindre un salon</button>
     </div>
-        <ListeRoomComponent  v-if="created" :socket="socket" :player="player" @event-roomId="setRoomId"/>
+        <ListeRoomComponent  v-if="state=== 'setRoom'"  :socket="socket" :player="player" @event-roomId="setRoomId"/>
+        <ListeUserComponent v-if="state=== 'waitPlayers'" :roomID="player.roomId" :socket="socket" />
 
 
     </div>
@@ -46,32 +47,32 @@
 
   import {Player} from '@/models/Player';
   import ListeRoomComponent from './ListeRoomComponent.vue';
-  import NewRoomComponent from "@/components/NewRoomComponent.vue";
-  import ListeUserComponent from "@/components/ListeUserComponent.vue";
-  import PlateauComponent from "@/components/PlateauComponent.vue";
-  import Regles from "@/components/Regles.vue";
+  import ListeUserComponent from './ListeUserComponent.vue';
+
 
   export default {
     props: ['revele','toggleModale','socket'],
     data() {
       return {
         player: new Player(),
-        created: false,
+        state: "setUsername"
       }
     },
       components: {
           ListeRoomComponent,
+          ListeUserComponent
       },
     methods: {
       validateName(){
           // J'initialise les paramètres du joueur qui rejoint une partie
           this.player.socketId = this.socket.id;
 
-          this.created=true;
+          this.state="setRoom";
       },
         setRoomId(payload) {
             this.player.roomId = payload.roomId
           this.socket.emit('playerData', this.player);
+            this.state=payload.state;
 
             this.$emit('event-roomId', { roomId:  payload.roomId, player: this.player});
             console.log("[Join] : "+payload.roomId);

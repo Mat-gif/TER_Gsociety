@@ -1,3 +1,6 @@
+<!--TODO: synchro liste attente coté host / -->
+
+
 <template>
 <!--      <div>-->
 <!--        <input type="text" v-model="player.username">-->
@@ -14,20 +17,44 @@
 
             </div>
             <div >
-                <label for="nbPlayersInput">Number of players:</label>
-                <input type="number" id="nbPlayersInput" v-model="game.nb_Players" />
+
+<!--                <input type="number" id="nbPlayersInput" v-model="game.nb_Players" />-->
+                <div>
+                    <label for="nbPlayersInput">Number of players : </label>
+                    <input type="radio" v-model="game.nb_Players" id="twoPlayers" name="twoPlayers" :value="parseInt(2)" checked>
+                    <label for="twoPlayers"> 2 joueurs </label>
+                    <input type="radio" v-model="game.nb_Players" id="fourPlayers" name="fourPlayers" :value="parseInt(4)">
+                    <label for="fourPlayers"> 4 joueurs </label>
+                </div>
 
             </div>
             <div >
-                <label for="nbSquares">Nombre cellules:</label>
-                <input type="number" id="nbSquares" v-model="game.nb_Squares" />
+                <label for="nbSquares">Nombre cellules : </label>
+
+                <input type="radio" v-model="game.nb_Squares" id="septCells" name="septCells" :value="parseInt(7)" >
+                <label for="septCells"> 7 cellules </label>
+
+                <input type="radio" v-model="game.nb_Squares" id="nineCells" name="nineCells" :value="parseInt(9)">
+                <label for="nineCells"> 9 cellules </label>
+
+                <input type="radio" v-model="game.nb_Squares" id="elevenCells" name="elevenCells" :value="parseInt(11)" >
+                <label for="elevenCells"> 11 cellules </label>
+
+                <input type="radio" v-model="game.nb_Squares" id="treizeCells" name="treizeCells" :value="parseInt(13)">
+                <label for="treizeCells"> 13 cellules </label>
+
+
+<!--                <input type="number" id="nbSquares" v-model="game.nb_Squares" />-->
 
             </div>
             <div>
+
                 <label for="nbWallsInput">Number of walls:</label>
-                <input type="number" id="nbWallsInput" v-model="game.nb_Walls" />
+                <input v-model.number="game.nb_Walls" type="range" id="nbWalls" name="nbWalls" :min="parseInt(3)" :max="parseInt(10)">
+
+<!--                <input type="number" id="nbWallsInput" v-model="game.nb_Walls" />-->
             </div>
-            <button class="pointer btn btn-success" @click="createRoom" >creer</button>
+            <button class="pointer btn btn-success" @click="createRoom" >Créer la partie</button>
 
             <br>
             <div> {{game}}</div><br>

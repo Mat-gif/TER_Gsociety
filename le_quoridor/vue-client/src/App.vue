@@ -1,9 +1,8 @@
-
+<!--TODO : modale règle à gerer-->
 <template>
   <!--    <h1>le quori(pompi)dor</h1>-->
     <div class="template">
 <div class="one">
-    <h1 v-if="myTurn" style="color: red">{{myTurn}}</h1>
     <!--lire la valuer de revele et utiliser la méthode toggleModale-->
     <NewRoomComponent v-if="!playGame" :socket="socket" @event-roomId="setRoomId" v-bind:revele="reveleCreer" v-bind:toggleModale="toggleCreer"/>
     <JoinRoomComponent v-if="!playGame" :socket="socket" @event-roomId="setRoomId" v-bind:revele="reveleRejoindre" v-bind:toggleModale="toggleRejoindre"/>
@@ -13,6 +12,13 @@
     <!--  ====================================================================================
     =====================================================================================-->
     <!--créer un boutton ouvrir la modale, click le boutton en utilisant la méthode toggleModale-->
+    <div  v-if="playGame && myTurn" class="alert alert-success">
+        <strong>Your turn man!</strong>
+    </div>
+
+    <div  v-if="playGame && !myTurn" class="alert alert-warning">
+        <strong>Wait bro is not your turn!</strong>
+    </div>
 
   <div class="boutons">
     <div  v-if="!playGame" v-on:click="toggleCreer" class="btn btn-success">Créer une partie</div>
@@ -78,7 +84,7 @@ export default {
     created() {
 
         this.socket.on('start game', ({info, initGame}) => {
-            alert("Début du game !")
+            // alert("Début du game !")
             this.nbSquares = info.nb_Squares;
             this.nbBarriere = info.nb_Walls;
             this.start =true

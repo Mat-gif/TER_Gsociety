@@ -1,16 +1,20 @@
 const ListePlayerLinked = require('./ListePlayerLinked');
 const Tour = require("./Tour");
+const {Pion,Barriere,Coord} = require("./Pion");
 class Room {
 
     constructor( game ) {
         console.log(game)
         this.id = Math.random().toString(36).substr(2,9);
         this.info = game;
-        this.plateau = this.createZeroMatrix( game.nb_Squares );
+        // this.plateau = this.createZeroMatrix( game.nb_Squares );
         this.players = [] ;
         this.initGame = [];
         this.listePlayerLinked = new ListePlayerLinked(game);
         this.tour = new Tour();
+        this.pions= {}
+        this.barrieres= {}
+
     }
 
 
@@ -21,9 +25,11 @@ class Room {
 
 
     addPlayer(player){
+        console.log(player)
         this.players.push(player)
 
-        this.plateau =  this.positionPionStart( this.plateau, this.sizePlayers(), player );
+        this.positionPionStart(this.info ,this.sizePlayers(), player)
+        // this.plateau =  this.positionPionStart( this.plateau, this.sizePlayers(), player );
         this.initGame.push(this.paramPlayers( player, this.sizePlayers()) );
 
         if (this.sizePlayers() === this.info.nb_Players) {
@@ -40,40 +46,55 @@ class Room {
     isEmpty(){return this.sizePlayers()===0}
 
     //Pour creer une matrice vide
-    createZeroMatrix(n){
-        var matrix = [];
-        for (var i = 0; i < n; i++)
-        {
-            var row = [];
-            for (var j = 0; j < n; j++)
-            {
-                row.push(0);
-            }
-            matrix.push(row);
-        }
-        return matrix;
-    }
+    // createZeroMatrix(n){
+    //     var matrix = [];
+    //     for (var i = 0; i < n; i++)
+    //     {
+    //         var row = [];
+    //         for (var j = 0; j < n; j++)
+    //         {
+    //             row.push(0);
+    //         }
+    //         matrix.push(row);
+    //     }
+    //     return matrix;
+    // }
 
-    positionPionStart( plateau, num, player ){
+    positionPionStart(  {nb_Squares, nb_Walls},num, player ){
+        let listeBarrieres = []
+        for (let i=0; i<nb_Walls; i++){
+            listeBarrieres.push(new Barriere(player.socketId, new Coord(null,null), new Coord(null,null), null));
+        }
+
+        this.barrieres[player.socketId] = listeBarrieres;
         switch (num) {
             case 1:
-                plateau[0][Math.floor(plateau.length/2)] = num;
-                player.positionStart = {x: Math.floor(plateau.length/2), y:0}
+                // plateau[0][Math.floor(plateau.length/2)] = num;
+                player.positionStart = {x: Math.floor(nb_Squares/2), y:0}
+                this.pions[player.socketId] = new Pion(player.socketId, new Coord(player.positionStart.x,player.positionStart.y))
+                // this.pions.add(player.socketId : new Pion(player.socketId, new Coord(player.positionStart.x,player.positionStart.y)))
                 break;
             case 2:
-                plateau[plateau.length-1][Math.floor(plateau.length/2)] = num;
-                player.positionStart = {x: Math.floor(plateau.length/2), y:plateau.length-1}
+                // plateau[plateau.length-1][Math.floor(plateau.length/2)] = num;
+                player.positionStart = {x: Math.floor(nb_Squares/2), y:nb_Squares-1}
+                this.pions[player.socketId] = new Pion(player.socketId, new Coord(player.positionStart.x,player.positionStart.y))
+                // this.pions.push(new Pion(player.socketId, new Coord(player.positionStart.x,player.positionStart.y)))
                 break;
             case 3:
-                plateau[Math.floor(plateau.length/2)][0] = num;
-                player.positionStart = {x: 0, y:Math.floor(plateau.length/2)}
+                // plateau[Math.floor(plateau.length/2)][0] = num;
+                player.positionStart = {x: 0, y:Math.floor(nb_Squares/2)}
+                this.pions[player.socketId] = new Pion(player.socketId, new Coord(player.positionStart.x,player.positionStart.y))
+                // this.pions.push(new Pion(player.socketId, new Coord(player.positionStart.x,player.positionStart.y)))
                 break;
             case 4:
-                plateau[Math.floor(plateau.length/2)][plateau.length-1] = num;
-                player.positionStart = {x: plateau.length-1, y:Math.floor(plateau.length/2)}
+                // plateau[Math.floor(plateau.length/2)][plateau.length-1] = num;
+                player.positionStart = {x: nb_Squares-1, y:Math.floor(nb_Squares/2)}
+                this.pions[player.socketId] = new Pion(player.socketId, new Coord(player.positionStart.x,player.positionStart.y))
+                // this.pions.push(new Pion(player.socketId, new Coord(player.positionStart.x,player.positionStart.y)))
                 break;
         }
-        return plateau
+        // console.log(this.pions)
+        // console.log(this.barrieres)
     }
 
     paramPlayers({socketId,positionStart}, num){
