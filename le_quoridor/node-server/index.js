@@ -12,7 +12,9 @@ const ListeRoom = require('./models/ListeRoom');
 const ConnectionPlayer = require('./models/ConnectionPlayer');
 require('./models/Tour');
 // Utiliser des fichiers statiques à partir du répertoire 'public'
-app.use(express.static('./views'));
+
+// app.use(express.static('../views'));
+app.use(express.static('../vue-client/dist'));
 
 // Initialisation de la liste de salon
 const rooms = new ListeRoom();
