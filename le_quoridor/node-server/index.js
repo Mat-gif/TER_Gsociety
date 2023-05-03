@@ -31,6 +31,7 @@ io.on('connection', (socket) => {
         {
             room = connection.createRoom(rooms,player,game)
             io.emit('room id', room.id)
+
         }
         /*  REJOINDRE UNE ROOM  */
         else
@@ -42,6 +43,8 @@ io.on('connection', (socket) => {
         socket.join(room.id);
         /* info quand autre joueurs rejoints le salon uniquement a un socket*/
         io.to(room.id).emit('join room', room.id);
+        io.to(room.id).emit('list users', room.players);
+
 
         /* A FAIRE QUAND IL EXISTE AU MOINS UN SALON DE JEU */
         if (!rooms.isEmpty())
@@ -81,17 +84,25 @@ io.on('connection', (socket) => {
 
             // io.to(room.id).except(socket.id).emit('change', sendCoord);
         })
-
-
-
-
-
     })
 
+    socket.on('deserter', ({roomId,host}) => {
+        console.log(`[disconnect] ${socket.id} `);
+        rooms.disconnection(socket.id)
+        console.log(rooms);
+        io.emit('list rooms', rooms.roomsDispo());
 
+        if(!host) {
+            const room = rooms.findRoom(roomId);
+            io.to(roomId).emit('list users', room.players);
+        }
+    });
 
     /* OBTENIR LA LISTE DES JOUEURS DANS UN SALON */
     socket.on('get users', (roomID) => {
+        console.log("-------------------------------")
+        console.log(roomID)
+        console.log("-------------------------------")
         const room = rooms.findRoom(roomID);
         io.to(roomID).emit('list users', room.players);
     });
@@ -107,6 +118,7 @@ io.on('connection', (socket) => {
         rooms.disconnection(socket.id)
         console.log(rooms);
         io.emit('list rooms', rooms.roomsDispo());
+
     });
     socket.on("message", (data) => {
         socket.broadcast.emit("message recu", data);

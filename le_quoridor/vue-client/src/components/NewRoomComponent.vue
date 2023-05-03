@@ -1,4 +1,4 @@
-<!--TODO: synchro liste attente coté host / -->
+
 
 
 <template>
@@ -10,7 +10,7 @@
     <div class="overlay"  v-if="revele">  </div>
     <div class="bloc-modale" v-if="revele">
 
-        <div v-if="!created">
+        <div v-if="state=== 'initGame'">
             <div >
                 <label for="username">nom :</label>
                 <input type="text" id="username" v-model="player.username" />
@@ -60,9 +60,11 @@
             <div> {{game}}</div><br>
             <div> {{player}}</div>
         </div>
-        <button v-on:click="toggleModale" class="btn-closei btn btn-danger">X</button>
+        <button v-on:click="toggleModale" class="btn-closei btn btn-danger"  v-if="state=== 'initGame'">X</button>
+        <button   v-on:click="toggleModale"  @click="deserter" class="btn-closei btn btn-danger" v-if="state=== 'wait'" >Quitter</button>
 
-            <ListeUserComponent v-if="created" :roomID="player.roomId" :socket="socket" />
+
+        <ListeUserComponent v-if="state=== 'wait'" :roomID="player.roomId" :socket="socket" />
     </div>
 
 
@@ -76,9 +78,9 @@
       props:['revele','toggleModale','socket'],
     data() {
       return {
-        player: new Player(),
-        game: new Game(),
-          created: false,
+          player: new Player(),
+          game: new Game(),
+          state: 'initGame'
       }
     },
       components:{
@@ -86,21 +88,24 @@
       },
     methods: {
       createRoom() {
-          this.created = true;
         // J'initialise les paramètres du joueur Hote de la partie
         this.player.isHost(this.socket.id)
-
         // J'envoie au serveur le joueur pour l'ajouter au salon
         this.socket.emit('playerData', this.player, this.game );
-
         // Permet d'émettre au composant "parent" les information concernant le salon
         this.socket.on('room id', (roomId) => {
               this.player.roomId = roomId;
+              this.state = 'wait';
               this.$emit('event-roomId', {roomId: roomId, player: this.player});
             });
-
         console.log(this.player);
-      }
+      },
+        deserter(){
+          console.log('deserter')
+          this.socket.emit('deserter', this.player)
+            this.state= 'initGame';
+          this.player= new Player();
+        }
     }
   }
   </script>

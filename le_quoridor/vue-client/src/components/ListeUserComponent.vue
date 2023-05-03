@@ -23,7 +23,7 @@
         players : []
       }
     },
-    created() {
+    mounted() {
       // Envoyer une demande de mise à jour de la liste des rooms au serveur
       if(this.roomID){
 
@@ -32,7 +32,8 @@
         this.socket.on('list users', (player) => {
           // Mettre à jour les données des rooms
           this.players = player;
- 
+
+
         });
       }
       

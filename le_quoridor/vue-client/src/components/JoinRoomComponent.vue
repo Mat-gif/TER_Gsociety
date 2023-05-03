@@ -15,9 +15,8 @@
         <!-- -->
 
         <!-- le boutton pour fermer le modale-->
-        <button v-on:click="toggleModale"
-                class="btn-closei btn btn-danger">X</button>
-
+        <button v-on:click="toggleModale" class="btn-closei btn btn-danger" v-if="state!== 'waitPlayers'">X</button>
+        <button  v-on:click="toggleModale"  @click="deserter" class="btn-closei btn btn-danger" v-if="state=== 'waitPlayers'" >Quitter</button>
 <!--        <div >-->
 <!--            <ul>-->
 <!--                <li>-->
@@ -37,6 +36,7 @@
         <button @click="validateName" class="pointer btn btn-success" >Rejoindre un salon</button>
     </div>
         <ListeRoomComponent  v-if="state=== 'setRoom'"  :socket="socket" :player="player" @event-roomId="setRoomId"/>
+
         <ListeUserComponent v-if="state=== 'waitPlayers'" :roomID="player.roomId" :socket="socket" />
 
 
@@ -71,12 +71,18 @@
       },
         setRoomId(payload) {
             this.player.roomId = payload.roomId
-          this.socket.emit('playerData', this.player);
+            this.socket.emit('playerData', this.player);
             this.state=payload.state;
 
             this.$emit('event-roomId', { roomId:  payload.roomId, player: this.player});
             console.log("[Join] : "+payload.roomId);
             console.log("[Join] : "+this.player.socketId);
+        },
+        deserter(){
+            console.log('deserter')
+            this.socket.emit('deserter', this.player)
+            this.state= 'setUsername'
+            this.player= new Player();
         }
     }
   }

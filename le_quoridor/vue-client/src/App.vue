@@ -7,7 +7,7 @@
 <div class="one">
     <!--lire la valuer de revele et utiliser la méthode toggleModale-->
     <NewRoomComponent v-if="!playGame" :socket="socket" @event-roomId="setRoomId" v-bind:revele="reveleCreer" v-bind:toggleModale="toggleCreer"/>
-    <JoinRoomComponent v-if="!playGame" :socket="socket" @event-roomId="setRoomId" v-bind:revele="reveleRejoindre" v-bind:toggleModale="toggleRejoindre"/>
+    <JoinRoomComponent v-if="!playGame" :socket="socket" @event-roomId="setRoomId" v-bind:revele="reveleRejoindre" v-bind:toggleModale="toggleRejoindre" />
 <!--    <ListeRoomComponent  v-if="!playGame" :socket="socket"/>-->
 <!--    <ListeUserComponent v-if="roomId && !playGame" :roomID="roomId" :socket="socket"/>-->
     <regles v-bind:revele="reveleRegles" v-bind:toggleModale="toggleRegles"></regles>
@@ -141,6 +141,11 @@ export default {
             console.log("payload "+ this.myTurn)
         },// créer la methode toggleModale
         toggleCreer:function(){
+
+
+
+
+
             this.reveleCreer = !this.reveleCreer
         },
         toggleRejoindre:function(){
