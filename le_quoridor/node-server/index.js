@@ -4,7 +4,7 @@
 
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 3000;
 const http = require('http');
 const server = http.createServer(app);
 const io = require("socket.io")(server);
@@ -13,9 +13,10 @@ const ConnectionPlayer = require('./models/ConnectionPlayer');
 require('./models/Tour');
 // Utiliser des fichiers statiques à partir du répertoire 'public'
 
-app.use(express.static('./views'));
 // app.use(express.static('../vue-client/dist'));
-//
+app.use(express.static('./views'));
+
+
 // Initialisation de la liste de salon
 const rooms = new ListeRoom();
 
@@ -89,7 +90,11 @@ io.on('connection', (socket) => {
         socket.on('coord',(roomID,coord) => {
             const room = rooms.findRoom(roomID);
             // console.log(coord)
+<<<<<<< HEAD
             room.updateCoordPion(socket.io,coord)
+=======
+            room.updateCoordPion(socket.id,coord)
+>>>>>>> origin/deppion
             let sendCoord = {id:socket.id, coord:coord}
 
             // console.log(sendCoord)
