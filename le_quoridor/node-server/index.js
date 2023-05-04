@@ -13,9 +13,9 @@ const ConnectionPlayer = require('./models/ConnectionPlayer');
 require('./models/Tour');
 // Utiliser des fichiers statiques à partir du répertoire 'public'
 
-// app.use(express.static('../views'));
-app.use(express.static('../vue-client/dist'));
-
+app.use(express.static('../views'));
+// app.use(express.static('../vue-client/dist'));
+//
 // Initialisation de la liste de salon
 const rooms = new ListeRoom();
 
@@ -64,35 +64,24 @@ io.on('connection', (socket) => {
     socket.on('game',(roomID) => {
         console.log(`[game] ${socket.id}`);
         const room = rooms.findRoom(roomID);
-        if(socket.id === room.tour.currentPlayer.currentPlayer.socketId) {
-            room.startTurn(room.tour.currentPlayer.currentPlayer.socketId) // o
-            io.to(room.tour.currentPlayer.currentPlayer.socketId).emit('my turn', true);
-            io.to(room.tour.currentPlayer.currentPlayer.socketId).emit('cells checked', room.arbitre.validCells);
-        }
+        if(socket.id === room.tour.currentPlayer.currentPlayer.socketId) io.to(room.tour.currentPlayer.currentPlayer.socketId).emit('my turn', true);
 
         socket.on('nextplayer',(roomID) => {
 
             console.log(`[nextplayer] ${socket.id}`);
             const room = rooms.findRoom(roomID);
             room.tour.changerJoueurActif()
-
-            room.startTurn(room.tour.currentPlayer.currentPlayer.socketId) // o
-
             io.to(room.tour.currentPlayer.currentPlayer.socketId).emit('my turn', true);
-
-            io.to(room.tour.currentPlayer.currentPlayer.socketId).emit('cells checked', room.arbitre.validCells);
-
             io.to(room.id).except(room.tour.currentPlayer.currentPlayer.socketId).emit('my turn', false);
         })
 
 
         socket.on('coord',(roomID,coord) => {
             const room = rooms.findRoom(roomID);
-            // console.log(coord)
-            room.updateCoordPion(socket.id,coord)
+            console.log(coord)
             let sendCoord = {id:socket.id, coord:coord}
 
-            // console.log(sendCoord)
+            console.log(sendCoord)
             io.to(room.id).emit('change', sendCoord);
 
             // io.to(room.id).except(socket.id).emit('change', sendCoord);
