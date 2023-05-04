@@ -8,7 +8,7 @@
       <ul id="room-list">
         <li v-for="room in rooms" :key="room.id">
             <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-                <div class="card-header"><button @click="joinRoom(room.id)" class="pointer btn btn-success" >Join</button></div>
+                <div class="card-header"><button @click="joinRoom(room.id,room.info)" class="pointer btn btn-success" >Join</button></div>
                 <div class="card-body">
                     <h5 class="card-title">{{room.id}}</h5>
                     <p class="card-text">{{room.info}}</p>
@@ -29,7 +29,8 @@
     data() {
       return {
         rooms : [],
-          roomId : null
+          roomId : null,
+          game:null
       }
     },
     created() {
@@ -43,11 +44,12 @@
 
     },
       methods:{
-          joinRoom(id) {
+          joinRoom(id,info) {
               this.roomId=id;
+              this.game=info ;
               // Permet d'émettre au composant "parent" les information concernant le salon
               console.log("[List] : "+this.roomId);
-              this.$emit('event-roomId', { roomId:  this.roomId , state: "waitPlayers"});
+              this.$emit('event-roomId', { roomId:  this.roomId , state: "waitPlayers", game: this.game});
 
           }
       }

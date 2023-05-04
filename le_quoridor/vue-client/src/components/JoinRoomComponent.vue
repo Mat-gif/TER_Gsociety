@@ -55,7 +55,8 @@
     data() {
       return {
         player: new Player(),
-        state: "setUsername"
+        state: "setUsername",
+          game:null
       }
     },
       components: {
@@ -73,8 +74,10 @@
             this.player.roomId = payload.roomId
             this.socket.emit('playerData', this.player);
             this.state=payload.state;
+            this.game=payload.game
 
-            this.$emit('event-roomId', { roomId:  payload.roomId, player: this.player});
+
+            this.$emit('event-roomId', { roomId:  payload.roomId, player: this.player, game : this.game});
             console.log("[Join] : "+payload.roomId);
             console.log("[Join] : "+this.player.socketId);
         },
