@@ -2,39 +2,32 @@
 <!--TODO : gerer les deplacements des pions -->
 
 <template>
-  <!--    <h1>le quori(pompi)dor</h1>-->
     <div class="template">
-<div class="one">
-    <!--lire la valuer de revele et utiliser la méthode toggleModale-->
-    <NewRoomComponent v-if="!playGame" :socket="socket" @event-roomId="setRoomId" v-bind:revele="reveleCreer" v-bind:toggleModale="toggleCreer"/>
-    <JoinRoomComponent v-if="!playGame" :socket="socket" @event-roomId="setRoomId" v-bind:revele="reveleRejoindre" v-bind:toggleModale="toggleRejoindre" />
-<!--    <ListeRoomComponent  v-if="!playGame" :socket="socket"/>-->
-<!--    <ListeUserComponent v-if="roomId && !playGame" :roomID="roomId" :socket="socket"/>-->
-    <regles v-bind:revele="reveleRegles" v-bind:toggleModale="toggleRegles"></regles>
-    <infoBarriere v-if="playGame" :username="player.username" :nb_-walls="5"></infoBarriere>
-    <!--  ====================================================================================
-    =====================================================================================-->
-    <!--créer un boutton ouvrir la modale, click le boutton en utilisant la méthode toggleModale-->
-    <div  v-if="playGame && myTurn" class="alert alert-success">
-        <strong>Your turn man!</strong>
-    </div>
-
-    <div  v-if="playGame && !myTurn" class="alert alert-warning">
-        <strong>Wait bro is not your turn!</strong>
-    </div>
-
-  <div class="boutons">
-    <div  v-if="!playGame" v-on:click="toggleCreer" class="btn btn-success">Créer une partie</div>
-    <div  v-if="!playGame" v-on:click="toggleRejoindre" class="btn btn-success">Rejoindre une partie</div>
-  </div>
-    <div class="game_rule">
-    <div v-on:click="toggleRegles" class="btn btn-success">Regles</div>
-    </div>
-    <PlateauComponent :socket="socket" :roomId="roomId" v-if="playGame" @event-turn="changeturn" :myTurn="myTurn"  :color="color" :nbSquares="nbSquares" :nbBarriere="nbBarriere" :myInitGame="myInitGame" :otherInitGame="otherInitGame" :newPosition="newPosition"/>
-</div>
-    <div class="two">
-        <chat :socket="socket" v-if="playGame" :username="player.username" :room-id="roomId"></chat>
-    </div>
+        {{myTurn}}
+        <div class="one">
+            <NewRoomComponent v-if="!playGame" :socket="socket" @event-roomId="setRoomId" v-bind:revele="reveleCreer" v-bind:toggleModale="toggleCreer"/>
+            <JoinRoomComponent v-if="!playGame" :socket="socket" @event-roomId="setRoomId" v-bind:revele="reveleRejoindre" v-bind:toggleModale="toggleRejoindre" />
+            <regles v-bind:revele="reveleRegles" v-bind:toggleModale="toggleRegles"></regles>
+            <infoBarriere v-if="playGame" :username="player.username" :nb_-walls="game.nb_Walls" :new_nb_-walls="game.new_nb_Walls"></infoBarriere>
+        <!--    alerte tours-->
+            <div  v-if="playGame && myTurn" class="alert alert-success">
+                <strong>Your turn man!</strong>
+            </div>
+            <div  v-if="playGame && !myTurn" class="alert alert-warning">
+                <strong>Wait bro is not your turn!</strong>
+            </div>
+            <div class="boutons">
+                <div  v-if="!playGame" v-on:click="toggleCreer" class="btn btn-success">Créer une partie</div>
+                <div  v-if="!playGame" v-on:click="toggleRejoindre" class="btn btn-success">Rejoindre une partie</div>
+            </div>
+            <div class="game_rule">
+                <div v-on:click="toggleRegles" class="btn btn-success">Regles</div>
+            </div>
+            <PlateauComponent :socket="socket" :roomId="roomId" v-if="playGame" @event-turn="changeturn" :myTurn="myTurn"  :color="color" :nbSquares="nbSquares" :nbBarriere="nbBarriere" :myInitGame="myInitGame" :otherInitGame="otherInitGame" :newPosition="newPosition"/>
+        </div>
+        <div class="two">
+            <chat :socket="socket" v-if="playGame" :username="player.username" :room-id="roomId"></chat>
+        </div>
     </div>
 </template>
 
@@ -68,6 +61,7 @@ export default {
             myTurn:false,
             start:false,
             newPosition:null,
+            game:null,
 
             // donner la valeur de revele
             reveleCreer:false,
@@ -132,6 +126,7 @@ export default {
             console.log("[App.vue] : "+this.player)
             this.roomId = payload.roomId
             console.log("[App.vue] : "+this.roomId)
+            this.game = payload.game;
         },
         changeturn(payload){
 

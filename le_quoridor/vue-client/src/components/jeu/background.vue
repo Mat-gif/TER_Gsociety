@@ -25,7 +25,7 @@ export default {
             y: 0,
             width: this.tailleGrille*(this.width/this.tailleGrille)-(this.width/this.tailleGrille)/6,
             height: this.tailleGrille*(this.height/this.tailleGrille)-(this.height/this.tailleGrille)/6,
-            fill: "#070A52",
+            fill: "#0B0B0B",
           });
           layerBackground.add(background);
           layerBackground.draw();

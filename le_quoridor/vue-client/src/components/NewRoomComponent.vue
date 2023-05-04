@@ -88,15 +88,17 @@
       },
     methods: {
       createRoom() {
+          this.game.new_nb_Walls= this.game.nb_Walls;
         // J'initialise les paramètres du joueur Hote de la partie
         this.player.isHost(this.socket.id)
         // J'envoie au serveur le joueur pour l'ajouter au salon
         this.socket.emit('playerData', this.player, this.game );
+
         // Permet d'émettre au composant "parent" les information concernant le salon
         this.socket.on('room id', (roomId) => {
               this.player.roomId = roomId;
               this.state = 'wait';
-              this.$emit('event-roomId', {roomId: roomId, player: this.player});
+              this.$emit('event-roomId', {roomId: roomId, player: this.player, game : this.game});
             });
         console.log(this.player);
       },
