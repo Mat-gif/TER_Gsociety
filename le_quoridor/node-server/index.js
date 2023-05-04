@@ -72,7 +72,7 @@ io.on('connection', (socket) => {
 
         socket.on('nextplayer',(roomID) => {
 
-            console.log([nextplayer] ${socket.id});
+            // console.log([nextplayer] ${socket.id});
             const room = rooms.findRoom(roomID);
             room.tour.changerJoueurActif()
 
