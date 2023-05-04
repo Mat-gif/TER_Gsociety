@@ -77,9 +77,9 @@ export default {
               // console.log(cell);
                 cell.on('click', function (evt) {
 
-                    let test =false
-                    if(self.valid.find(c => c.x===evt.target.attrs.x1 && c.y===evt.target.attrs.y1)) test =true
-                    if (self.myTurn && test) { // si c'est mon tour
+                    // let test =false
+                    // if(self.valid.find(c => c.x===evt.target.attrs.x1 && c.y===evt.target.attrs.y1)) test =true
+                    if (self.myTurn ) { // si c'est mon tour
                           // if (prevRect) prevRect.fill('blue');
                           // evt.target.fill(mycolor);
                           // prevRect = evt.target;
