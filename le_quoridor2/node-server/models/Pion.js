@@ -6,8 +6,13 @@ class Coord {
 }
 
 class Barriere {
-    constructor(socket, coord1, coord2, name) {
-        this.socket = socket;
+    // constructor(socket, coord1, coord2, name) {
+    //     this.socket = socket;
+    //     this.coord1 = coord1;
+    //     this.coord2 = coord2;
+    //     this.name = name;
+    // }
+    constructor(coord1, coord2, name) {
         this.coord1 = coord1;
         this.coord2 = coord2;
         this.name = name;

@@ -26,7 +26,7 @@ class Room {
     startTurn(sockeId){
         this.arbitre = null
         this.arbitre = new Arbitre(this.pions, this.barrieres, this.info)
-        this.arbitre.checkCells(sockeId)
+        this.arbitre.checkMoves(sockeId)
     }
     addPlayer(player){
         console.log(player)
