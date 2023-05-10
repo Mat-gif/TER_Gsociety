@@ -35,7 +35,6 @@ class Arbitre {
 
     //test si cellules adjacentes valides pour déplacement et retourne liste cells valides après les test
     adjacentValidCells(cell) {
-        let i = 0
         let myCell = cell
         let checkingCells = this.findCells(myCell)
 
@@ -69,15 +68,13 @@ class Arbitre {
             // checkingCells.forEach((c, index) => {
             for (let indice = checkingCells.length - 1; indice >= 0; indice--) {
                 let c = checkingCells[indice];
-                console.log("Cell en checking :")
-                console.log(c)
+
 
                 if ((myCell.coord.y - c.y) === 0) {// horizontale
                     let wallV = this.walls["V"]
 
                     if ((myCell.coord.x - c.x) > 0) { // gauche
-                        i=i+1
-                        console.log("gauche")
+
                         // console.log("-----gauche")
                         // console.log(wallV.find(w => w.coord.x  === myCell.coord.x- 1 && w.coord.y === myCell.coord.y))
                         if (wallV.find(w => w.coord.x  === myCell.coord.x- 1 && w.coord.y === myCell.coord.y)) {// si une barriere est en travers de notre route , sur ma route oui
@@ -85,8 +82,7 @@ class Arbitre {
                             checkingCells.splice(indice, 1); // On enlève la barrière
                         }
                     } else { // droite
-                        i=i+2
-                        console.log("droite")
+
 
                         // console.log("-----droite")
                         if (wallV.find(w => w.coord.x === myCell.coord.x && w.coord.y === myCell.coord.y)) {// si une barriere est en travers de notre route , sur ma route oui
@@ -102,8 +98,7 @@ class Arbitre {
                     // console.log(myCell)
                     // console.log(c)
                     if ((myCell.coord.y - c.y) > 0) { // haut
-                        i=+4
-                        console.log("haut")
+
 
                         // console.log("haut")
                         // console.log(myCell)
@@ -112,8 +107,7 @@ class Arbitre {
                             checkingCells.splice(indice, 1); // On enlève la barrière
                         }
                     } else { // bas
-                        i=i+8
-                        console.log("bas")
+
 
                         // console.log("bas")
                         // console.log(myCell)
@@ -126,8 +120,6 @@ class Arbitre {
             }
 
         }
-        console.log(i)
-        console.log(checkingCells)
         return checkingCells;
     }
 

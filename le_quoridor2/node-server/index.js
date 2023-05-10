@@ -78,7 +78,8 @@ io.on('connection', (socket) => {
             // console.log(bar2)
             const room = rooms.findRoom(roomID);
             let res = room.arbitre.testValidBar(bar1,bar2)
-
+            console.log("VALID BAR ??")
+            console.log(res)
             if(res){
                 room.addBarriere(socket.id,bar1,bar2)
             }
