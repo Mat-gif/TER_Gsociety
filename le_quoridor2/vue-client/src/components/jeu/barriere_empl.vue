@@ -18,6 +18,26 @@ export default {
       roomId :Number,
       socket : Object
   },
+    mounted() {
+
+        this.socket.on("updated bar", (bar) => {
+            console.log(bar)
+            this.layerBarEmpl.getChildren().forEach(b =>{
+                console.log(b)
+                if(b.attrs.name===bar.name && b.attrs.x1===bar.x1 && b.attrs.y1===bar.y1){
+                    b.fill("#EDED5E")
+                    if(b.attrs.name==="V"){
+                        this.layerBarEmpl.find(node => node.attrs.x1 === b.attrs.x1 && node.attrs.y1 === b.attrs.y1 + 1 && node.attrs.name === "V")[0].fill("#EDED5E")
+                    }
+                    else{
+                        this.layerBarEmpl.find(node => node.attrs.x1 === b.attrs.x1 + 1 && node.attrs.y1 === b.attrs.y1 && node.attrs.name === "H")[0].fill("#EDED5E")
+                    }
+
+                }
+            })
+                this.layerBarEmpl.draw()
+        })
+    },
   watch: {
     layerBarEmpl: {
       immediate: true,

@@ -3,12 +3,11 @@
 
 <template>
     <div class="template">
-        {{myTurn}}
         <div class="one">
             <NewRoomComponent v-if="!playGame" :socket="socket" @event-roomId="setRoomId" v-bind:revele="reveleCreer" v-bind:toggleModale="toggleCreer"/>
             <JoinRoomComponent v-if="!playGame" :socket="socket" @event-roomId="setRoomId" v-bind:revele="reveleRejoindre" v-bind:toggleModale="toggleRejoindre" />
             <regles v-bind:revele="reveleRegles" v-bind:toggleModale="toggleRegles"></regles>
-            <infoBarriere v-if="playGame" :username="player.username" :nb_-walls="game.nb_Walls" :new_nb_-walls="game.new_nb_Walls"></infoBarriere>
+            <infoBarriere v-if="playGame" :username="player.username" :nb_-walls="game.nb_Walls" :new_nb_-walls="player.barLeft"></infoBarriere>
         <!--    alerte tours-->
             <div  v-if="playGame && myTurn" class="alert alert-success">
                 <strong>Your turn man!</strong>

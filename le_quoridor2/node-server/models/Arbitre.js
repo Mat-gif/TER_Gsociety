@@ -64,7 +64,7 @@ class Arbitre {
         //Si aucune barrière verticale ni horizontale
         if (this.walls["H"].length ===0 && this.walls["V"]===0) this.validCells = checkingCells; //////////////////
         else {
-            console.log(checkingCells,checkingCells.length)
+            // console.log(checkingCells,checkingCells.length)
             // checkingCells.forEach((c, index) => {
             for (let indice = checkingCells.length - 1; indice >= 0; indice--) {
                 let c = checkingCells[indice];
@@ -131,7 +131,7 @@ class Arbitre {
         murs[bar2.name].push(new Barriere(new Coord(bar2.x1, bar2.y1, bar2.name)));
 
 
-        console.log(this.walls)
+        // console.log(this.walls)
 
 
         // const murs = Object.assign({}, this.walls);
@@ -148,7 +148,7 @@ class Arbitre {
             // console.log(this.pions[key])
             // const pion = this.pions[key];
             const pion = new Pion(this.pions[key].testVict,this.pions[key].score,this.pions[key].socket,new Coord(this.pions[key].coord.x,this.pions[key].coord.y))
-            console.log(pion)
+            // console.log(pion)
             let pionBlocked = true
             let cellsATester = this.adjacentValidCells(pion)
             let cellsTestee =[]

@@ -15,8 +15,8 @@ class Room {
         this.pions= {}
         this.barrieres= {"V":[],"H":[]}
 
-        this.barrieres["V"].push(new Barriere(new Coord(3, 0, "V")));
-        this.barrieres["H"].push(new Barriere(new Coord(4, 0, "H")));
+        // this.barrieres["V"].push(new Barriere(new Coord(3, 0, "V")));
+        // this.barrieres["H"].push(new Barriere(new Coord(4, 0, "H")));
         // this.barrieres["V"].push(new Barriere(new Coord(3, 7, "V")));
         // // this.walls["V"].push(new Barriere(new Coord(3, 8, "V")));
         // this.barrieres["V"].push(new Barriere(new Coord(4, 7, "V")));
@@ -73,9 +73,24 @@ class Room {
         console.log(`[room] ${ player.username } ajouté a la room : ${ this.id }`);
     }
 
+    enoughtBar(socketId){
+        let enough = false
+        this.players.forEach(p => {
+            if(p.socketId===socketId){
+                console.log(p.barLeft)
+                if(p.barLeft > 0) { enough = true}
+            }
+        })
+        return enough
+    }
     addBarriere(socketId,bar1,bar2){
         this.barrieres[bar1.name].push(new Barriere(new Coord(bar1.x1, bar1.y1),socketId));
         this.barrieres[bar2.name].push(new Barriere(new Coord(bar2.x1, bar2.y1),socketId));
+        this.players.forEach((p,index) => {
+            if(p.socketId===socketId){
+                this.players[index].barLeft = this.players[index].barLeft - 1
+            }
+        })
     }
     sizePlayers(){return this.players.length}
 

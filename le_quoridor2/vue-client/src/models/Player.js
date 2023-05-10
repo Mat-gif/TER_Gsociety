@@ -10,7 +10,8 @@ export class Player {
             turn: false,
             color: null,
             positionStart: null,
-            win: false
+            win: false,
+            barLeft: null
         });
         Object.assign(this, data);
     }

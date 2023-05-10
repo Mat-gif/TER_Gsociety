@@ -89,6 +89,7 @@
     methods: {
       createRoom() {
           this.game.new_nb_Walls= this.game.nb_Walls;
+          this.player.barLeft= this.game.nb_Walls;
         // J'initialise les paramètres du joueur Hote de la partie
         this.player.isHost(this.socket.id)
         // J'envoie au serveur le joueur pour l'ajouter au salon

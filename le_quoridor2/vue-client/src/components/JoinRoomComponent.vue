@@ -71,11 +71,11 @@
           this.state="setRoom";
       },
         setRoomId(payload) {
+            this.player.barLeft = payload.game.nb_Walls
             this.player.roomId = payload.roomId
             this.socket.emit('playerData', this.player);
             this.state=payload.state;
             this.game=payload.game
-
 
             this.$emit('event-roomId', { roomId:  payload.roomId, player: this.player, game : this.game});
             console.log("[Join] : "+payload.roomId);
