@@ -81,7 +81,7 @@ export default {
               owner: this.listeJoueur[num][0],
               x: pionPos[num][0],
               y: pionPos[num][1],
-              radius: 0.5*((this.width/this.tailleGrille)-(this.width/this.tailleGrille)/6),
+              radius: 0.4*((this.width/this.tailleGrille)-(this.width/this.tailleGrille)/6),
               fill: this.listeJoueur[num][1],
             });
             layerPion.add(pion);

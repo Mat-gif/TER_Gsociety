@@ -13,23 +13,49 @@ class Room {
         this.listePlayerLinked = new ListePlayerLinked(game);
         this.tour = new Tour();
         this.pions= {}
-        this.barrieres= []
+        this.barrieres= {"V":[],"H":[]}
 
+        // this.barrieres["V"].push(new Barriere(new Coord(3, 7, "V")));
+        // // this.walls["V"].push(new Barriere(new Coord(3, 8, "V")));
+        // this.barrieres["V"].push(new Barriere(new Coord(4, 7, "V")));
+        // this.barrieres["V"].push(new Barriere(new Coord(4, 8, "V")));
+        // this.barrieres["H"].push(new Barriere(new Coord(4, 6, "H")));
+        // this.barrieres["H"].push(new Barriere(new Coord(3, 6, "H")));
+        // this.barrieres["H"].push(new Barriere(new Coord(4, 5, "H")));
     }
 
     updateCoordPion(socketId,coord){
-        console.log(coord)
-        console.log(this.pions[socketId])
+        // console.log(coord)
+        // console.log(this.pions[socketId])
+
+        if(this.pions[socketId].testVict==="y-"){
+            if(this.pions[socketId].coord.y - coord.y < 0) this.pions[socketId].score = this.pions[socketId].score-1;
+            else if(this.pions[socketId].coord.y - coord.y > 0) this.pions[socketId].score = this.pions[socketId].score+1;
+        }else if(this.pions[socketId].testVict==="y+"){
+            if(this.pions[socketId].coord.y - coord.y < 0) this.pions[socketId].score = this.pions[socketId].score+1;
+            else if(this.pions[socketId].coord.y - coord.y > 0) this.pions[socketId].score = this.pions[socketId].score-1;
+        }else if(this.pions[socketId].testVict==="x-"){
+            if(this.pions[socketId].coord.x - coord.x < 0) this.pions[socketId].score = this.pions[socketId].score-1;
+            else if(this.pions[socketId].coord.x - coord.x > 0) this.pions[socketId].score = this.pions[socketId].score+1;
+        }else if(this.pions[socketId].testVict==="x+") {
+            if (this.pions[socketId].coord.x - coord.x < 0) this.pions[socketId].score = this.pions[socketId].score + 1;
+            else if (this.pions[socketId].coord.x - coord.x > 0) this.pions[socketId].score = this.pions[socketId].score - 1;
+        }
+
         this.pions[socketId].coord.x = coord.x
         this.pions[socketId].coord.y = coord.y
+
+        console.log(`[Score Victoire] ${socketId} : ${this.pions[socketId].score}`)
+        if(this.pions[socketId].score===0) return true;
+        return false
     }
-    startTurn(sockeId){
+    startTurn(socketId){
         this.arbitre = null
         this.arbitre = new Arbitre(this.pions, this.barrieres, this.info)
-        this.arbitre.checkMoves(sockeId)
+        this.arbitre.checkMoves(socketId)
     }
     addPlayer(player){
-        console.log(player)
+        // console.log(player)
         this.players.push(player)
 
         this.positionPionStart(this.info ,this.sizePlayers(), player)
@@ -39,12 +65,16 @@ class Room {
         if (this.sizePlayers() === this.info.nb_Players) {
             this.listePlayerLinked.addPlayerLinked(this.players)
             this.tour.initTour(this.listePlayerLinked)
-            console.log(this.listePlayerLinked.listePlayerLinked)
+            // console.log(this.listePlayerLinked.listePlayerLinked)
         }
 
         console.log(`[room] ${ player.username } ajouté a la room : ${ this.id }`);
     }
 
+    addBarriere(socketId,bar1,bar2){
+        this.barrieres[bar1.name].push(new Barriere(new Coord(bar1.x1, bar1.y1),socketId));
+        this.barrieres[bar2.name].push(new Barriere(new Coord(bar2.x1, bar2.y1),socketId));
+    }
     sizePlayers(){return this.players.length}
 
     isEmpty(){return this.sizePlayers()===0}
@@ -59,19 +89,19 @@ class Room {
         switch (num) {
             case 1:
                 player.positionStart = {x: Math.floor(nb_Squares/2), y:0}
-                this.pions[player.socketId] = new Pion(player.socketId, new Coord(player.positionStart.x,player.positionStart.y))
+                this.pions[player.socketId] = new Pion("y-",nb_Squares-1,player.socketId, new Coord(player.positionStart.x,player.positionStart.y))
                 break;
             case 2:
                 player.positionStart = {x: Math.floor(nb_Squares/2), y:nb_Squares-1}
-                this.pions[player.socketId] = new Pion(player.socketId, new Coord(player.positionStart.x,player.positionStart.y))
+                this.pions[player.socketId] = new Pion("y+",nb_Squares-1,player.socketId, new Coord(player.positionStart.x,player.positionStart.y))
                 break;
             case 3:
                 player.positionStart = {x: 0, y:Math.floor(nb_Squares/2)}
-                this.pions[player.socketId] = new Pion(player.socketId, new Coord(player.positionStart.x,player.positionStart.y))
+                this.pions[player.socketId] = new Pion("x-",nb_Squares-1,player.socketId, new Coord(player.positionStart.x,player.positionStart.y))
                 break;
             case 4:
                 player.positionStart = {x: nb_Squares-1, y:Math.floor(nb_Squares/2)}
-                this.pions[player.socketId] = new Pion(player.socketId, new Coord(player.positionStart.x,player.positionStart.y))
+                this.pions[player.socketId] = new Pion("x+",nb_Squares-1,player.socketId, new Coord(player.positionStart.x,player.positionStart.y))
                 break;
         }
     }

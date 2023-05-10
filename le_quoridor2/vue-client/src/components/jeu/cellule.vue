@@ -22,7 +22,7 @@ export default {
       }
     },
     mounted() {
-        this.socket.emit('nextplayer',this.roomId);
+        // this.socket.emit('nextplayer',this.roomId);
 
         this.socket.on("my turn", (turn) => {
             this.myTurn = turn

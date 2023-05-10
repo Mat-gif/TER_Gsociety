@@ -3,7 +3,7 @@
       <div ref="plateau">
           <Background :width="width" :height="height" :layerBackground="layerBackground" :taille-grille="nbSquares"/>
           <Rect :roomId="roomId" :socket="socket" :width="width" :height="height" :layerCell="layerCell" :taille-grille="nbSquares"/>
-          <BarrierEmpl :width="width" :height="height" :layerBarEmpl="layerBarEmpl" :taille-grille="nbSquares"/>
+          <BarrierEmpl :roomId="roomId" :socket="socket" :width="width" :height="height" :layerBarEmpl="layerBarEmpl" :taille-grille="nbSquares"/>
 <!--          <BarrierObj :width="width" :height="height" :layerBar="layerBar" :listeJoueur="listeJoueur" :nbBarriere="nbBarriere" :taille-grille="nbSquares"/>-->
           <Pion :newPosition="newPosition" :myInitGame="myInitGame" :otherInitGame="otherInitGame" :width="width" :height="height" :layerPion="layerPion" :listeJoueur="listeJoueur" :taille-grille="nbSquares"/>
       </div>

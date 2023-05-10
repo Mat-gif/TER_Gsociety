@@ -12,15 +12,17 @@ class Barriere {
     //     this.coord2 = coord2;
     //     this.name = name;
     // }
-    constructor(coord1, coord2, name) {
-        this.coord1 = coord1;
-        this.coord2 = coord2;
-        this.name = name;
+    constructor(coord, socketId) {
+        this.coord = coord;
+        // this.coord2 = coord2;
+        this.socketId = socketId;
     }
 }
 
 class Pion {
-    constructor(socket, coord) {
+    constructor(testVict,score, socket, coord) {
+        this.testVict = testVict;
+        this.score =score;
         this.socket = socket;
         this.coord = coord;
     }

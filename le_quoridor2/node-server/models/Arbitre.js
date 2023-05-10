@@ -1,46 +1,49 @@
 //TODO : test deplacement si on bloque un pion adverse pour 1 tour (cas du bout du tunnel)
 
-const {Coord, Barriere} = require("./Pion");
+const {Coord, Barriere, Pion} = require("./Pion");
 
 class Arbitre {
 
     validCells = []
-    validWalls = []
 
-    constructor(pions, walls,param) {
+    constructor(pions, walls, param) {
         this.param = param
         /*pions = {socketId:Pion(socket,coord(x,y)),...}*/
-        this.pions=pions
+        this.pions = pions
         /*walls = {type:[],...}*/
-        this.walls=walls
+        this.walls = walls
     }
 
-    checkMoves(socketId){
+    checkMoves(socketId) {
         let cellPion = this.pions[socketId]
         this.validCells = this.adjacentValidCells(cellPion)
         // this.validWalls = this.validWallsPos()
-        console.log(this.validCells)
+        // console.log(this.validCells)
     }
 
     //recup les cells en +-1 de la cell ou se trouve le pion du joueur à qui c'est le tour
-    findCells(myCell){
+    findCells(myCell) {
         return [new Coord(myCell.coord.x - 1, myCell.coord.y),
             new Coord(myCell.coord.x, myCell.coord.y - 1),
             new Coord(myCell.coord.x + 1, myCell.coord.y),
             new Coord(myCell.coord.x, myCell.coord.y + 1)];
     }
 
-    //test si cellules adjacentes valides pour déplacement et retourne liste cells valides après les test
-    adjacentValidCells(cell){
-        let myCell = cell
-        let checkingCells =this.findCells(myCell)
 
-        console.log(checkingCells)
+
+
+
+    //test si cellules adjacentes valides pour déplacement et retourne liste cells valides après les test
+    adjacentValidCells(cell) {
+        let myCell = cell
+        let checkingCells = this.findCells(myCell)
+
+        // console.log(checkingCells)
 
         //on retire les coords des cells qui ne sont pas dans le plateau
         checkingCells = checkingCells.filter(c => c.x > -1 && c.y > -1 && c.x < this.param.nb_Squares && c.y < this.param.nb_Squares)
 
-        console.log(checkingCells)
+        // console.log(checkingCells)
 
         //on test pour chaque pions s'il est sur une cell possible
         // this.pions.forEach(p => checkingCells = checkingCells.filter(c => c.x !== p.coord.x && c.y !==p.coord.y))
@@ -48,96 +51,186 @@ class Arbitre {
         for (const key of Object.keys(this.pions)) {
             const pion = this.pions[key];
             // Faites quelque chose avec chaque pion
-            checkingCells = checkingCells.filter(c => c.x !== pion.coord.x || c.y !==pion.coord.y)
+            checkingCells = checkingCells.filter(c => c.x !== pion.coord.x || c.y !== pion.coord.y)
 
         }
-        console.log(checkingCells)
-        console.log(this.walls)
+        // console.log(checkingCells)
+        // console.log(this.walls)
         //on test si barriere entre cell actuelle et cells possibles
-        if (!this.walls.length) this.validCells = checkingCells; //////////////////
-        else{
-            checkingCells.forEach((c,index) => {
 
-                if((myCell.coord.y-c.y) === 0 ){// horizontale
-                    let wallH = this.walls["H"]
-                    if((myCell.coord.x-c.x) < 0 ){ // gauche
-                        if(wallH.find(w => w.coord.x-1 === myCell.x && w.coord.y === myCell.y)){// si une barriere est en travers de notre route , sur ma route oui
+
+        // console.log(this.walls)
+
+        if (this.walls["H"].length ===0 && this.walls["V"]===0) this.validCells = checkingCells; //////////////////
+        else {
+            checkingCells.forEach((c, index) => {
+                // console.log("-----1")
+                if ((myCell.coord.y - c.y) === 0) {// horizontale
+                    // console.log("-----2")
+                    let wallV = this.walls["V"]
+                    // console.log(wallV)
+
+                    if ((myCell.coord.x - c.x) > 0) { // gauche
+                        // console.log("-----gauche")
+                        // console.log(wallV.find(w => w.coord.x  === myCell.coord.x- 1 && w.coord.y === myCell.coord.y))
+                        if (wallV.find(w => w.coord.x  === myCell.coord.x- 1 && w.coord.y === myCell.coord.y)) {// si une barriere est en travers de notre route , sur ma route oui
+                            // console.log("-----gauche splice")
                             checkingCells.splice(index, 1); // On enlève la barrière
                         }
-                    }else { // droite
-                        if(wallH.find(w => w.coord.x === myCell.x && w.coord.y === myCell.y)){// si une barriere est en travers de notre route , sur ma route oui
+                    } else { // droite
+                        // console.log("-----droite")
+                        if (wallV.find(w => w.coord.x === myCell.coord.x && w.coord.y === myCell.coord.y)) {// si une barriere est en travers de notre route , sur ma route oui
+                            // console.log("-----droite splice")
                             checkingCells.splice(index, 1); // On enlève la barrière
                         }
                     }
-                }else{ // verticale
-                    let wallV = this.walls["V"]
-                    if((myCell.coord.y-c.y) < 0 ){ // haut
-                        if(wallV.find(w => w.coord.x === myCell.x && w.coord.y-1 === myCell.y)){// si une barriere est en travers de notre route , sur ma route oui
+                }
+                if ((myCell.coord.x - c.x) === 0) { // verticale
+                    let wallH = this.walls["H"]
+                    // console.log(myCell)
+                    // console.log(c)
+                    if ((myCell.coord.y - c.y) > 0) { // haut
+                        // console.log("haut")
+                        // console.log(myCell)
+                        // console.log(wallH.find(w => w.coord.x === myCell.coord.x && w.coord.y === myCell.coord.y- 1))
+                        if (wallH.find(w => w.coord.x ===  myCell.coord.x && w.coord.y ===  myCell.coord.y-1)) {// si une barriere est en travers de notre route , sur ma route oui
                             checkingCells.splice(index, 1); // On enlève la barrière
                         }
-                    }else { // bas
-                        if(wallV.find(w => w.coord.x === myCell.x && w.coord.y === myCell.y)){// si une barriere est en travers de notre route , sur ma route oui
+                    } else { // bas
+                        // console.log("bas")
+                        // console.log(myCell)
+                        // console.log(wallH.find(w => w.coord.x === myCell.coord.x && w.coord.y === myCell.coord.y))
+                        if (wallH.find(w => w.coord.x === myCell.coord.x && w.coord.y === myCell.coord.y)) {// si une barriere est en travers de notre route , sur ma route oui
                             checkingCells.splice(index, 1); // On enlève la barrière
                         }
                     }
                 }
             })
-            console.log(checkingCells)
+
         }
         return checkingCells;
     }
 
-    checkBar(){
-        let listePion = this.pions
-        let isValid = true
+    testValidBar(bar1, bar2) {
+        const murs = this.walls
+        // const murs = Object.assign({}, this.walls);
 
-        //On va verifier pour chaque pion qu il ne sera pas bloque par le placement de la barriere
-        for (let key in this.pions){  //ici key = socket
-            if(!this.testVictoire(p.coord)){
-                isValid = false
-            }
-        }
+        murs[bar1.name].push(new Barriere(new Coord(bar1.x1, bar1.y1, bar1.name)));
+        murs[bar2.name].push(new Barriere(new Coord(bar2.x1, bar2.y1, bar2.name)));
 
-        return isValid
 
-    }
+        console.log(this.walls)
 
-    testVictoire(p){
-        //liste qui contient les cells non testées atteignables par les pions
-        let cellsATester = []
 
-        //On récupère les positions à tester qui sont les cellules valides adjacentes à la cellule testée comme non-gagnante
-        cellsATester += this.adjacentValidCells(p) //on ajouter à cellsAtester les cellules valides adjacentes à tester
-        while(true) ///////
-        return true
-    }
-
-    validWallsPos() {
-        const typeWall = ["H","V"]
-
-        //Pour chaque type de mur (H ou V)
-        for (let i = 0; i < types.length; i++) {
-            const type = types[i];
-
-            //On copie la liste de mur existant et on ajoute un mur en i, j s'il n'y est pas déjà
-            for(let i = 0; i < this.game.nb_Squares-1; i++) {
-                for (let j = 0; j < this.game.nb_Squares - 1; j++) {
-                    let newWallsList = this.walls[type]
-                    if(true){ //TODO si mur pas déjà dans la liste
-                        //on ajoute le mur en fonction de H et V car les coord de la 2e partie du mur est différente
-                        if (type === "H") {
-                            newWallsList += new Barriere(new Coord(i, j), new Coord(i + 1, j), type);
-                        } else {
-                            newWallsList += new Barriere(new Coord(i, j), new Coord(i, j + 1), type);
-                        }
+        // const murs = Object.assign({}, this.walls);
+        // murs["V"] = [...murs["V"], new Barriere(new Coord(3, 7, "V"))];
+        // murs["V"] = [...murs["V"], new Barriere(new Coord(3, 8, "V"))];
+        // murs["H"] = [...murs["H"], new Barriere(new Coord(4, 6, "H"))];
+        // murs["H"] = [...murs["H"], new Barriere(new Coord(5, 6, "H"))];
+        //
+        // murs[bar1.name] = [...murs[bar1.name], new Barriere(new Coord(bar1.x1, bar1.y1, bar1.name))];
+        // murs[bar2.name] = [...murs[bar2.name], new Barriere(new Coord(bar2.x1, bar2.y1, bar2.name))];
+        // console.log(murs);
+        let placementOk = true
+        for (const key of Object.keys(this.pions)) {
+            // console.log(this.pions[key])
+            // const pion = this.pions[key];
+            const pion = new Pion(this.pions[key].testVict,this.pions[key].score,this.pions[key].socket,new Coord(this.pions[key].coord.x,this.pions[key].coord.y))
+            console.log(pion)
+            let pionBlocked = true
+            let cellsATester = this.adjacentValidCells(pion)
+            let cellsTestee =[]
+            // cellsATester.push(this.adjacentValidCells(pion))
+            while (cellsATester.length!==0){
+                if(pion.testVict==="y-"){
+                    // console.log(cellsATester[0].y)
+                    if(cellsATester[0].y===this.param.nb_Squares-1){
+                        pionBlocked = false
+                        cellsATester = []
+                        break
                     }
-                    //TODO ensuite, faire liste de mur de 'lautre type + liste de mur de ce type newWallList et TEST VALIDE
+                    else{
+                        // console.log("else y-")
+                        cellsTestee.push(cellsATester[0])
+                        // console.log(cellsATester[0])
+                        pion.coord.x = cellsATester[0].x
+                        pion.coord.y = cellsATester[0].y
+                        this.adjacentValidCells(pion).forEach(c=>{
+                            if(!cellsTestee.includes(c)){
+                                cellsATester.push(c)
+                            }
+                        })
+                        cellsATester.shift()
+                    }
                 }
+                else if(pion.testVict==="y+"){
+                    // console.log(cellsATester[0].y)
+                    if(cellsATester[0].y===0){
+                        pionBlocked = false
+                        cellsATester = []
+                        break
+                    }
+                    else{
+                        // console.log("else y+")
+                        cellsTestee.push(cellsATester[0])
+                        pion.coord.x = cellsATester[0].x
+                        pion.coord.y = cellsATester[0].y
+                        this.adjacentValidCells(pion).forEach(c=>{
+                            if(!cellsTestee.includes(c)){
+                                cellsATester.push(c)
+                            }
+                        })
+                        cellsATester.shift()
+                    }
+                }
+                else if(pion.testVict==="x-"){
+                    if(cellsATester[0].x===this.param.nb_Squares-1){
+                        pionBlocked = false
+                        cellsATester = []
+                        break
+                    }
+                    else{
+                        cellsTestee.push(cellsATester[0])
+                        pion.coord.x = cellsATester[0].x
+                        pion.coord.y = cellsATester[0].y
+                        this.adjacentValidCells(pion).forEach(c=>{
+                            if(!cellsTestee.includes(c)){
+                                cellsATester.push(c)
+                            }
+                        })
+                        cellsATester.shift()
+                    }
+                }
+                else if(pion.testVict==="x+"){
+                    if(cellsATester[0].x===0){
+                        pionBlocked = false
+                        cellsATester = []
+                        break
+                    }
+                    else{
+                        cellsTestee.push(cellsATester[0])
+                        pion.coord.x = cellsATester[0].x
+                        pion.coord.y = cellsATester[0].y
+                        this.adjacentValidCells(pion).forEach(c=>{
+                            if(!cellsTestee.includes(c)){
+                                cellsATester.push(c)
+                            }
+                        })
+                        cellsATester.shift()
+                    }
+                }
+
             }
-
-
+            if(pionBlocked){placementOk=false;break}
         }
-        return [];
+
+        const index1 = murs[bar1.name].indexOf(bar1);
+        murs[bar1.name].splice(index1, 1);
+        const index2 = murs[bar2.name].indexOf(bar2);
+        murs[bar2.name].splice(index2, 1);
+
+        // console.log(murs)
+        return placementOk
     }
 }
 

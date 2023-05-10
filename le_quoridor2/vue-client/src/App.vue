@@ -131,7 +131,7 @@ export default {
         changeturn(payload){
 
             this.myTurn=payload.myTurn
-            this.socket.emit('nextplayer',this.roomId);
+            // this.socket.emit('nextplayer',this.roomId);
             this.socket.emit('coord',this.roomId, payload.coord);
             console.log("payload "+ this.myTurn)
         },// créer la methode toggleModale
