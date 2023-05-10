@@ -15,6 +15,8 @@ class Room {
         this.pions= {}
         this.barrieres= {"V":[],"H":[]}
 
+        this.barrieres["V"].push(new Barriere(new Coord(3, 0, "V")));
+        this.barrieres["H"].push(new Barriere(new Coord(4, 0, "H")));
         // this.barrieres["V"].push(new Barriere(new Coord(3, 7, "V")));
         // // this.walls["V"].push(new Barriere(new Coord(3, 8, "V")));
         // this.barrieres["V"].push(new Barriere(new Coord(4, 7, "V")));

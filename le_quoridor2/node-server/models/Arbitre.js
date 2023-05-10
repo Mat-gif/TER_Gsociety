@@ -35,6 +35,7 @@ class Arbitre {
 
     //test si cellules adjacentes valides pour déplacement et retourne liste cells valides après les test
     adjacentValidCells(cell) {
+        let i = 0
         let myCell = cell
         let checkingCells = this.findCells(myCell)
 
@@ -61,53 +62,72 @@ class Arbitre {
 
         // console.log(this.walls)
 
+        //Si aucune barrière verticale ni horizontale
         if (this.walls["H"].length ===0 && this.walls["V"]===0) this.validCells = checkingCells; //////////////////
         else {
-            checkingCells.forEach((c, index) => {
-                // console.log("-----1")
+            console.log(checkingCells,checkingCells.length)
+            // checkingCells.forEach((c, index) => {
+            for (let indice = checkingCells.length - 1; indice >= 0; indice--) {
+                let c = checkingCells[indice];
+                console.log("Cell en checking :")
+                console.log(c)
+
                 if ((myCell.coord.y - c.y) === 0) {// horizontale
-                    // console.log("-----2")
                     let wallV = this.walls["V"]
-                    // console.log(wallV)
 
                     if ((myCell.coord.x - c.x) > 0) { // gauche
+                        i=i+1
+                        console.log("gauche")
                         // console.log("-----gauche")
                         // console.log(wallV.find(w => w.coord.x  === myCell.coord.x- 1 && w.coord.y === myCell.coord.y))
                         if (wallV.find(w => w.coord.x  === myCell.coord.x- 1 && w.coord.y === myCell.coord.y)) {// si une barriere est en travers de notre route , sur ma route oui
                             // console.log("-----gauche splice")
-                            checkingCells.splice(index, 1); // On enlève la barrière
+                            checkingCells.splice(indice, 1); // On enlève la barrière
                         }
                     } else { // droite
+                        i=i+2
+                        console.log("droite")
+
                         // console.log("-----droite")
                         if (wallV.find(w => w.coord.x === myCell.coord.x && w.coord.y === myCell.coord.y)) {// si une barriere est en travers de notre route , sur ma route oui
                             // console.log("-----droite splice")
-                            checkingCells.splice(index, 1); // On enlève la barrière
+                            checkingCells.splice(indice, 1); // On enlève la barrière
                         }
                     }
                 }
+
                 if ((myCell.coord.x - c.x) === 0) { // verticale
                     let wallH = this.walls["H"]
+
                     // console.log(myCell)
                     // console.log(c)
                     if ((myCell.coord.y - c.y) > 0) { // haut
+                        i=+4
+                        console.log("haut")
+
                         // console.log("haut")
                         // console.log(myCell)
                         // console.log(wallH.find(w => w.coord.x === myCell.coord.x && w.coord.y === myCell.coord.y- 1))
                         if (wallH.find(w => w.coord.x ===  myCell.coord.x && w.coord.y ===  myCell.coord.y-1)) {// si une barriere est en travers de notre route , sur ma route oui
-                            checkingCells.splice(index, 1); // On enlève la barrière
+                            checkingCells.splice(indice, 1); // On enlève la barrière
                         }
                     } else { // bas
+                        i=i+8
+                        console.log("bas")
+
                         // console.log("bas")
                         // console.log(myCell)
                         // console.log(wallH.find(w => w.coord.x === myCell.coord.x && w.coord.y === myCell.coord.y))
                         if (wallH.find(w => w.coord.x === myCell.coord.x && w.coord.y === myCell.coord.y)) {// si une barriere est en travers de notre route , sur ma route oui
-                            checkingCells.splice(index, 1); // On enlève la barrière
+                            checkingCells.splice(indice, 1); // On enlève la barrière
                         }
                     }
                 }
-            })
+            }
 
         }
+        console.log(i)
+        console.log(checkingCells)
         return checkingCells;
     }
 
