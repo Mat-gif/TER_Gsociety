@@ -70,6 +70,7 @@ io.on('connection', (socket) => {
         if(socket.id === room.tour.currentPlayer.currentPlayer.socketId) {
             room.startTurn(room.tour.currentPlayer.currentPlayer.socketId) // o
             io.to(room.tour.currentPlayer.currentPlayer.socketId).emit('my turn', true);
+            io.to(room.id).except(room.tour.currentPlayer.currentPlayer.socketId).emit('my turn', false)
             io.to(room.tour.currentPlayer.currentPlayer.socketId).emit('cells checked', room.arbitre.validCells);
         }
 
@@ -77,11 +78,12 @@ io.on('connection', (socket) => {
             const room = rooms.findRoom(roomID);
             console.log(room.enoughtBar(socket.id))
             if(room.enoughtBar(socket.id)) {
-                let res = room.arbitre.testValidBar(bar1, bar2)
+                let res = room.arbitre.testValidBar(bar1, bar2, socket.id)
                 console.log("Placement barrière valide ?")
                 console.log(res)
                 if (res) {
                     room.addBarriere(socket.id, bar1, bar2)
+                    io.to(socket.id).emit('majBar')
                     console.log(`[nextplayer] ${socket.id}`);
                     room.tour.changerJoueurActif()
 
@@ -89,7 +91,8 @@ io.on('connection', (socket) => {
 
                     io.to(room.tour.currentPlayer.currentPlayer.socketId).emit('my turn', true);
 
-                    io.to(room.tour.currentPlayer.currentPlayer.socketId).emit('updated bar', bar1);
+                    // io.to(room.tour.currentPlayer.currentPlayer.socketId).emit('updated bar', bar1);
+                    io.to(room.id).emit('updated bar', bar1);
 
                     io.to(room.tour.currentPlayer.currentPlayer.socketId).emit('cells checked', room.arbitre.validCells);
 

@@ -125,10 +125,10 @@ class Room {
 
     paramPlayers({socketId,positionStart}, num){
         switch (num) {
-            case 1: return {socketId: socketId, positionStart:positionStart, color:"red"};
-            case 2: return {socketId: socketId, positionStart:positionStart, color:"green"};
-            case 3: return {socketId: socketId, positionStart:positionStart, color:"yellow"};
-            case 4: return {socketId: socketId, positionStart:positionStart, color:"purple"};
+            case 1: return {socketId: socketId, positionStart:positionStart, color:"#B391D3"};
+            case 2: return {socketId: socketId, positionStart:positionStart, color:"#14C7D5"};
+            case 3: return {socketId: socketId, positionStart:positionStart, color:"#F10002"};
+            case 4: return {socketId: socketId, positionStart:positionStart, color:"#F48229"};
         }
     }
 

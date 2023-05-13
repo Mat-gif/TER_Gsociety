@@ -123,12 +123,32 @@ class Arbitre {
         return checkingCells;
     }
 
-    testValidBar(bar1, bar2) {
+    testValidBar(bar1, bar2, socket) {
+        let placementOk = true
         const murs = this.walls
-        // const murs = Object.assign({}, this.walls);
 
-        murs[bar1.name].push(new Barriere(new Coord(bar1.x1, bar1.y1, bar1.name)));
-        murs[bar2.name].push(new Barriere(new Coord(bar2.x1, bar2.y1, bar2.name)));
+        let part1 = new Barriere(new Coord(bar1.x1, bar1.y1),socket)
+        let part2 = new Barriere(new Coord(bar2.x1, bar2.y1),socket)
+
+        for(let i = 0;i<murs[bar1.name].length;i++){
+
+
+            if((part1.coord.x === murs[bar1.name][i].coord.x && part1.coord.y === murs[bar1.name][i].coord.y) || (part2.coord.x === murs[bar1.name][i].coord.x && part2.coord.y === murs[bar1.name][i].coord.y)) {
+                placementOk = false
+                console.log("déjà un mur)")
+                return placementOk
+            }
+        }
+
+        murs[bar1.name].push(part1);
+        murs[bar2.name].push(part2);
+
+        console.log(murs)
+
+        //si la barrière que l'on veut placer entre en collision avec une autre barrière
+
+
+
 
 
         // console.log(this.walls)
@@ -143,7 +163,6 @@ class Arbitre {
         // murs[bar1.name] = [...murs[bar1.name], new Barriere(new Coord(bar1.x1, bar1.y1, bar1.name))];
         // murs[bar2.name] = [...murs[bar2.name], new Barriere(new Coord(bar2.x1, bar2.y1, bar2.name))];
         // console.log(murs);
-        let placementOk = true
         for (const key of Object.keys(this.pions)) {
             // console.log(this.pions[key])
             // const pion = this.pions[key];
@@ -168,7 +187,7 @@ class Arbitre {
                         pion.coord.x = cellsATester[0].x
                         pion.coord.y = cellsATester[0].y
                         this.adjacentValidCells(pion).forEach(c=>{
-                            if(!cellsTestee.includes(c)){
+                            if(!cellsTestee.includes(c)){ /////////////////////////////////:
                                 cellsATester.push(c)
                             }
                         })

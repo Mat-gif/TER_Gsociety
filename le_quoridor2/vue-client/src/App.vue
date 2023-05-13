@@ -7,22 +7,46 @@
             <NewRoomComponent v-if="!playGame" :socket="socket" @event-roomId="setRoomId" v-bind:revele="reveleCreer" v-bind:toggleModale="toggleCreer"/>
             <JoinRoomComponent v-if="!playGame" :socket="socket" @event-roomId="setRoomId" v-bind:revele="reveleRejoindre" v-bind:toggleModale="toggleRejoindre" />
             <regles v-bind:revele="reveleRegles" v-bind:toggleModale="toggleRegles"></regles>
-            <infoBarriere v-if="playGame" :username="player.username" :nb_-walls="game.nb_Walls" :new_nb_-walls="player.barLeft"></infoBarriere>
-        <!--    alerte tours-->
-            <div  v-if="playGame && myTurn" class="alert alert-success">
-                <strong>Your turn man!</strong>
+
+
+
+                <div>
+                    <img class="img1" src="./assets/quoridor_logo.gif" v-if="!playGame">
+                </div>
+                <div class="boutons">
+                    <div  v-if="!playGame" v-on:click="toggleCreer" class="btn ">   Creer   </div>
+                    <div  v-if="!playGame" v-on:click="toggleRejoindre" class="btn "> Rejoindre </div>
+                </div>
+
+            <div class="newContainer">
+                <!--    alerte tours-->
+                <div class="item2">
+                    <div>
+                        <img src="./assets/quoridor_logo.gif" v-if="playGame" style="width: 65%; margin: auto; margin-bottom: 40px; display: flex" >
+                    </div>
+                    <div class="turning">
+                        <PlateauComponent :socket="socket" :roomId="roomId" v-if="playGame" @event-turn="changeturn" :myTurn="myTurn"  :color="color" :nbSquares="nbSquares" :nbBarriere="nbBarriere" :myInitGame="myInitGame" :otherInitGame="otherInitGame" :newPosition="newPosition"/>
+                    </div>
+
+                    <div  v-if="playGame && myTurn" class="alertmyturn">
+                        <strong>A toi de jouer</strong>
+                    </div>
+                    <div  v-if="playGame && !myTurn" class="alertnotmyturn">
+                        <strong>Ce n'est pas ton tour</strong>
+                    </div>
+                </div>
+
+                <div class="item1">
+                    <infoBarriere v-if="playGame" :username="player.username" :nb_-walls="game.nb_Walls" :socket="socket"></infoBarriere>
+                </div>
+
             </div>
-            <div  v-if="playGame && !myTurn" class="alert alert-warning">
-                <strong>Wait bro is not your turn!</strong>
-            </div>
-            <div class="boutons">
-                <div  v-if="!playGame" v-on:click="toggleCreer" class="btn btn-success">Créer une partie</div>
-                <div  v-if="!playGame" v-on:click="toggleRejoindre" class="btn btn-success">Rejoindre une partie</div>
-            </div>
+
+
             <div class="game_rule">
-                <div v-on:click="toggleRegles" class="btn btn-success">Regles</div>
+                <div v-on:click="toggleRegles" class="btn">Regles</div>
             </div>
-            <PlateauComponent :socket="socket" :roomId="roomId" v-if="playGame" @event-turn="changeturn" :myTurn="myTurn"  :color="color" :nbSquares="nbSquares" :nbBarriere="nbBarriere" :myInitGame="myInitGame" :otherInitGame="otherInitGame" :newPosition="newPosition"/>
+
         </div>
         <div class="two">
             <chat :socket="socket" v-if="playGame" :username="player.username" :room-id="roomId"></chat>
@@ -152,6 +176,12 @@ export default {
 };
 </script>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+body{
+    background: #0B0B0B;
+    font-family: 'Press Start 2P', cursive;
+    height: 100%;
+}
 .template{
     margin: 20px ;
     display: grid;
@@ -169,13 +199,111 @@ export default {
     grid-column: 2/3;
     grid-row: 1;
 }
-/*.boutons{*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    background: #1a1e21;*/
-/*}*/
-/*.game_rule{*/
 
+.newContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+
+.item1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    grid-column: 1 / 1;
+    grid-row: 1;
+}
+
+.item3 {
+    grid-column: 2 / 1;
+}
+
+.item2 {
+    grid-column: 3 / 2;
+    grid-row: 1;
+}
+
+
+div .img1{
+    margin-top: 20%;
+    margin-left: 17.5%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*animation: 1.5s ease-in   scaleMove;*/
+}
+@keyframes scaleMove {
+    0%{
+        /*transform: scale(1);*/
+        transform: rotate(360deg);
+    }
+    50%{
+        transform: scale(1.2);
+
+    }
+    100%{
+        transform: scale(1.05);
+    }
+
+}
+.boutons{
+    display: flex;
+    margin-top: 3%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    margin-left: 29%;
+    gap: 5%;
+}
+.boutons div{
+    width: 200px;
+}
+/*.boutons div:hover{*/
+/*    transform: scale(1.2);*/
+/*    transition: 1s;*/
+/*    color: white;*/
 /*}*/
+.boutons div{
+    padding-bottom: 2px;
+    background: #0B0B0B;
+    box-shadow: rgba(255, 0, 0, 0.35) 0px 5px 15px;
+    border: 2px solid #0b5ed7;
+    color: #0b5ed7;
+}
+.game_rule{
+    margin-top: 20%;
+}
+.game_rule div{
+
+    background: #0B0B0B;
+    box-shadow: rgba(255, 0, 0, 0.35) 0px 5px 15px;
+    border: 2px solid #0b5ed7;
+    color: #0b5ed7;
+}
+.alertmyturn{
+    margin : auto;
+    text-align: center;
+    width: 50%;
+    padding: 10px;
+    background: #0B0B0B;
+    box-shadow: rgba(5, 137, 89, 0.35) 0px 5px 15px;
+    border: 2px solid #01D58E;
+    color: #01D58E;
+    margin-top: 40px;
+}
+.alertnotmyturn{
+    margin : auto;
+    text-align: center;
+    width: 50%;
+    padding: 10px;
+    background: #0B0B0B;
+    box-shadow: rgba(121, 15, 194, 0.35) 0px 5px 15px;
+    border: 2px solid #B85BF1;
+    color: #B85BF1;
+    margin-top: 40px;
+}
 </style>
 

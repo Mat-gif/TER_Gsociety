@@ -1,39 +1,18 @@
 <template>
-<!--      <div>-->
-<!--        <input type="text" v-model="player.username">-->
-<!--        <input type="text" v-model="player.roomId">-->
-<!--        <button @click="joinRoom">Rejoindre un salon</button>-->
-<!--      </div>-->
 
-  <!--mon div container, objet globale-->
-  <!-- si bloc modale est égale la valeur de revele, la valeur par defaul est false-->
     <div class="overlay"  v-if="revele">  </div>
     <div class="bloc-modale" v-if="revele">
 
 
-        <!-- <h1 class="mb-5">Quoridor</h1>-->
-        <!-- -->
-
-        <!-- le boutton pour fermer le modale-->
         <button v-on:click="toggleModale" class="btn-closei btn btn-danger" v-if="state!== 'waitPlayers'">X</button>
         <button  v-on:click="toggleModale"  @click="deserter" class="btn-closei btn btn-danger" v-if="state=== 'waitPlayers'" >Quitter</button>
-<!--        <div >-->
-<!--            <ul>-->
-<!--                <li>-->
-<!--                    <span>Nom de partie</span>-->
-<!--                    <span>X/MAX</span>-->
-<!--                    <span>NbBarrier</span>-->
-<!--                    <button class="pointer" >rejoindre</button>-->
-<!--                </li>-->
-<!--            </ul>-->
 
-<!--        </div>-->
-    <div v-if="state=== 'setUsername'">
-        <div>
+    <div v-if="state=== 'setUsername'" class="user">
+        <div >
             <label for="username">nom :</label>
             <input type="text" id="username" v-model="player.username" />
         </div>
-        <button @click="validateName" class="pointer btn btn-success" >Rejoindre un salon</button>
+        <button @click="validateName" class="pointer btn " >Rejoindre</button>
     </div>
         <ListeRoomComponent  v-if="state=== 'setRoom'"  :socket="socket" :player="player" @event-roomId="setRoomId"/>
 
@@ -103,9 +82,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background:white ;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background: #0B0B0B;
+    box-shadow: rgba(255, 0, 0, 0.35) 0px 5px 15px;
+    border: 2px solid #0b5ed7;
     flex-direction: column;
+    color: #0c63e4;
+    text-transform: capitalize;
 
 }
 .overlay {
@@ -127,12 +109,56 @@
 .btn-closei{
     position: absolute;
     right: 10px;
-    color: white;
-    background-color: red;
+    background: #0B0B0B;
+    box-shadow: rgba(255, 0, 0, 0.35) 0px 5px 15px;
+    border: 2px solid #0b5ed7;
+    color: #0b5ed7;
     /* width: 20%;*/
     top: 10px;
 
     font-size: large;
     /*border: 3px solid red;*/
+}
+
+label{
+    font-weight: bold;
+    font-size: 22px;
+    line-height:2;
+}
+input{
+    color: white;
+    height: 50px;
+    background: #333363;
+    border: 2px solid #0b5ed7;
+}
+input[type=text] {
+    padding-left: 13px;
+    font-size: 12px;
+
+}
+
+
+.pointer{
+    display: flex;
+    text-transform: uppercase;
+    font-size: 22px;
+    font-weight: 600;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    margin-left: 25%;
+    height: 50px;
+    padding-bottom: 2px;
+    background: #0B0B0B;
+    box-shadow: rgba(255, 0, 0, 0.35) 0px 5px 15px;
+    border: 2px solid #0b5ed7;
+    color: #0b5ed7;
+}
+
+.user{
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    justify-content: center;
 }
 </style>

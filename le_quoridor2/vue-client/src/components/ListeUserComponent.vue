@@ -1,12 +1,13 @@
 <template>
-  
-    <div>
-      <h2>Liste des joueurs en attentes</h2>
+
+    <div class="listeUser">
+        <h2>Joueurs en attentes</h2>
         <div class="spinner-border"></div>
       <ul id="user-list">
-        <li v-for="player in players" :key="player.username">{{ player.username }}</li>
+        <li v-for="player in players" :key="player.username" >{{ player.username }}</li>
       </ul>
     </div>
+
   </template>
   
   <script>
@@ -41,4 +42,27 @@
     }
 }
   </script>
-  
+
+<style>
+
+
+.listeUser{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.listeUser h2{
+
+    margin-bottom: 100px;
+}
+.spinner-border{
+    margin-bottom: 100px;
+}
+
+#user-list li{
+    list-style: none;
+}
+
+</style>

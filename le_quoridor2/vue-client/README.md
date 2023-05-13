@@ -27,3 +27,11 @@ npm run dev
 ```sh
 npm run build
 ```
+
+```icon
+npm install --save @fortawesome/fontawesome-svg-core @fortawesome/vue-fontawesome @fortawesome/free-solid-svg-icons
+
+npm install --save @fortawesome/fontawesome-svg-core @fortawesome/vue-fontawesome @fortawesome/free-solid-svg-icons
+
+```
+

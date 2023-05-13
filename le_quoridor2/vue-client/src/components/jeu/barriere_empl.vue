@@ -16,9 +16,19 @@ export default {
     height : Number,
     selected: Array,
       roomId :Number,
-      socket : Object
+      socket : Object,
+      placable : false
   },
+    data(){
+        return{
+            myTurn:null,
+        }
+    },
     mounted() {
+
+        this.socket.on("my turn", (turn) => {
+            this.myTurn = turn
+        })
 
         this.socket.on("updated bar", (bar) => {
             console.log(bar)
@@ -26,11 +36,14 @@ export default {
                 console.log(b)
                 if(b.attrs.name===bar.name && b.attrs.x1===bar.x1 && b.attrs.y1===bar.y1){
                     b.fill("#EDED5E")
+                    b.placable = true
                     if(b.attrs.name==="V"){
-                        this.layerBarEmpl.find(node => node.attrs.x1 === b.attrs.x1 && node.attrs.y1 === b.attrs.y1 + 1 && node.attrs.name === "V")[0].fill("#EDED5E")
+                        this.layerBarEmpl.find(node => node.attrs.x1 === b.attrs.x1 && node.attrs.y1 === b.attrs.y1 + 1 && node.attrs.name === "V")[0].fill("#EDED5E").placable = true
+                        this.layerBarEmpl.find(node => node.attrs.x1 === b.attrs.x1 && node.attrs.y1 === b.attrs.y1 - 1 && node.attrs.name === "V")[0].placable = true
                     }
                     else{
-                        this.layerBarEmpl.find(node => node.attrs.x1 === b.attrs.x1 + 1 && node.attrs.y1 === b.attrs.y1 && node.attrs.name === "H")[0].fill("#EDED5E")
+                        this.layerBarEmpl.find(node => node.attrs.x1 === b.attrs.x1 + 1 && node.attrs.y1 === b.attrs.y1 && node.attrs.name === "H")[0].fill("#EDED5E").placable = true
+                        this.layerBarEmpl.find(node => node.attrs.x1 === b.attrs.x1 - 1 && node.attrs.y1 === b.attrs.y1 && node.attrs.name === "H")[0].placable = true
                     }
 
                 }
@@ -61,42 +74,46 @@ export default {
 
                     //ecouteur pour visualiser l'emplacement de la barriere
                     barV.on('click', function (evt) {
-                        let bar1 = {
-                            name:evt.target.attrs.name,
-                            x1:evt.target.attrs.x1,
-                            y1:evt.target.attrs.y1
-                        }
-                        let bar =   layerBarEmpl.find(node => node.attrs.x1 === evt.target.attrs.x1 && node.attrs.y1 === evt.target.attrs.y1 + 1 && node.attrs.name === "V")[0]
-                        let bar2 = {
-                            name:bar.attrs.name,
-                            x1:bar.attrs.x1,
-                            y1:bar.attrs.y1
-                        }
-                        console.log(bar1)
-                        self.socket.emit("testBar", self.roomId,bar1,bar2)
-
-                        self.socket.on("valid Bar",(res)=>{
-                            if(res){
-                                evt.target.fill('#EDED5E')
-                                console.log("[barV] "+evt.target.attrs.id)
-                                layerBarEmpl.find(node => node.attrs.x1 === evt.target.attrs.x1 && node.attrs.y1 === evt.target.attrs.y1 + 1 && node.attrs.name === "V")[0].fill('#EDED5E')
-                                layerBarEmpl.draw()
+                        if(!this.placable && self.myTurn){
+                            let bar1 = {
+                                name: evt.target.attrs.name,
+                                x1: evt.target.attrs.x1,
+                                y1: evt.target.attrs.y1
                             }
-                        })
+                            let bar = layerBarEmpl.find(node => node.attrs.x1 === evt.target.attrs.x1 && node.attrs.y1 === evt.target.attrs.y1 + 1 && node.attrs.name === "V")[0]
+                            let bar2 = {
+                                name: bar.attrs.name,
+                                x1: bar.attrs.x1,
+                                y1: bar.attrs.y1
+                            }
+                            console.log(bar1)
+                            self.socket.emit("testBar", self.roomId, bar1, bar2)
 
-
+                            self.socket.on("valid Bar", (res) => {
+                                if (res) {
+                                    evt.target.fill('#EDED5E')
+                                    console.log("[barV] " + evt.target.attrs.id)
+                                    layerBarEmpl.find(node => node.attrs.x1 === evt.target.attrs.x1 && node.attrs.y1 === evt.target.attrs.y1 + 1 && node.attrs.name === "V")[0].fill('#EDED5E')
+                                    layerBarEmpl.draw()
+                                }
+                            })
+                        }
                     })
-                    // barV.on('mouseout', function (evt) {
-                    //     evt.target.fill('#464646')
-                    //     layerBarEmpl.find(node => node.attrs.x1 === evt.target.attrs.x1 && node.attrs.y1 === evt.target.attrs.y1 + 1 && node.attrs.name === "V")[0].fill('#464646')
-                    //     layerBarEmpl.draw()
-                    // })
-                    //
-                    // //ecouteur pour placer la barrière
-                    // barV.on('click', function (evt) {
-                    // })
-                    // barV.on('click', function (evt) {
-                    // })
+                    barV.on('mouseover', function (evt) {
+                        if(!this.placable && self.myTurn){
+                            evt.target.fill('#E89AC4')
+                            layerBarEmpl.find(node => node.attrs.x1 === evt.target.attrs.x1 && node.attrs.y1 === evt.target.attrs.y1 + 1 && node.attrs.name === "V")[0].fill('#E89AC4')
+                            layerBarEmpl.draw()
+                        }
+                    })
+                    barV.on('mouseout', function (evt) {
+                        if(!this.placable && self.myTurn){
+                            evt.target.fill('#464646')
+                            layerBarEmpl.find(node => node.attrs.x1 === evt.target.attrs.x1 && node.attrs.y1 === evt.target.attrs.y1 + 1 && node.attrs.name === "V")[0].fill('#464646')
+                            layerBarEmpl.draw()
+                        }
+                    })
+
                 }
               layerBarEmpl.add(barV);
             }
@@ -116,41 +133,49 @@ export default {
               });
                 if(i!==this.tailleGrille-1){
                     barH.on('click', function (evt) {
-                        let bar1 = {
-                            name:evt.target.attrs.name,
-                            x1:evt.target.attrs.x1,
-                            y1:evt.target.attrs.y1
-                        }
-                        let bar =   layerBarEmpl.find(node => node.attrs.x1 === evt.target.attrs.x1+1 && node.attrs.y1 === evt.target.attrs.y1 && node.attrs.name === "H")[0]
-                        console.log(bar.attrs)
-                        let bar2 = {
-                            name:bar.attrs.name,
-                            x1:bar.attrs.x1,
-                            y1:bar.attrs.y1
-                        }
-                        console.log(bar2)
-                        self.socket.emit("testBar", self.roomId,bar1,bar2)
-                        self.socket.on("valid Bar",(res)=>{
-                            if(res){
-                                evt.target.fill('#EDED5E')
-                                console.log("[barH] "+evt.target.attrs.id)
-                                layerBarEmpl.find(node => node.attrs.x1 === evt.target.attrs.x1 + 1 && node.attrs.y1 === evt.target.attrs.y1 && node.attrs.name === "H")[0].fill('#EDED5E')
-                                layerBarEmpl.draw()
+                        if(!this.placable && self.myTurn){
+                            let bar1 = {
+                                name: evt.target.attrs.name,
+                                x1: evt.target.attrs.x1,
+                                y1: evt.target.attrs.y1
                             }
-                        })
-
-
-
+                            let bar = layerBarEmpl.find(node => node.attrs.x1 === evt.target.attrs.x1 + 1 && node.attrs.y1 === evt.target.attrs.y1 && node.attrs.name === "H")[0]
+                            console.log(bar.attrs)
+                            let bar2 = {
+                                name: bar.attrs.name,
+                                x1: bar.attrs.x1,
+                                y1: bar.attrs.y1
+                            }
+                            console.log(bar2)
+                            self.socket.emit("testBar", self.roomId, bar1, bar2)
+                            self.socket.on("valid Bar", (res) => {
+                                if (res) {
+                                    evt.target.fill('#EDED5E')
+                                    console.log("[barH] " + evt.target.attrs.id)
+                                    layerBarEmpl.find(node => node.attrs.x1 === evt.target.attrs.x1 + 1 && node.attrs.y1 === evt.target.attrs.y1 && node.attrs.name === "H")[0].fill('#EDED5E')
+                                    layerBarEmpl.draw()
+                                }
+                            })
+                        }
                     })
-                    // barH.on('mouseout', function (evt) {
-                    //     evt.target.fill('#464646')
-                    //     layerBarEmpl.find(node => node.attrs.x1 === evt.target.attrs.x1 + 1 && node.attrs.y1 === evt.target.attrs.y1 && node.attrs.name === "H")[0].fill('#464646')
-                    //     layerBarEmpl.draw()
-                    // })
+                    barH.on('mouseover', function (evt) {
+                        if(!this.placable && self.myTurn){
+                            evt.target.fill('#E89AC4')
+                            layerBarEmpl.find(node => node.attrs.x1 === evt.target.attrs.x1 + 1 && node.attrs.y1 === evt.target.attrs.y1 && node.attrs.name === "H")[0].fill('#E89AC4')
+                            layerBarEmpl.draw()
+                        }
+                    })
+                    barH.on('mouseout', function (evt) {
+                        if(!this.placable && self.myTurn){
+                            evt.target.fill('#464646')
+                            layerBarEmpl.find(node => node.attrs.x1 === evt.target.attrs.x1 + 1 && node.attrs.y1 === evt.target.attrs.y1 && node.attrs.name === "H")[0].fill('#464646')
+                            layerBarEmpl.draw()
+                        }
+                    })
                 }
               layerBarEmpl.add(barH);
             }
-          };
+          }
           console.log(layerBarEmpl)
           layerBarEmpl.draw();
         }

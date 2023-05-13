@@ -9,7 +9,7 @@
 <!--    </div>-->
     <div class="container">
       <div>
-        <h2 id="chatty">Chat</h2>
+        <h2 id="chatty">chatbox</h2>
         <button class="future_modal">📨</button>
       </div>
       <div ref="messages" id="messages">
@@ -41,13 +41,13 @@
       <div>
         <input
           v-model="text"
-          placeholder="write a message..."
+          placeholder="..."
           class="text-message"
           v-on:keyup.enter="sendMessage"
           v-on:keyup="onTyping"
         />
       </div>
-      <div id="typing-indicator"></div>
+<!--      <div id="typing-indicator"></div>-->
     </div>
   </div>
 </template>
@@ -150,9 +150,14 @@ export default {
   bottom: 3.3%;
   box-sizing: border-box;
 }
+input{
+    color: white;
+    background: #333363;
+}
 input::placeholder {
   padding-left: 8px;
   font-size: 1.5rem;
+    color: white;
 }
 .d-flex .text_saisie {
   background-color: red;
@@ -181,7 +186,7 @@ input::placeholder {
 }
 .message-from-me div span {
   margin-right: 0;
-  background: yellow;
+  /*background: #767632;*/
   max-width: 100%;
 }
 
@@ -206,14 +211,14 @@ input::placeholder {
 }
 .message-from-others div span {
   padding: 0.5rem;
-  background: yellow;
+  /*background: #80804c;*/
   align-self: flex-end;
   max-width: 100%;
-  border-radius: 50%;
+  /*border-radius: 50%;*/
   word-wrap: break-word !important;
 }
 .message__user__time {
-  background-color: yellow;
+  /*background-color: yellow;*/
 }
 #typing-indicator {
   font-size: 0.8rem;
@@ -227,8 +232,10 @@ input::placeholder {
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: antiquewhite;
+  background-color: #0B0B0B;
   height: 90vh;
+    color: white;
+    border: 3px solid #217BFF;
   border-radius: 10px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 }
@@ -248,7 +255,7 @@ input::placeholder {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 2px solid #0c63e4;
 }
 
 .container > div:first-child #chatty {
