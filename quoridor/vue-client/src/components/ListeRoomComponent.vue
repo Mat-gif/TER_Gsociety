@@ -2,13 +2,6 @@
 
 
 <template>
-  <!--                <div class="card-body">-->
-  <!--                    <p class="card-text">{{room.info}}</p>-->
-  <!--                </div>-->
-
-  <!--            <span class="">{{room.id}}</span>-->
-  <!--            <span class="mt-3 p-5">{{room.info}}</span>-->
-  <!--            <button @click="joinRoom(room.id)" class="pointer btn btn-success" >Join</button>-->
     <div class="listeRoom">
       <h2>Salons disponibles</h2>
       <ul id="room-list" >
@@ -17,7 +10,8 @@
             <p> <font-awesome-icon :icon="['fas', 'user']" /> {{room.info.nb_Players}}  </p>
             <p> <font-awesome-icon :icon="['fas', 'th-large']" /> {{room.info.nb_Squares}}x{{room.info.nb_Squares}}  </p>
             <p> <font-awesome-icon :icon="['fas', 'hand']" /> {{room.info.nb_Walls}}  </p>
-            <button @click="joinRoom(room.id,room.info)" class="pointer btn " >Join</button>
+            <button @click="joinRoom(room)" class="pointer btn " >Join</button>
+<!--            <button @click="joinRoom(room.id,room.info)" class="pointer btn " >Join</button>-->
         </li>
       </ul>
     </div>
@@ -52,12 +46,13 @@
 
     },
       methods:{
-          joinRoom(id,info) {
-              this.roomId=id;
-              this.game=info ;
+          joinRoom(room) {
+              console.log(room.id)
+              this.roomId=room.id;
+              this.game=room.info ;
               // Permet d'émettre au composant "parent" les information concernant le salon
               console.log("[List] : "+this.roomId);
-              this.$emit('event-roomId', { roomId:  this.roomId , state: "waitPlayers", game: this.game});
+              this.$emit('event-roomId', { roomId:  this.roomId , state: "waitPlayers", game: room.info});
 
           }
       }

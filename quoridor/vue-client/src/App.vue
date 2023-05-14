@@ -123,11 +123,14 @@ export default {
 
 
         this.socket.on('start game', ({info, initGame}) => {
+
             // alert("Début du game !")
             this.nbSquares = info.nb_Squares;
             this.nbBarriere = info.nb_Walls;
             this.start =true
+            console.log("[starrt game]"+ this.roomId)
             this.socket.emit('game', this.roomId);
+
             initGame.forEach(element => {
                 if( element.socketId === this.socket.id)
                 {

@@ -96,6 +96,14 @@
       components:{
           ListeUserComponent,
       },
+      mounted() {
+          // Exécute la fonction `showMessage` chaque fois que `isVisible` passe à `true`
+          this.$watch("state",  (newValue) => {
+              if (newValue === "wait") {
+                  this.socket.off("room id");
+              }
+          })
+      },
     methods: {
       createRoom() {
           this.game.new_nb_Walls= this.game.nb_Walls;
@@ -110,7 +118,9 @@
               this.player.roomId = roomId;
               this.state = 'wait';
               this.$emit('event-roomId', {roomId: roomId, player: this.player, game : this.game});
+
             });
+
         console.log(this.player);
       },
         deserter(){

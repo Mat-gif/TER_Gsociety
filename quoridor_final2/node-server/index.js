@@ -67,8 +67,10 @@ io.on('connection', (socket) => {
 
 
     socket.on('game',(roomID) => {
-        console.log(`[game] ${socket.id}`);
-        const room = rooms.findRoom(roomID);
+        console.log(`[game] ${socket.id} :::  ${roomID}  `);
+
+        let room = rooms.findRoom(roomID);
+
 
         if(socket.id === room.tour.currentPlayer.currentPlayer.socketId) {
             room.startTurn(room.tour.currentPlayer.currentPlayer.socketId) // o
@@ -78,7 +80,7 @@ io.on('connection', (socket) => {
         }
 
         socket.on('testBar',(roomID,bar1,bar2) => {
-            const room = rooms.findRoom(roomID);
+            let room = rooms.findRoom(roomID);
             console.log(room.enoughtBar(socket.id))
             if(room.enoughtBar(socket.id)) {
                 let res = room.arbitre.testValidBar(bar1, bar2, socket.id)
@@ -115,7 +117,7 @@ io.on('connection', (socket) => {
 
 
         socket.on('coord',(roomID,coord) => {
-            const room = rooms.findRoom(roomID);
+            let room = rooms.findRoom(roomID);
             // console.log(coord)
             let isWin = room.updateCoordPion(socket.id,coord)
             let sendCoord = {id:socket.id, coord:coord}
