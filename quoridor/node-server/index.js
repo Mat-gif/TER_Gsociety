@@ -89,7 +89,7 @@ io.on('connection', (socket) => {
                 if (res) {
                     room.addBarriere(socket.id, bar1, bar2)
                     io.to(socket.id).emit('majBar')
-                    console.log(`[nextplayer] ${socket.id}`);
+                    // console.log(`[nextplayer] ${socket.id}`);
                     room.tour.changerJoueurActif()
 
                     room.startTurn(room.tour.currentPlayer.currentPlayer.socketId) // o
@@ -146,6 +146,7 @@ io.on('connection', (socket) => {
             }else{
                 io.to(room.id).emit('my turn', false);
                 io.to(room.id).emit('winner',socket.id);
+                console.log(`[WINNER] Room: ${room.id} | Player: ${socket.id}`)
             }
 
         })
