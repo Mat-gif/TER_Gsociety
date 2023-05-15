@@ -31,7 +31,7 @@ class Room {
         this.pions[socketId].coord.x = coord.x
         this.pions[socketId].coord.y = coord.y
 
-        console.log(`[Score Victoire] ${socketId} : ${this.pions[socketId].score}`)
+        // console.log(`[Score Victoire] ${socketId} : ${this.pions[socketId].score}`)
         return this.pions[socketId].score === 0;
 
     }

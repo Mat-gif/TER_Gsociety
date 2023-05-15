@@ -99,7 +99,7 @@ class Arbitre {
         let res = []
         let myCell = cell
         let checkingCells = this.findCells(myCell)
-
+        let checkingCells2
         // console.log(checkingCells)
 
         //on retire les coords des cells qui ne sont pas dans le plateau
@@ -109,6 +109,10 @@ class Arbitre {
 
         //on test pour chaque pions s'il est sur une cell possible
         // this.pions.forEach(p => checkingCells = checkingCells.filter(c => c.x !== p.coord.x && c.y !==p.coord.y))
+
+
+        checkingCells = this.testBarr(myCell.coord,checkingCells)
+        checkingCells2 = checkingCells
 
         for (const key of Object.keys(this.pions)) {
             const pion = this.pions[key];
@@ -122,7 +126,6 @@ class Arbitre {
 
                     if(direction1 === 0){ // Vertical
                         let direction2 = checkingCells[i].y - myCell.coord.y
-                        console.log(direction2)
                         if(direction2 < 0){ // haut
                             // i,j-2 / muCell
                             let out = this.testBarr(checkingCells[i],[new Coord(myCell.coord.x, myCell.coord.y-2)])
@@ -132,10 +135,6 @@ class Arbitre {
                             else {
                                 this.testBarr(checkingCells[i],[new Coord(myCell.coord.x-1, myCell.coord.y-1), new Coord(myCell.coord.x+1, myCell.coord.y-1) ] ).forEach(r => res.push(r))
                             }
-
-
-
-
 
                         }
                         else{//bas
@@ -152,7 +151,6 @@ class Arbitre {
                     }
                     else{ // Horizontal
                         let direction3 = checkingCells[i].x - myCell.coord.x
-                        console.log(direction3)
                         if(direction3 > 0){ // droite
                             // i+2,j / muCell
                             let out = this.testBarr(checkingCells[i],[new Coord(myCell.coord.x+2, myCell.coord.y)])
@@ -179,13 +177,15 @@ class Arbitre {
             }
 
             // Faites quelque chose avec chaque pion
-            checkingCells = checkingCells.filter(c => c.x !== pion.coord.x || c.y !== pion.coord.y)
+            checkingCells2 = checkingCells2.filter(c => c.x !== pion.coord.x || c.y !== pion.coord.y)
 
 
         }
 
+        // this.testBarr(myCell.coord,checkingCells).forEach(r => res.push(r))
 
-        this.testBarr(myCell.coord,checkingCells).forEach(r => res.push(r))
+        checkingCells2.forEach(r => res.push(r))
+
 
         return res;
     }
