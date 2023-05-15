@@ -99,7 +99,7 @@ class Arbitre {
         let res = []
         let myCell = cell
         let checkingCells = this.findCells(myCell)
-        let checkingCells2
+
         // console.log(checkingCells)
 
         //on retire les coords des cells qui ne sont pas dans le plateau
@@ -107,14 +107,12 @@ class Arbitre {
 
         // console.log(checkingCells)
 
-        checkingCells = this.testBarr(myCell.coord,checkingCells)
-
-        checkingCells2= checkingCells
         //on test pour chaque pions s'il est sur une cell possible
         // this.pions.forEach(p => checkingCells = checkingCells.filter(c => c.x !== p.coord.x && c.y !==p.coord.y))
 
         for (const key of Object.keys(this.pions)) {
             const pion = this.pions[key];
+
 
 
 
@@ -181,13 +179,13 @@ class Arbitre {
             }
 
             // Faites quelque chose avec chaque pion
-            //
-            checkingCells2 = checkingCells2.filter(c => c.x !== pion.coord.x || c.y !== pion.coord.y)
+            checkingCells = checkingCells.filter(c => c.x !== pion.coord.x || c.y !== pion.coord.y)
+
 
         }
 
 
-        checkingCells2.forEach(r => res.push(r))
+        this.testBarr(myCell.coord,checkingCells).forEach(r => res.push(r))
 
         return res;
     }
