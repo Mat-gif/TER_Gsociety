@@ -100,12 +100,9 @@ class Arbitre {
         let myCell = cell
         let checkingCells = this.findCells(myCell)
         let checkingCells2
-        // console.log(checkingCells)
 
         //on retire les coords des cells qui ne sont pas dans le plateau
         checkingCells = checkingCells.filter(c => c.x > -1 && c.y > -1 && c.x < this.param.nb_Squares && c.y < this.param.nb_Squares)
-
-        // console.log(checkingCells)
 
         //on test pour chaque pions s'il est sur une cell possible
         // this.pions.forEach(p => checkingCells = checkingCells.filter(c => c.x !== p.coord.x && c.y !==p.coord.y))
@@ -128,24 +125,36 @@ class Arbitre {
                         let direction2 = checkingCells[i].y - myCell.coord.y
                         if(direction2 < 0){ // haut
                             // i,j-2 / muCell
-                            let out = this.testBarr(checkingCells[i],[new Coord(myCell.coord.x, myCell.coord.y-2)])
-                            if(out.length !== 0) {
-                                out.forEach(r => res.push(r))
-                            }
-                            else {
+                            if(myCell.coord.y-2 < 0){
                                 this.testBarr(checkingCells[i],[new Coord(myCell.coord.x-1, myCell.coord.y-1), new Coord(myCell.coord.x+1, myCell.coord.y-1) ] ).forEach(r => res.push(r))
                             }
+                            else{
+                                let out = this.testBarr(checkingCells[i],[new Coord(myCell.coord.x, myCell.coord.y-2)])
+                                if(out.length !== 0) {
+                                    out.forEach(r => res.push(r))
+                                }
+                                else {
+                                    this.testBarr(checkingCells[i],[new Coord(myCell.coord.x-1, myCell.coord.y-1), new Coord(myCell.coord.x+1, myCell.coord.y-1) ] ).forEach(r => res.push(r))
+                                }
+                            }
+
 
                         }
                         else{//bas
                             // i,j+2 / muCell
-                            let out = this.testBarr(checkingCells[i],[new Coord(myCell.coord.x, myCell.coord.y+2)])
-                            if(out.length !== 0) {
-                                out.forEach(r => res.push(r))
-                            }
-                            else {
+                            if(myCell.coord.y+2 > this.param.nb_Squares-1){
                                 this.testBarr(checkingCells[i],[new Coord(myCell.coord.x-1, myCell.coord.y+1), new Coord(myCell.coord.x+1, myCell.coord.y+1) ] ).forEach(r => res.push(r))
                             }
+                            else{
+                                let out = this.testBarr(checkingCells[i],[new Coord(myCell.coord.x, myCell.coord.y+2)])
+                                if(out.length !== 0) {
+                                    out.forEach(r => res.push(r))
+                                }
+                                else {
+                                    this.testBarr(checkingCells[i],[new Coord(myCell.coord.x-1, myCell.coord.y+1), new Coord(myCell.coord.x+1, myCell.coord.y+1) ] ).forEach(r => res.push(r))
+                                }
+                            }
+
 
                         }
                     }
@@ -153,23 +162,34 @@ class Arbitre {
                         let direction3 = checkingCells[i].x - myCell.coord.x
                         if(direction3 > 0){ // droite
                             // i+2,j / muCell
-                            let out = this.testBarr(checkingCells[i],[new Coord(myCell.coord.x+2, myCell.coord.y)])
-                            if(out.length !== 0) {
-                                out.forEach(r => res.push(r))
-                            }
-                            else {
+                            if(myCell.coord.x+2 > this.param.nb_Squares-1){
                                 this.testBarr(checkingCells[i],[new Coord(myCell.coord.x+1, myCell.coord.y+1), new Coord(myCell.coord.x+1, myCell.coord.y-1) ] ).forEach(r => res.push(r))
                             }
+                            else{
+                                let out = this.testBarr(checkingCells[i],[new Coord(myCell.coord.x+2, myCell.coord.y)])
+                                if(out.length !== 0) {
+                                    out.forEach(r => res.push(r))
+                                }
+                                else {
+                                    this.testBarr(checkingCells[i],[new Coord(myCell.coord.x+1, myCell.coord.y+1), new Coord(myCell.coord.x+1, myCell.coord.y-1) ] ).forEach(r => res.push(r))
+                                }
+                            }
+
                         }
                         else{//gauche
                             // i-2,j / muCell
-                            let out = this.testBarr(checkingCells[i],[new Coord(myCell.coord.x-2, myCell.coord.y)])
-                            if(out.length !== 0) {
-                                out.forEach(r => res.push(r))
-                            }
-                            else {
+                            if(myCell.coord.x-2 < 0){
                                 this.testBarr(checkingCells[i],[new Coord(myCell.coord.x-1, myCell.coord.y+1), new Coord(myCell.coord.x-1, myCell.coord.y-1) ] ).forEach(r => res.push(r))
+                            }else{
+                                let out = this.testBarr(checkingCells[i],[new Coord(myCell.coord.x-2, myCell.coord.y)])
+                                if(out.length !== 0) {
+                                    out.forEach(r => res.push(r))
+                                }
+                                else {
+                                    this.testBarr(checkingCells[i],[new Coord(myCell.coord.x-1, myCell.coord.y+1), new Coord(myCell.coord.x-1, myCell.coord.y-1) ] ).forEach(r => res.push(r))
+                                }
                             }
+
                         }
                     }
                 }
@@ -185,6 +205,7 @@ class Arbitre {
         // this.testBarr(myCell.coord,checkingCells).forEach(r => res.push(r))
 
         checkingCells2.forEach(r => res.push(r))
+
 
 
         return res;

@@ -21,23 +21,23 @@
 
 
         <div><img src="./assets/quoridor_logo.gif" v-if="playGame" style="width: 30%; margin: auto;display: flex" ></div>
+          <div>
+              <div class="popupWin" v-if="showPopup && this.winner===this.player.socketId">
+                  <br>
+                  <p>Je suis le super champion</p>
+              </div>
+              <div class="popupLoose" v-if="showPopup && this.winner!==this.player.socketId">
+                  <br>
+                  <p>Le super champion est :</p>
+                  <p>{{this.winner}} </p>
+              </div>
+          </div>
 
             <div class="le-jeux">
               <div class="template">
                 <div class="one"><infoBarriere v-if="playGame" :username="player.username" :nb_-walls="game.nb_Walls" :socket="socket"></infoBarriere></div>
 
                 <div class="two">
-                  <div>
-                    <div class="popup" v-if="showPopup && this.winner===this.player.socketId">
-                      <br>
-                      <p>Je suis le super champion</p>
-                    </div>
-                    <div class="popupLoose" v-if="showPopup && this.winner!==this.player.socketId">
-                      <br>
-                      <p>Le super champion est :</p>
-                      <p>{{this.winner}} </p>
-                    </div>
-                  </div>
                   <div class="turning">
                     <PlateauComponent :largeur="largeur" :socket="socket" :roomId="roomId" v-if="playGame" @event-turn="changeturn" :myTurn="myTurn"  :color="color" :nbSquares="nbSquares" :nbBarriere="nbBarriere" :myInitGame="myInitGame" :otherInitGame="otherInitGame" :newPosition="newPosition"/>
                   </div>
@@ -54,7 +54,7 @@
               <strong>Ce n'est pas ton tour</strong>
             </div>
             <div class="game_rule"><div v-on:click="toggleRegles"  class="myBtn" >Regles</div></div>
-            <div class="credit"><div v-on:click="toggleCredit"  class="myBtn" >Credit</div></div>
+            <div class="credit"><div v-on:click="toggleCredit"  class="myBtn" >Credits</div></div>
       </div>
 
 </template>
@@ -366,30 +366,40 @@ export default {
 
   }
 
-  .popup {
-    height: 100px;
-    width: 60%;
-    text-align: center;
-    position: relative;
+  .popupWin {
+      position: fixed;
+      top: 40%;
+      bottom: 40%;
+      left: 30%;
+      right: 30%;
+      width: 40%;
+      height: 20%;
+      text-align: center;
+    /*position: relative;*/
     z-index: 999;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #1E1E1E;
+    /*top: 50%;*/
+    /*left: 50%;*/
+    /*transform: translate(-50%, -50%);*/
+      background: rgba(30, 30, 30, 0.75);
     box-shadow: rgba(77, 150, 214, 0.8) 0px 5px 15px;
     border: 2px solid #0b5ed7;
     color: #0b5ed7;
   }
   .popupLoose {
-    height: 100px;
-    width: 60%;
+      position: fixed;
+      top: 40%;
+      bottom: 40%;
+      left: 30%;
+      right: 30%;
+      width: 40%;
+      height: 20%;
     text-align: center;
-    position: relative;
+    /*position: relative;*/
     z-index: 999;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #1E1E1E;
+    /*top: 50%;*/
+    /*left: 50%;*/
+    /*transform: translate(-50%, -50%);*/
+      background: rgba(30, 30, 30, 0.75);
     box-shadow: rgba(255, 0, 0, 0.35) 0px 5px 15px;
     border: 2px solid rgba(255, 0, 0, 0.35);
     color: rgba(255, 0, 0, 0.35);
