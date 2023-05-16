@@ -375,6 +375,9 @@ export default {
       width: 40%;
       height: 20%;
       text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     /*position: relative;*/
     z-index: 999;
     /*top: 50%;*/
@@ -393,7 +396,10 @@ export default {
       right: 30%;
       width: 40%;
       height: 20%;
-    text-align: center;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     /*position: relative;*/
     z-index: 999;
     /*top: 50%;*/

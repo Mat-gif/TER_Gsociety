@@ -3,8 +3,13 @@
 
         <div class="bloc-modale" v-if="revele">
             <button v-on:click="toggleModale" class="myBtn myClose">X</button>
-            <img src="../assets/elon.png" style="height: 60%; border-radius: 40px;">
-          <h1>Gsociety</h1>
+<!--            <img src="../assets/elon.png" style="height: 60%; border-radius: 40px;">-->
+            <img src="../assets/logo_gsociety.png" style="height: 60%; border-radius: 40px;">
+            <br>
+            <br>
+<!--            <h1>Gsociety</h1>-->
+            <br>
+            <h2>Lijuan - Loum - Mathieu - Victor</h2>
         </div>
 </template>
 
